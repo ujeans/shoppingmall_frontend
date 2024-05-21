@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import AppLayout from "./components/commom/AppLayout";
 // pages
 import MyPage from "./pages/myPage/MyPage";
+import SellPage from "./pages/sellPage/SellPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <AppLayout>
         <Routes>
           <Route path="/settings" element={<MyPage />} />
+          <Route path="/sell" element={<SellPage />} />
         </Routes>
       </AppLayout>
     </ThemeProvider>
