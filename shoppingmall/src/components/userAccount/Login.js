@@ -71,12 +71,14 @@ const SubmitButton = styled.button`
   color: #ffffff;
   font-weight: 700;
   margin-bottom: 15px;
+  cursor: pointer;
 `;
 
 const SignupButton = styled.button`
   width: 465px;
   height: 45px;
   border-radius: 10px;
+  cursor: pointer;
 
   &:hover {
   }

@@ -115,7 +115,9 @@ const IconWrapper = styled.div`
   border-right: 1px solid #000000;
 `;
 
-const Icon = styled.img``;
+const Icon = styled.img`
+  background-color: ${theme.grayBgColor};
+`;
 
 const Input = styled.input`
   width: 100%;
@@ -149,4 +151,5 @@ const SubmitButton = styled.button`
   background-color: ${theme.mainColor};
   color: #ffffff;
   font-weight: 700;
+  cursor: pointer;
 `;
