@@ -1,6 +1,7 @@
 import styled from "styled-components";
 // assets
 import salesDetails from "../../assets/salesDetails.svg";
+import orderDetails from "../../assets/orderDetails.svg";
 import cart from "../../assets/cart.svg";
 
 const MyDealList = () => {
@@ -11,6 +12,10 @@ const MyDealList = () => {
         <MyDealBox>
           <Icon src={salesDetails}></Icon>
           <ListTitle>판매 내역</ListTitle>
+        </MyDealBox>
+        <MyDealBox>
+          <Icon src={orderDetails}></Icon>
+          <ListTitle>주문 내역</ListTitle>
         </MyDealBox>
         <MyDealBox>
           <Icon src={cart}></Icon>

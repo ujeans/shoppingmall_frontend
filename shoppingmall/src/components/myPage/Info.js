@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   width: 644px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 const InfoTitle = styled.div`
