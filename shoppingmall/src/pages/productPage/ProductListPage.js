@@ -1,7 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const ProductListPage = () => {
+   const [productList, setProductList] = useState([
+    {
+        id: 1,
+        image: "https://via.placeholder.com/150",
+        productName: "아디다스",
+        productPrice: "56000",
+        description:
+          "상품 설명 상품 설명 상품 설명 상품 설명",
+      },
+      {
+        id: 2,
+        image: "https://via.placeholder.com/150",
+        productName: "아디다스",
+        productPrice: "56000",
+        description:
+          "상품 설명 상품 설명 상품 설명 상품 설명",
+      },
+      {
+        id: 3,
+        image: "https://via.placeholder.com/150",
+        productName: "아디다스",
+        productPrice: "56000",
+        description:
+          "상품 설명 상품 설명 상품 설명 상품 설명",
+      },
+      {
+        id: 4,
+        image: "https://via.placeholder.com/150",
+        productName: "아디다스",
+        productPrice: "56000",
+        description:
+          "상품 설명 상품 설명 상품 설명 상품 설명",
+      },
+      {
+        id: 5,
+        image: "https://via.placeholder.com/150",
+        productName: "아디다스",
+        productPrice: "56000",
+        description:
+          "상품 설명 상품 설명 상품 설명 상품 설명",
+      },
+      {
+        id: 6,
+        image: "https://via.placeholder.com/150",
+        productName: "아디다스",
+        productPrice: "56000",
+        description:
+          "상품 설명 상품 설명 상품 설명 상품 설명",
+      },
+   ]);
+
+   console.log(productList);
+
+
+
+
+
     return (
         <ProductListPageWrapper>
             <ProductListFilterWrapper>
@@ -24,8 +81,27 @@ const ProductListPage = () => {
                </RightWrapper>
                 
             </ProductListFilterWrapper>
-            <div></div>
-            <div></div>
+            <ProductListContainer>
+                {productList.map((product, index) => (
+                    <ProductItem key={index} >
+                        <ProductImage src={product.image} alt={product.productName}/>
+                        <ProductInfoWrapper>
+                            <div>
+                                <div>{product.productName}</div>
+                                <div>{product.productPrice}</div>
+                                <div>{product.description}</div>
+                            </div>
+                            <div>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="24" height="24" fill="white"/>
+                                    <path d="M21 8.25C21 5.765 18.901 3.75 16.312 3.75C14.377 3.75 12.715 4.876 12 6.483C11.285 4.876 9.623 3.75 7.687 3.75C5.1 3.75 3 5.765 3 8.25C3 15.47 12 20.25 12 20.25C12 20.25 21 15.47 21 8.25Z" stroke="#858585" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </ProductInfoWrapper>
+                    </ProductItem>
+                ))}     
+            </ProductListContainer>
+     
 
 
 
@@ -43,19 +119,21 @@ export default ProductListPage;
 
 const ProductListPageWrapper = styled.div`
     width: 100%;
-    max-width: 1200px; /* 최대 너비 설정 */
-    margin: 0 auto; /* 가운데 정렬 */
-    padding: 20px; /* 내부 여백 추가 */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px; 
     border: 1px solid black;
 `;
 
 const ProductListFilterWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+    width: 100%;
 `;
 
 
 const LeftWrapper  = styled.div`
+    margin-left: 8%;
     > button {
         margin-right: 10px;
         width: 80px;
@@ -81,13 +159,11 @@ const Selector = styled.select`
     height: 30px;
     border: 1px solid #D1D4D8;
     border-radius: 15px;
-
-
-
 `;
 
-const RightWrapper = styled.div`
 
+const RightWrapper = styled.div`
+    margin-right: 8%;
     > button {
         width: 124px;
         height: 40px;
@@ -106,8 +182,32 @@ const RightWrapper = styled.div`
         }
     }
 
+`;
+
+const ProductListContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+`;
 
 
+const ProductItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    margin: 10px;
+    width: calc(100% / ${(props) => props.productsPerRow} - 20px);
+    box-sizing: border-box;
+`;
+
+const ProductImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background-color: red;
+`;
 
 
+const ProductInfoWrapper = styled.div`
+    display: flex;
 `;
