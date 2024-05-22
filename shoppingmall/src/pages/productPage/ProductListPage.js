@@ -6,7 +6,7 @@ import ModalComponent from '../../components/modal/ModalComponent';
 const ProductListPage = () => {
    const navigate = useNavigate();
    const [isVisible, setIsVisible] = useState(false);
-   const [isLogin, setIsLogin] = useState(true);
+   const [isLogin, setIsLogin] = useState(false);
    const productsPerRow = 4;
    const pages = [1, 2, 3, 4, 5];
    const [currentPage, setCurrentPage] = useState(1);
@@ -78,7 +78,7 @@ const ProductListPage = () => {
    ]);
 
    const closeModal = () => {
-        setIsVisible(false)
+        setIsVisible(false);
    };
 
    const onPageChange = (page) => {
@@ -88,7 +88,7 @@ const ProductListPage = () => {
 
    const checkLogin = () => {
        if (isLogin === true) {
-        navigate("/write");
+        navigate("/PR");
         setIsVisible(false);
        } else {
         setIsVisible(true);
@@ -96,7 +96,7 @@ const ProductListPage = () => {
    };
 
     return (
-        <ProductListPageWrapper>
+        <ProductListPageWrapper >
             <ProductListFilterWrapper>
                 <LeftWrapper>
                     <button >추천순</button>
@@ -170,14 +170,16 @@ const ProductListPage = () => {
                 </PageButton>
             </PaginationContainer>        
 
-            <div>
-                {isVisible && (
-                    <ModalComponent title="로그인이 필요한 기능입니다." 
-                                    subText="로그인 페이지로 이동하시겠습니까?" 
-                                    urlPath="/login" 
-                                    isClosed={closeModal}/>
-                )}    
-            </div>            
+           
+            {isVisible && (
+                <ModalComponent title="로그인이 필요한 기능입니다." 
+                                subText="로그인 페이지로 이동하시겠습니까?" 
+                                urlPath="/login" 
+                                isClosed={closeModal}/>
+                )};    
+                    
+                    
+                       
         </ProductListPageWrapper>
     );
 };
@@ -189,7 +191,6 @@ const ProductListPageWrapper = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px; 
-    border: 1px solid #FFFF;
 `;
 
 const ProductListFilterWrapper = styled.div`
@@ -305,7 +306,6 @@ const PageButton = styled.button`
     color: white;
   }
 `;
-
 
 const ArrowIcon = styled.div`
   width: 10px;
