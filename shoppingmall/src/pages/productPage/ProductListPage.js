@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ModalComponent from '../../components/modal/ModalComponent';
 
 const ProductListPage = () => {
+   const navigate = useNavigate();
    const [isVisible, setIsVisible] = useState(false);
+   const [isLogin, setIsLogin] = useState(true);
    const productsPerRow = 4;
    const pages = [1, 2, 3, 4, 5];
    const [currentPage, setCurrentPage] = useState(1);
@@ -74,10 +77,6 @@ const ProductListPage = () => {
       },
    ]);
 
-   const openModal = () => {
-        setIsVisible(true);
-   };
-
    const closeModal = () => {
         setIsVisible(false)
    };
@@ -87,8 +86,13 @@ const ProductListPage = () => {
         console.log(`Page changed to ${page}`);
     };
 
-   const onSetIsVisible = (active) => {
-        setIsVisible(active);
+   const checkLogin = () => {
+       if (isLogin === true) {
+        navigate("/write");
+        setIsVisible(false);
+       } else {
+        setIsVisible(true);
+       }
    };
 
     return (
@@ -105,7 +109,7 @@ const ProductListPage = () => {
                     </Selector>
                 </LeftWrapper>
                 <RightWrapper>
-                    <button onClick={() => onSetIsVisible(true)}>상품 등록 &nbsp;
+                    <button onClick={checkLogin}>상품 등록 &nbsp;
                         <svg width="14" height="14" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M17.1092 0.890819C16.6989 0.480662 16.1426 0.250244 15.5625 0.250244C14.9824 0.250244 14.4261 0.480662 14.0158 0.890819L13.0517 1.85499L16.145 4.94832L17.1092 3.98415C17.5193 3.57393 17.7497 3.01758 17.7497 2.43749C17.7497 1.85739 17.5193 1.30104 17.1092 0.890819ZM15.2608 5.83249L12.1675 2.73915L2.0425 12.8642C1.52821 13.3782 1.15015 14.0123 0.942499 14.7092L0.275832 16.9467C0.243645 17.0546 0.241245 17.1693 0.268884 17.2785C0.296524 17.3877 0.353175 17.4875 0.432845 17.5671C0.512514 17.6468 0.612238 17.7035 0.721464 17.7311C0.830691 17.7587 0.945358 17.7563 1.05333 17.7242L3.29083 17.0575C3.98769 16.8498 4.6218 16.4718 5.13583 15.9575L15.2608 5.83249Z" fill="#858585"/>
                         </svg>
