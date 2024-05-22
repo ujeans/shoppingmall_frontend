@@ -74,7 +74,14 @@ const ProductListPage = () => {
       },
    ]);
 
-   
+   const openModal = () => {
+        setIsVisible(true);
+   };
+
+   const closeModal = () => {
+        setIsVisible(false)
+   };
+
    const onPageChange = (page) => {
         setCurrentPage(page);
         console.log(`Page changed to ${page}`);
@@ -88,7 +95,7 @@ const ProductListPage = () => {
         <ProductListPageWrapper>
             <ProductListFilterWrapper>
                 <LeftWrapper>
-                    <button>추천순</button>
+                    <button >추천순</button>
                     <button>가격 낮은순</button>
                     <button>가격 높은순</button>
                     <Selector name="category">
@@ -161,7 +168,10 @@ const ProductListPage = () => {
 
             <div>
                 {isVisible && (
-                    <ModalComponent title="로그인이 필요한 기능입니다." subText="로그인 페이지로 이동하시겠습니까?" visible={isVisible} urlPath="/login"/>
+                    <ModalComponent title="로그인이 필요한 기능입니다." 
+                                    subText="로그인 페이지로 이동하시겠습니까?" 
+                                    urlPath="/login" 
+                                    isClosed={closeModal}/>
                 )}    
             </div>            
         </ProductListPageWrapper>
@@ -217,12 +227,13 @@ const RightWrapper = styled.div`
     > button {
         width: 124px;
         height: 40px;
-        border: 1px solid #0066FF;
+        border: 1px solid #FFFFFF;
         font-size: 14px;
         font-weight: 600;
         line-height: 16.94px;
         padding-right: 5px;
         background-color: #FFFFFF;
+        cursor: pointer;
         
         > svg {
             margin-right: 3px;

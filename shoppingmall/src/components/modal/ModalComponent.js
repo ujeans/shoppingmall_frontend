@@ -2,13 +2,10 @@ import React , { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
-const ModalComponent = ( props) => {
-    const {title, subText, setIsVisible, urlPath} = props;
+const ModalComponent = ( {title, subText, urlPath, isClosed} ) => {
+    
     const navigate = useNavigate();
     const [url, setUrl] = useState("");
-    const closeBtn =() => {
-        setIsVisible(false);
-    };
 
     const moveToPage = () => {
         setUrl(urlPath);
@@ -23,7 +20,7 @@ const ModalComponent = ( props) => {
                     <SubTitle>{subText}</SubTitle>
                 </ModalTop>
                 <ModalBottom>
-                    <CancelButton onClick={() => closeBtn()}>취소</CancelButton>
+                    <CancelButton onClick={isClosed}>취소</CancelButton>
                     <OkButton onClick={() => moveToPage()}>확인</OkButton>
                 </ModalBottom>
             </Modal>
