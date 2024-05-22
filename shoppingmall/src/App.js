@@ -7,6 +7,7 @@ import AppLayout from "./components/commom/AppLayout";
 // pages
 import MyPage from "./pages/myPage/MyPage";
 import ProductListPage from "./pages/productPage/ProductListPage";
+import ProductWritePage from "./pages/productPage/ProductWritePage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/settings" element={<MyPage />} />
           <Route path="/products" element={<ProductListPage/>}/>
+          <Route path="/write"  element={<ProductWritePage/>}/>
         </Routes>
       </AppLayout>
     </ThemeProvider>
