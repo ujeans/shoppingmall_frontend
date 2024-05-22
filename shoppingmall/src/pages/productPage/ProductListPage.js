@@ -5,11 +5,13 @@ import ModalComponent from '../../components/modal/ModalComponent';
 
 const ProductListPage = () => {
    const navigate = useNavigate();
+   const [btnActive, setBtnActive] = useState(1);
    const [isVisible, setIsVisible] = useState(false);
    const [isLogin, setIsLogin] = useState(false);
    const productsPerRow = 4;
    const pages = [1, 2, 3, 4, 5];
    const [currentPage, setCurrentPage] = useState(1);
+
    const [productList, setProductList] = useState([
     {
         id: 1,
@@ -95,13 +97,34 @@ const ProductListPage = () => {
        }
    };
 
+   const handleClickButton = idx => {
+    console.log("idx: " , idx);
+    setBtnActive(idx);
+    console.log(btnActive);
+   };
+
     return (
         <ProductListPageWrapper >
             <ProductListFilterWrapper>
                 <LeftWrapper>
-                    <button >추천순</button>
-                    <button>가격 낮은순</button>
-                    <button>가격 높은순</button>
+                    <ButtonDivs>
+                                <Menu 
+                                        onClick={() => handleClickButton(0)}
+                                        isActive={btnActive === 0}>
+                                        추천순    
+                                </Menu>
+                                <Menu 
+                                        onClick={() => handleClickButton(1)}
+                                        isActive={btnActive === 1}>
+                                        가격 낮은순    
+                                </Menu>
+                                <Menu 
+                                        onClick={() => handleClickButton(2)}
+                                        isActive={btnActive === 2}>
+                                        가격 높은순    
+                                </Menu>
+                       
+                    </ButtonDivs>
                     <Selector name="category">
                         <option value="">의류</option>
                         <option value="">가전</option>
@@ -115,7 +138,6 @@ const ProductListPage = () => {
                         </svg>
                     </button>
                </RightWrapper>
-                
             </ProductListFilterWrapper>
             <ProductListContainer>
                 {productList.map((product, index) => (
@@ -201,30 +223,52 @@ const ProductListFilterWrapper = styled.div`
 
 const LeftWrapper  = styled.div`
     margin-left: 1%;
-    > button {
-        margin-right: 10px;
-        width: 80px;
-        height: 30px;
-        border: 1px solid #D1D4D8;
-        border-radius: 15px;
-        font-size: 12px;
-        background-color: #FFFFFF;
-        &:hover {
-            background-color: #F4F4F4;
-            border: 1px solid #D1D4D8;
-        }
-        &:active {
-            background-color: #EB4646E5;
-            color: #FFFFFF;
-        }
+    display: flex;
+    justify-content: flex;
+`;
+
+const ButtonDivs = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+   
     }
 `;
 
+const Menu = styled.button`
+    background-color:  ${props => (props.isActive ? "#EB4646" : "")};
+    &:active {
+        background-color: #EB4646;
+        border: 1px solid #D1D4D8;
+    }
+    width: 80px;
+    height: 30px;
+    border: 1px solid #D1D4D8;
+    border-radius: 15px;
+    font-size: 12px;
+    cursor: pointer;
+    &:hover {
+        background-color: #D1D4D8;
+        color: white;
+      }
+`;
+
+
+
+
+
 const Selector = styled.select`
+    margin-left: 5px;
     width: 92px;
     height: 30px;
     border: 1px solid #D1D4D8;
     border-radius: 15px;
+    text-align: center;
+    > option {
+        &:hover {
+            background-color: #F4F4F4;
+        }
+    }
 `;
 
 const RightWrapper = styled.div`
