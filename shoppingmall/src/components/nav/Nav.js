@@ -1,34 +1,53 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../style/theme";
+import { useNavigate } from "react-router-dom";
 
 //svg
 import mypage from "../../assets/mypage.svg";
 import cart from "../../assets/cart.svg";
 
 const Nav = () => {
+  // eslint-disable-next-line
   const [isLoggedIn, setLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+  const moveToHome = () => {
+    navigate("/");
+  };
+  const moveToLogin = () => {
+    navigate("/login");
+  };
+  const moveToSignup = () => {
+    navigate("/signup");
+  };
+  const moveToMypage = () => {
+    navigate("/mypage");
+  };
+  const moveToCart = () => {
+    navigate("/cart");
+  };
 
   return (
     <Container>
       <Wrapper>
-        <Title>super24</Title>
+        <Title onClick={moveToHome}>super24</Title>
         <ButtonWrapper>
           {isLoggedIn ? (
             <>
-              <LoginButton>로그인</LoginButton>
-              <SignupButton>회원가입</SignupButton>
-            </>
-          ) : (
-            <>
-              <MyPageButton>
+              <MyPageButton onClick={moveToMypage}>
                 <Icon src={mypage} />
                 <ButtonText>마이페이지</ButtonText>
               </MyPageButton>
-              <CartButton>
+              <CartButton onClick={moveToCart}>
                 <Icon src={cart} />
                 <ButtonText>장바구니</ButtonText>
               </CartButton>
+            </>
+          ) : (
+            <>
+              <LoginButton onClick={moveToLogin}>로그인</LoginButton>
+              <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
             </>
           )}
         </ButtonWrapper>
@@ -58,6 +77,7 @@ const Title = styled.h2`
   font-weight: bold;
   font-size: 20px;
   margin-left: 20px;
+  cursor: pointer;
 `;
 
 const ButtonWrapper = styled.div``;

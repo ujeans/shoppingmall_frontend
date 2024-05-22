@@ -1,8 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../style/theme";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const moveToSignup = () => {
+    navigate("/signup");
+  };
+
   return (
     <>
       <Wrapper>
@@ -14,7 +20,7 @@ const Login = () => {
           <Input placeholder="비밀번호" type="password" required />
           <SubmitButton>로그인</SubmitButton>
         </InputWrapper>
-        <SignupButton>회원가입</SignupButton>
+        <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
       </Wrapper>
     </>
   );

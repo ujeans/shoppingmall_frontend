@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../style/theme";
-
+import { useNavigate } from "react-router-dom";
 //svg
 import email from "../../assets/email.svg";
 import password from "../../assets/password.svg";
 import people from "../../assets/people.svg";
 import phone from "../../assets/phone.svg";
-import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   //유저 정보
