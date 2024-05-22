@@ -8,6 +8,8 @@ import AppLayout from "./components/commom/AppLayout";
 import MyPage from "./pages/myPage/MyPage";
 import ProductListPage from "./pages/productPage/ProductListPage";
 import ProductWritePage from "./pages/productPage/ProductWritePage";
+import Login from "../src/components/userAccount/Login";
+import Signup from "./components/userAccount/Signup";
 
 function App() {
   return (
@@ -16,8 +18,10 @@ function App() {
       <AppLayout>
         <Routes>
           <Route path="/settings" element={<MyPage />} />
-          <Route path="/products" element={<ProductListPage/>}/>
+          <Route path="/" element={<ProductListPage/>}/>
           <Route path="/write"  element={<ProductWritePage/>}/>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </AppLayout>
     </ThemeProvider>

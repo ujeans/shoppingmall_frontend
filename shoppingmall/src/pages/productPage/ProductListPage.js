@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
+import ModalComponent from '../../components/modal/ModalComponent';
 
 const ProductListPage = () => {
-   const navigate = useNavigate();
+   const [isVisible, setIsVisible] = useState(false);
    const productsPerRow = 4;
+   const pages = [1, 2, 3, 4, 5];
+   const [currentPage, setCurrentPage] = useState(1);
    const [productList, setProductList] = useState([
     {
         id: 1,
@@ -70,12 +72,17 @@ const ProductListPage = () => {
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
-     
    ]);
 
-   const navigateToWrite = () => {
-    navigate("/write");
-   }
+   
+   const onPageChange = (page) => {
+        setCurrentPage(page);
+        console.log(`Page changed to ${page}`);
+    };
+
+   const onSetIsVisible = (active) => {
+        setIsVisible(active);
+   };
 
     return (
         <ProductListPageWrapper>
@@ -91,7 +98,7 @@ const ProductListPage = () => {
                     </Selector>
                 </LeftWrapper>
                 <RightWrapper>
-                    <button onClick={navigateToWrite}>상품 등록 &nbsp;
+                    <button onClick={() => onSetIsVisible(true)}>상품 등록 &nbsp;
                         <svg width="14" height="14" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M17.1092 0.890819C16.6989 0.480662 16.1426 0.250244 15.5625 0.250244C14.9824 0.250244 14.4261 0.480662 14.0158 0.890819L13.0517 1.85499L16.145 4.94832L17.1092 3.98415C17.5193 3.57393 17.7497 3.01758 17.7497 2.43749C17.7497 1.85739 17.5193 1.30104 17.1092 0.890819ZM15.2608 5.83249L12.1675 2.73915L2.0425 12.8642C1.52821 13.3782 1.15015 14.0123 0.942499 14.7092L0.275832 16.9467C0.243645 17.0546 0.241245 17.1693 0.268884 17.2785C0.296524 17.3877 0.353175 17.4875 0.432845 17.5671C0.512514 17.6468 0.612238 17.7035 0.721464 17.7311C0.830691 17.7587 0.945358 17.7563 1.05333 17.7242L3.29083 17.0575C3.98769 16.8498 4.6218 16.4718 5.13583 15.9575L15.2608 5.83249Z" fill="#858585"/>
                         </svg>
@@ -119,16 +126,44 @@ const ProductListPage = () => {
                     </ProductItem>
                 ))}     
             </ProductListContainer>
-     
+            <PaginationContainer>
+                <PageButton
+                    onClick={() => onPageChange(currentPage > 1 ? currentPage - 1 : 1)}>
+                    <ArrowIcon  alt="Previous" >
+                        <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.75 16.5L1.25 9L8.75 1.5" stroke="#858585" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </ArrowIcon>
+                </PageButton>
+                {pages.map((page, index) => (
+                    <PageButton
+                    key={index}
+                    onClick={() => onPageChange(page)}
+                    isActive={currentPage === page}
+                    >
+                    {page}
+                    </PageButton>
+                ))}
+                <PageButton
+                    onClick={() =>
+                    onPageChange(
+                        currentPage < pages.length ? currentPage + 1 : pages.length
+                    )
+                    }
+                >
+                    <ArrowIcon alt="Next" flipped>
+                        <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.25 1.5L8.75 9L1.25 16.5" stroke="#858585" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </ArrowIcon>
+                </PageButton>
+            </PaginationContainer>        
 
-
-
-
-
-
-
-
-
+            <div>
+                {isVisible && (
+                    <ModalComponent title="로그인이 필요한 기능입니다." subText="로그인 페이지로 이동하시겠습니까?" visible={isVisible} urlPath="/login"/>
+                )}    
+            </div>            
         </ProductListPageWrapper>
     );
 };
@@ -140,7 +175,7 @@ const ProductListPageWrapper = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px; 
-    border: 1px solid black;
+    border: 1px solid #FFFF;
 `;
 
 const ProductListFilterWrapper = styled.div`
@@ -148,7 +183,6 @@ const ProductListFilterWrapper = styled.div`
     justify-content: space-between;
     width: 100%;
 `;
-
 
 const LeftWrapper  = styled.div`
     margin-left: 1%;
@@ -171,14 +205,12 @@ const LeftWrapper  = styled.div`
     }
 `;
 
-
 const Selector = styled.select`
     width: 92px;
     height: 30px;
     border: 1px solid #D1D4D8;
     border-radius: 15px;
 `;
-
 
 const RightWrapper = styled.div`
     margin-right: 1%;
@@ -192,14 +224,12 @@ const RightWrapper = styled.div`
         padding-right: 5px;
         background-color: #FFFFFF;
         
-
         > svg {
             margin-right: 3px;
             line-height: 16.94px;
             margin-top: 2px;
         }
     }
-
 `;
 
 const ProductListContainer = styled.div`
@@ -207,7 +237,6 @@ const ProductListContainer = styled.div`
     flex-wrap: wrap;
     justify-content: center;
 `;
-
 
 const ProductItem = styled.div`
     display: flex;
@@ -225,17 +254,49 @@ const ProductImage = styled.img`
   background-color: red;
 `;
 
-
 const ProductInfoWrapper = styled.div`
     display: flex;
 `;
 
 const Icon = styled.div`
-
     > svg {
         &:active {
             fill: red;
         }
     }
+`;
 
+const PaginationContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+`;
+
+const PageButton = styled.button`
+  color: ${(props) => (props.isActive ? "white" : "#858585")};
+  background-color: ${(props) => (props.isActive ? "#EB4646" : "#f4f4f4")};
+  width: 45px;
+  height: 45px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: #eb4646;
+    color: white;
+  }
+`;
+
+
+const ArrowIcon = styled.div`
+  width: 10px;
+  height: 18px;
+  &:hover {
+    background-color: #eb4646;
+    color: white;
+  }
 `;
