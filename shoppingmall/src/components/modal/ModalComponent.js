@@ -44,14 +44,13 @@ const ModalWrapper = styled.div`
 
 const Modal = styled.div`
     position: relative;
-    width: 669px;
+    width: 600px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
 `;
 
 const ModalTop = styled.div`
-    width: 100%;
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;

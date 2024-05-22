@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { theme } from "../../style/theme";
 import ModalComponent from '../../components/modal/ModalComponent';
+
+// svg
+import like from "../../assets/like.svg";
+import unlike from "../../assets/unlike.svg";
 
 const ProductListPage = () => {
    const navigate = useNavigate();
    const [btnActive, setBtnActive] = useState(1);
    const [isVisible, setIsVisible] = useState(false);
+   const [isChecked, setIsLike] = useState([]);
    const [isLogin, setIsLogin] = useState(false);
    const productsPerRow = 4;
    const pages = [1, 2, 3, 4, 5];
@@ -98,10 +104,16 @@ const ProductListPage = () => {
    };
 
    const handleClickButton = idx => {
-    console.log("idx: " , idx);
     setBtnActive(idx);
-    console.log(btnActive);
    };
+
+   const handleHeart = (index) => {
+    setIsLike(() => {
+      const newLike = [...isChecked];
+      newLike[index] = !newLike[index];
+      return newLike;  
+    })
+   }
 
     return (
         <ProductListPageWrapper >
@@ -123,7 +135,6 @@ const ProductListPage = () => {
                                         isActive={btnActive === 2}>
                                         가격 높은순    
                                 </Menu>
-                       
                     </ButtonDivs>
                     <Selector name="category">
                         <option value="">의류</option>
@@ -149,12 +160,20 @@ const ProductListPage = () => {
                                 <div>{product.productPrice}</div>
                                 <div>{product.description}</div>
                             </div>
-                            <Icon>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="24" height="24" fill="white"/>
-                                    <path d="M21 8.25C21 5.765 18.901 3.75 16.312 3.75C14.377 3.75 12.715 4.876 12 6.483C11.285 4.876 9.623 3.75 7.687 3.75C5.1 3.75 3 5.765 3 8.25C3 15.47 12 20.25 12 20.25C12 20.25 21 15.47 21 8.25Z" stroke="#858585" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </Icon>
+                            <IconWrapper onClick={() => {handleHeart(index)}}>
+                               
+                                    
+                                    <Icon src={unlike} fill="grayBgColor"/>
+                                
+                                
+                                
+                                   
+                                         
+                                   
+                                       
+                                    
+                               
+                            </IconWrapper>
                         </ProductInfoWrapper>
                     </ProductItem>
                 ))}     
@@ -253,10 +272,6 @@ const Menu = styled.button`
       }
 `;
 
-
-
-
-
 const Selector = styled.select`
     margin-left: 5px;
     width: 92px;
@@ -318,12 +333,59 @@ const ProductInfoWrapper = styled.div`
     display: flex;
 `;
 
-const Icon = styled.div`
-    > svg {
-        &:active {
-            fill: red;
-        }
-    }
+const IconWrapper = styled.div`
+    padding: 10px;
+    height: 100%
+`;
+
+const Icon = styled.img`
+    background-color: ${(props) => (props.isActive ? "#EB4646" : "#f4f4f4")};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 `;
 
 const PaginationContainer = styled.div`
