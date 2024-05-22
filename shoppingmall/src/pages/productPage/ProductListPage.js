@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const ProductListPage = () => {
+   const productsPerRow = 4;
    const [productList, setProductList] = useState([
     {
         id: 1,
@@ -51,13 +52,24 @@ const ProductListPage = () => {
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
+      {
+        id: 7,
+        image: "https://via.placeholder.com/150",
+        productName: "아디다스",
+        productPrice: "56000",
+        description:
+          "상품 설명 상품 설명 상품 설명 상품 설명",
+      },
+      {
+        id: 8,
+        image: "https://via.placeholder.com/150",
+        productName: "아디다스",
+        productPrice: "56000",
+        description:
+          "상품 설명 상품 설명 상품 설명 상품 설명",
+      },
+     
    ]);
-
-   console.log(productList);
-
-
-
-
 
     return (
         <ProductListPageWrapper>
@@ -83,7 +95,7 @@ const ProductListPage = () => {
             </ProductListFilterWrapper>
             <ProductListContainer>
                 {productList.map((product, index) => (
-                    <ProductItem key={index} >
+                    <ProductItem key={index} productsPerRow = { productsPerRow} >
                         <ProductImage src={product.image} alt={product.productName}/>
                         <ProductInfoWrapper>
                             <div>
@@ -91,12 +103,12 @@ const ProductListPage = () => {
                                 <div>{product.productPrice}</div>
                                 <div>{product.description}</div>
                             </div>
-                            <div>
+                            <Icon>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect width="24" height="24" fill="white"/>
                                     <path d="M21 8.25C21 5.765 18.901 3.75 16.312 3.75C14.377 3.75 12.715 4.876 12 6.483C11.285 4.876 9.623 3.75 7.687 3.75C5.1 3.75 3 5.765 3 8.25C3 15.47 12 20.25 12 20.25C12 20.25 21 15.47 21 8.25Z" stroke="#858585" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                            </div>
+                            </Icon>
                         </ProductInfoWrapper>
                     </ProductItem>
                 ))}     
@@ -133,7 +145,7 @@ const ProductListFilterWrapper = styled.div`
 
 
 const LeftWrapper  = styled.div`
-    margin-left: 8%;
+    margin-left: 1%;
     > button {
         margin-right: 10px;
         width: 80px;
@@ -163,7 +175,7 @@ const Selector = styled.select`
 
 
 const RightWrapper = styled.div`
-    margin-right: 8%;
+    margin-right: 1%;
     > button {
         width: 124px;
         height: 40px;
@@ -210,4 +222,14 @@ const ProductImage = styled.img`
 
 const ProductInfoWrapper = styled.div`
     display: flex;
+`;
+
+const Icon = styled.div`
+
+    > svg {
+        &:active {
+            fill: red;
+        }
+    }
+
 `;
