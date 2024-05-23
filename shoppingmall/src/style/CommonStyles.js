@@ -3,7 +3,7 @@ import styled from "styled-components";
 // Cart, OrderDetails border layout
 export const Container = styled.div`
   border-top: 2px solid black;
-  border-bottom: 1px solid black;
+  border-bottom: ${props => (props.borderBottom ? "1px solid black" : "none")};
 `;
 
 export const Header = styled.div`
@@ -11,6 +11,7 @@ export const Header = styled.div`
   height: 70px;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid ${props => props.theme.border};
   font-size: 18px;
   font-weight: bold;
 `;

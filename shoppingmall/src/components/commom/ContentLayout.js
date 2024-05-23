@@ -35,6 +35,8 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: ${props => props.width};
+  min-height: calc(100vh - 67px);
+  height: fit-content;
 `;
 
 const Top = styled.div`

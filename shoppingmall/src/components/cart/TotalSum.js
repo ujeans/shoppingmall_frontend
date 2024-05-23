@@ -4,7 +4,7 @@ import { Container, Header } from "../../style/CommonStyles";
 
 const TotalSum = () => {
   return (
-    <Container>
+    <Container borderBottom={true}>
       <Header>
         <PaymentText>총 주문금액</PaymentText>
         <PaymentText>총 주문금액</PaymentText>
@@ -39,7 +39,6 @@ const PaymentText = styled.div`
 const PaymentWrapper = styled.div`
   display: flex;
   padding: 30px 0;
-  border-top: 1px solid ${props => props.theme.border};
 `;
 
 const PaymentBox = styled.div`

@@ -10,7 +10,7 @@ import { Container, Header } from "../../style/CommonStyles";
 const FilledCart = ({ cartItems }) => {
   return (
     <>
-      <Container>
+      <Container borderBottom={false}>
         <Header>
           <Checkbox>
             <Icon src={checkbox} />

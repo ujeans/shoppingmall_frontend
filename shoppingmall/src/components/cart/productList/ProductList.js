@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  border-top: 1px solid ${props => props.theme.border};
+  border-bottom: 1px solid ${props => props.theme.border};
 `;
 
 const Checkbox = styled.div`
