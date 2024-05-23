@@ -1,11 +1,12 @@
-import React from "react";
 import styled from "styled-components";
+// styles
+import { BlackBtn } from "../../../style/CommonStyles";
 
 const OrderAmount = ({ product }) => {
   return (
     <Container>
       <OrderPrice>{product.price}원</OrderPrice>
-      <OrderBtn>BUY NOW</OrderBtn>
+      <BlackBtn padding="10px 12px">BUY NOW</BlackBtn>
     </Container>
   );
 };
@@ -25,14 +26,4 @@ const OrderPrice = styled.div`
   margin-bottom: 10px;
   font-size: 20px;
   font-weight: bold;
-`;
-
-const OrderBtn = styled.button`
-  padding: 10px 12px;
-  border: none;
-  color: white;
-  background-color: ${props => props.theme.mainColor};
-  font-weight: bold;
-  font-size: 12px;
-  cursor: pointer;
 `;

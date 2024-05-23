@@ -1,13 +1,24 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 // assets
 import checkbox from "../../assets/checkbox.svg";
 // components
 import ProductList from "./productList/ProductList";
 import TotalSum from "./TotalSum";
 // styles
-import { Container, Header } from "../../style/CommonStyles";
+import {
+  BlackBtn,
+  Container,
+  Header,
+  WhiteBtn,
+} from "../../style/CommonStyles";
 
 const FilledCart = ({ cartItems }) => {
+  const navigate = useNavigate();
+
+  const navigateToPage = () => {
+    navigate("/");
+  };
   return (
     <>
       <Container borderBottom={false}>
@@ -27,8 +38,12 @@ const FilledCart = ({ cartItems }) => {
       </BtnWrapper>
       <TotalSum />
       <ButtonWrapper>
-        <Btn>CONTINUE SHOPPING</Btn>
-        <Btn className="check-out">CHECK OUT</Btn>
+        <Btn padding=" 12px 20px" fontSize="20px" onClick={navigateToPage}>
+          CONTINUE SHOPPING
+        </Btn>
+        <BlackBtn padding=" 12px 20px" fontSize="20px">
+          CHECK OUT
+        </BlackBtn>
       </ButtonWrapper>
     </>
   );
@@ -96,26 +111,6 @@ const ButtonWrapper = styled.div`
   margin-top: 30px;
 `;
 
-const Btn = styled.button`
-  padding: 12px 20px;
-  border: 1px solid ${props => props.theme.grayTextIcon};
-  background: none;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-
-  &:hover {
-    color: ${props => props.theme.mainColor};
-  }
-
-  &.check-out {
-    margin-left: 10px;
-    border: none;
-    background-color: black;
-    color: white;
-
-    &:hover {
-      color: ${props => props.theme.mainColor};
-    }
-  }
+const Btn = styled(WhiteBtn)`
+  margin-right: 10px;
 `;

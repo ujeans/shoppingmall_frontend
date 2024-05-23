@@ -15,3 +15,32 @@ export const Header = styled.div`
   font-size: 18px;
   font-weight: bold;
 `;
+
+// buttons
+export const BlackBtn = styled.button`
+  padding: ${props => props.padding};
+  background: black;
+  color: white;
+  border: none;
+  font-size: ${props => props.fontSize};
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    color: ${props => props.theme.mainColor};
+  }
+`;
+
+export const WhiteBtn = styled.button`
+  padding: ${props => props.padding};
+  background: none;
+  border: 1px solid black;
+  color: black;
+  font-size: ${props => props.fontSize};
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    color: ${props => props.theme.mainColor};
+  }
+`;
