@@ -44,7 +44,7 @@ const Wrapper = styled.div`
 const ModalWrapper = styled.div`
     position: fixed;
     background-color: white;
-    top: 50%;
+    top: 40%;
     left: 50%;
     /* 위아래 너비를 준 상태에서 가로 50%, 세로 50%를 이동시킬 수 있다 (= 한가운데 배치) */
     transform: translate(-50%, -50%);
@@ -67,13 +67,15 @@ const ModalTop = styled.div`
     margin-bottom: 20px;
     background-color: white;
     justify-content: flex-start;
-    margin-left: 5%;
+    margin-left: 10%;
 `;
 
 const ModalTitle = styled.div`
+    margin-top: 10px;
     font-size: 20px;
     line-height: 24.2px;
-    weight: 600;
+    font-weight: 600;
+    margin-bottom: 10px;
 
 `;
 
