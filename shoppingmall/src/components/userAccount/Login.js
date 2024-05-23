@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { theme } from "../../style/theme";
 import { useNavigate } from "react-router-dom";
 
+//svg
+import email from "../../assets/email.svg";
+import password from "../../assets/password.svg";
+
 const Login = () => {
   //로그인 정보
   const [user, setUser] = useState({
@@ -53,20 +57,32 @@ const Login = () => {
       <Wrapper>
         <Title onClick={moveToHome}>super24</Title>
         <InputWrapper>
-          <Input
-            placeholder="아이디(이메일)"
-            value={user.email}
-            name="email"
-            onChange={handleInputChange}
-          />
-          <Input
-            placeholder="비밀번호"
-            type="password"
-            value={user.password}
-            name="password"
-            onChange={handleInputChange}
-          />
+          <InputContainer>
+            <IconWrapper>
+              <Icon src={email} />
+            </IconWrapper>
+            <Input
+              placeholder="아이디(이메일)"
+              value={user.email}
+              name="email"
+              onChange={handleInputChange}
+            />
+          </InputContainer>
+          <InputContainer>
+            <IconWrapper>
+              <Icon src={password} />
+            </IconWrapper>
+
+            <Input
+              placeholder="비밀번호"
+              type="password"
+              value={user.password}
+              name="password"
+              onChange={handleInputChange}
+            />
+          </InputContainer>
         </InputWrapper>
+
         <SubmitButton disabled={!isInVaild} onClick={submitLogin}>
           로그인
         </SubmitButton>
@@ -101,12 +117,33 @@ const InputWrapper = styled.div`
   margin: 262px 0 66px 0;
 `;
 
-const Input = styled.input`
-  width: 459px;
-  height: 62px;
-  text-indent: 12px;
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 463px;
   margin-bottom: 15px;
   border: 1px solid ${theme.border};
+`;
+
+const IconWrapper = styled.div`
+  width: 54px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${theme.grayBgColor};
+  border-right: 1px solid ${theme.border};
+`;
+
+const Icon = styled.img`
+  width: 24px;
+  height: 24px;
+`;
+
+const Input = styled.input`
+  width: 465px;
+  text-indent: 12px;
+  border: none;
   &::placeholder {
     color: ${({ theme }) => theme.placeholderText};
     color: ${theme.placeholderText};

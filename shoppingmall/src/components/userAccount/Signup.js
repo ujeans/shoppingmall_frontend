@@ -7,6 +7,8 @@ import email from "../../assets/email.svg";
 import password from "../../assets/password.svg";
 import people from "../../assets/people.svg";
 import phone from "../../assets/phone.svg";
+import home from "../../assets/home.svg";
+import userCircle from "../../assets/userCircle.svg";
 
 const Signup = () => {
   //유저 정보
@@ -67,6 +69,20 @@ const Signup = () => {
       moveToLogin();
     } catch (error) {
       console.error("에러", error);
+    }
+  };
+
+  const fileInputRef = React.createRef();
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // 파일 처리 로직 추가
+      console.log(file.name);
     }
   };
 
@@ -146,7 +162,7 @@ const Signup = () => {
           </InputContainer>
           <InputContainer>
             <IconWrapper>
-              <Icon src={phone} />
+              <Icon src={home} />
             </IconWrapper>
             <Input
               placeholder="주소"
@@ -160,7 +176,18 @@ const Signup = () => {
             있어요.
           </FileInfo>
           <FileInputWrapper>
-            <FileInput type="file" accept="image/*" name="img" />
+            <FileInput
+              type="file"
+              accept="image/*"
+              name="img"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+            <ImageButton
+              src={userCircle}
+              alt="파일 선택 버튼"
+              onClick={handleImageClick}
+            />
           </FileInputWrapper>
 
           <InputNickname
@@ -256,6 +283,9 @@ const FileInputWrapper = styled.div`
   width: 100%;
   max-width: 465px;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const FileInfo = styled.div`
@@ -264,7 +294,15 @@ const FileInfo = styled.div`
   margin: 11px 0 36px 0;
 `;
 
-const FileInput = styled.input``;
+const FileInput = styled.input`
+  display: none;
+`;
+
+const ImageButton = styled.img`
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+`;
 
 const SubmitButton = styled.button`
   width: 100%;
