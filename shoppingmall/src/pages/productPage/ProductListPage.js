@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from "../../style/theme";
 import ModalComponent from '../../components/modal/ModalComponent';
@@ -113,6 +113,10 @@ const ProductListPage = () => {
       newLike[index] = !newLike[index];
       return newLike;  
     })
+   };
+
+   const clickProduct = (id) => {
+       navigate(`/product/${id}`);
    }
 
     return (
@@ -150,19 +154,25 @@ const ProductListPage = () => {
             </ProductListFilterWrapper>
             <ProductListContainer>
                 {productList.map((product, index) => (
-                    <ProductItem key={index} productsPerRow = { productsPerRow} >
-                        <ProductImage src={product.image} alt={product.productName}/>
-                        <ProductInfoWrapper>
-                            <div>
-                                <ProductName>{product.productName}</ProductName>
-                                <ProductPrice>{product.productPrice + " 원"}</ProductPrice>
-                                <ProductDescription>{product.description}</ProductDescription>
-                            </div>
-                            <IconWrapper onClick={() => {handleHeart(index)}}>
-                                    <Icon src={unlike} fill="grayBgColor"/>
-                            </IconWrapper>
-                        </ProductInfoWrapper>
-                    </ProductItem>
+                   
+                        <ProductItem key={index} productsPerRow = { productsPerRow} onClick={() => {clickProduct(product.id)}} >
+                             
+                            <ProductImage src={product.image} alt={product.productName}/>
+                            <ProductInfoWrapper>
+                                <div>
+
+                                    <ProductName>{product.productName}</ProductName>
+                                    <ProductPrice>{product.productPrice + " 원"}</ProductPrice>
+                                    <ProductDescription>{product.description}</ProductDescription>
+                                </div>
+                                <IconWrapper onClick={() => {handleHeart(index)}}>
+                                        <Icon src={unlike} fill="grayBgColor"/>
+                                </IconWrapper>
+                            </ProductInfoWrapper>
+                            
+                        </ProductItem>
+                   
+                    
                 ))}     
             </ProductListContainer>
             <Pagination
@@ -272,6 +282,7 @@ const ProductItem = styled.div`
     margin: 10px;
     width: calc(100% / ${(props) => props.productsPerRow} - 20px);
     box-sizing: border-box;
+    cursor:pointer;
 `;
 
 const ProductImage = styled.img`
