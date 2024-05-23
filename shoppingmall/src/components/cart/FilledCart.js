@@ -4,11 +4,13 @@ import checkbox from "../../assets/checkbox.svg";
 // components
 import ProductList from "./productList/ProductList";
 import TotalSum from "./TotalSum";
+// styles
+import { Container, Header } from "../../style/CommonStyles";
 
 const FilledCart = ({ cartItems }) => {
   return (
     <>
-      <Wrapper>
+      <Container>
         <Header>
           <Checkbox>
             <Icon src={checkbox} />
@@ -18,7 +20,7 @@ const FilledCart = ({ cartItems }) => {
           <OrderAmount>주문금액</OrderAmount>
         </Header>
         <ProductList cartItems={cartItems} />
-      </Wrapper>
+      </Container>
       <BtnWrapper>
         <DeleteBtn>선택상품 삭제</DeleteBtn>
         <DeleteBtn>품절상품 삭제</DeleteBtn>
@@ -33,20 +35,6 @@ const FilledCart = ({ cartItems }) => {
 };
 
 export default FilledCart;
-
-const Wrapper = styled.div`
-  border-top: 2px solid black;
-  border-bottom: 1px solid black;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  font-size: 18px;
-  font-weight: bold;
-`;
 
 const Checkbox = styled.div`
   width: 6%;

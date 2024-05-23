@@ -1,23 +1,23 @@
 import styled from "styled-components";
+// // styles
+import { Container } from "../../style/CommonStyles";
 
 const EmptyCart = () => {
   return (
-    <Container>
+    <EmptyContainer>
       <Wrapper>
         <EmptyCartMessage>장바구니에 담은 상품이 없습니다.</EmptyCartMessage>
         <Btn>CONTINUE SHOPPING</Btn>
       </Wrapper>
-    </Container>
+    </EmptyContainer>
   );
 };
 
 export default EmptyCart;
 
-const Container = styled.div`
+const EmptyContainer = styled(Container)`
   display: flex;
   justify-content: center;
-  border-top: 2px solid black;
-  border-bottom: 1px solid black;
 `;
 
 const Wrapper = styled.div`
@@ -27,6 +27,7 @@ const Wrapper = styled.div`
 `;
 
 const EmptyCartMessage = styled.div`
+  display: flex;
   margin-bottom: 60px;
   font-size: 18px;
   font-weight: bold;
