@@ -156,8 +156,8 @@ const Signup = () => {
           </InputContainer>
 
           <FileInputWrapper>
-            <FileInfo>나를 나타내는 프로필 사진을 등록해주세요</FileInfo>
-            <Input type="file" accept="image/*" name="img" />
+            <FileInfo>프로필 사진을 등록해주세요. (선택사항)</FileInfo>
+            <ImageInput type="file" accept="image/*" name="img" />
           </FileInputWrapper>
           <InputContainer>
             <Input
@@ -244,6 +244,8 @@ const Input = styled.input`
     color: ${theme.placeholderText};
   }
 `;
+
+const ImageInput = styled.input``;
 
 const FileInputWrapper = styled.div`
   width: 100%;

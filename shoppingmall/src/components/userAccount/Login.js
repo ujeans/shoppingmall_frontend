@@ -1,12 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../style/theme";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  //로그인 정보
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setUser((user) => ({
+      ...user,
+      [name]: value,
+    }));
+  };
+
+  const isInVaild =
+    user.email && user.password.length >= 8 && user.password.length <= 20;
+
   const navigate = useNavigate();
   const moveToSignup = () => {
     navigate("/signup");
+  };
+
+  //로그인 실행
+  const submitLogin = async () => {
+    try {
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (!response.ok) {
+        throw new Error("이메일과 비밀번호를 확인하세요");
+      }
+    } catch (error) {
+      console.error("에러", error);
+    }
   };
 
   return (
@@ -16,9 +52,22 @@ const Login = () => {
           <Header>super24</Header>
         </Title>
         <InputWrapper>
-          <Input placeholder="아이디(이메일)" required />
-          <Input placeholder="비밀번호" type="password" required />
-          <SubmitButton>로그인</SubmitButton>
+          <Input
+            placeholder="아이디(이메일)"
+            value={user.email}
+            name="email"
+            onChange={handleInputChange}
+          />
+          <Input
+            placeholder="비밀번호"
+            type="password"
+            value={user.password}
+            name="password"
+            onChange={handleInputChange}
+          />
+          <SubmitButton disabled={!isInVaild} onClick={submitLogin}>
+            로그인
+          </SubmitButton>
         </InputWrapper>
         <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
       </Wrapper>
