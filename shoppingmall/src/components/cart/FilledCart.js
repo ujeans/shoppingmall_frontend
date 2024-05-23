@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 // assets
 import checkbox from "../../assets/checkbox.svg";
 // components
 import ProductList from "./productList/ProductList";
 import TotalSum from "./TotalSum";
+import Modal from "../commom/Modal/Modal";
 // styles
 import {
   BlackBtn,
@@ -15,10 +17,16 @@ import {
 
 const FilledCart = ({ cartItems }) => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const navigateToPage = () => {
     navigate("/");
   };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
   return (
     <>
       <Container borderBottom={false}>
@@ -41,9 +49,20 @@ const FilledCart = ({ cartItems }) => {
         <Btn padding=" 12px 20px" fontSize="20px" onClick={navigateToPage}>
           CONTINUE SHOPPING
         </Btn>
-        <BlackBtn padding=" 12px 20px" fontSize="20px">
+        <BlackBtn padding=" 12px 20px" fontSize="20px" onClick={openModal}>
           CHECK OUT
         </BlackBtn>
+        {isOpen && (
+          <Modal
+            open={isOpen}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+            title="결제 완료"
+            subText="결제 완료되었습니다. 홈으로 이동하시겠습니까?"
+            navigateToPage={navigateToPage}
+          />
+        )}
       </ButtonWrapper>
     </>
   );

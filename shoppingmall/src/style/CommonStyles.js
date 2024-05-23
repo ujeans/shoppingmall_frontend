@@ -21,7 +21,7 @@ export const BlackBtn = styled.button`
   padding: ${props => props.padding};
   background: black;
   color: white;
-  border: none;
+  border: 1px solid black;
   font-size: ${props => props.fontSize};
   font-weight: bold;
   cursor: pointer;
