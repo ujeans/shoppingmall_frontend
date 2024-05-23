@@ -13,7 +13,7 @@ import MyPage from "./pages/myPage/MyPage";
 import Sell from "./pages/sellPage/SellPage";
 import ProductRegistration from "./pages/ProductRegistrationPage/ProductRegistrationPage";
 import ProductDetailPage from "./pages/productPage/ProductDetailPage";
-import OrderDetails from "./pages/orderDetails/OrderDetails";
+import OrderDetailsPage from "./pages/orderDetails/OrderDetailsPage";
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/sell" element={<Sell />} />
           <Route path="/PR" element={<ProductRegistration />} />
-          <Route path="/order-details" element={<OrderDetails />} />
+          <Route path="/order-details" element={<OrderDetailsPage />} />
         </Routes>
       </AppLayout>
     </ThemeProvider>

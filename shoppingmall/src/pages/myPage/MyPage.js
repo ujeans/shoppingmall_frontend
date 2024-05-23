@@ -6,7 +6,7 @@ import MyDealList from "../../components/myPage/MyDealList";
 
 const MyPage = () => {
   return (
-    <ContentLayout title={"마이페이지"}>
+    <ContentLayout title={"마이페이지"} width="800px">
       <Profile />
       <Info />
       <MyDealList />

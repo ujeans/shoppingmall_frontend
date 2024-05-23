@@ -15,7 +15,7 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState(products);
 
   return (
-    <ContentLayout title={"장바구니"}>
+    <ContentLayout title={"장바구니"} width="800px">
       {cartItems.length === 0 ? (
         <EmptyCart />
       ) : (
