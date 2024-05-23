@@ -4,4 +4,6 @@ export const theme = {
   placeholderText: "#B1B5B9",
   grayTextIcon: "#858585",
   grayBgColor: "#F4F4F4",
+  black: "#000000",
+  white: "#FFFFFF",
 };

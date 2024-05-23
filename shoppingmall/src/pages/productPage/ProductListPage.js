@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from "../../style/theme";
 import ModalComponent from '../../components/modal/ModalComponent';
-
+import Pagination from "../../components/commom/Pagination";
 // svg
-import like from "../../assets/like.svg";
 import unlike from "../../assets/unlike.svg";
+import pencil from "../../assets/pencil.svg"
 
 const ProductListPage = () => {
    const navigate = useNavigate();
    const [btnActive, setBtnActive] = useState(1);
    const [isVisible, setIsVisible] = useState(false);
    const [isChecked, setIsLike] = useState([]);
-   const [isLogin, setIsLogin] = useState(false);
+   const [isLogin, setIsLogin] = useState(true);
    const productsPerRow = 4;
    const pages = [1, 2, 3, 4, 5];
    const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +23,7 @@ const ProductListPage = () => {
         id: 1,
         image: "https://via.placeholder.com/150",
         productName: "아디다스",
-        productPrice: "56000",
+        productPrice: "56,000",
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
@@ -31,7 +31,7 @@ const ProductListPage = () => {
         id: 2,
         image: "https://via.placeholder.com/150",
         productName: "아디다스",
-        productPrice: "56000",
+        productPrice: "56,000",
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
@@ -39,7 +39,7 @@ const ProductListPage = () => {
         id: 3,
         image: "https://via.placeholder.com/150",
         productName: "아디다스",
-        productPrice: "56000",
+        productPrice: "56,000",
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
@@ -47,7 +47,7 @@ const ProductListPage = () => {
         id: 4,
         image: "https://via.placeholder.com/150",
         productName: "아디다스",
-        productPrice: "56000",
+        productPrice: "56,000",
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
@@ -55,7 +55,7 @@ const ProductListPage = () => {
         id: 5,
         image: "https://via.placeholder.com/150",
         productName: "아디다스",
-        productPrice: "56000",
+        productPrice: "56,000",
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
@@ -63,7 +63,7 @@ const ProductListPage = () => {
         id: 6,
         image: "https://via.placeholder.com/150",
         productName: "아디다스",
-        productPrice: "56000",
+        productPrice: "56,000",
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
@@ -71,7 +71,7 @@ const ProductListPage = () => {
         id: 7,
         image: "https://via.placeholder.com/150",
         productName: "아디다스",
-        productPrice: "56000",
+        productPrice: "56,000",
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
@@ -79,7 +79,7 @@ const ProductListPage = () => {
         id: 8,
         image: "https://via.placeholder.com/150",
         productName: "아디다스",
-        productPrice: "56000",
+        productPrice: "56,000",
         description:
           "상품 설명 상품 설명 상품 설명 상품 설명",
       },
@@ -120,33 +120,31 @@ const ProductListPage = () => {
             <ProductListFilterWrapper>
                 <LeftWrapper>
                     <ButtonDivs>
-                                <Menu 
-                                        onClick={() => handleClickButton(0)}
-                                        isActive={btnActive === 0}>
-                                        추천순    
-                                </Menu>
-                                <Menu 
-                                        onClick={() => handleClickButton(1)}
-                                        isActive={btnActive === 1}>
-                                        가격 낮은순    
-                                </Menu>
-                                <Menu 
-                                        onClick={() => handleClickButton(2)}
-                                        isActive={btnActive === 2}>
-                                        가격 높은순    
-                                </Menu>
+                        <Menu 
+                            onClick={() => handleClickButton(0)}
+                            isActive={btnActive === 0}>
+                            추천순    
+                        </Menu>
+                        <Menu 
+                            onClick={() => handleClickButton(1)}
+                            isActive={btnActive === 1}>
+                            가격 낮은순    
+                        </Menu>
+                        <Menu 
+                            onClick={() => handleClickButton(2)}
+                            isActive={btnActive === 2}>
+                            가격 높은순    
+                        </Menu>
                     </ButtonDivs>
                     <Selector name="category">
-                        <option value="">의류</option>
-                        <option value="">가전</option>
-                        <option value="">디지털</option>
+                        <option value="cloth">의류</option>
+                        <option value="home">가전</option>
+                        <option value="digital">디지털</option>
                     </Selector>
                 </LeftWrapper>
                 <RightWrapper>
                     <button onClick={checkLogin}>상품 등록 &nbsp;
-                        <svg width="14" height="14" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.1092 0.890819C16.6989 0.480662 16.1426 0.250244 15.5625 0.250244C14.9824 0.250244 14.4261 0.480662 14.0158 0.890819L13.0517 1.85499L16.145 4.94832L17.1092 3.98415C17.5193 3.57393 17.7497 3.01758 17.7497 2.43749C17.7497 1.85739 17.5193 1.30104 17.1092 0.890819ZM15.2608 5.83249L12.1675 2.73915L2.0425 12.8642C1.52821 13.3782 1.15015 14.0123 0.942499 14.7092L0.275832 16.9467C0.243645 17.0546 0.241245 17.1693 0.268884 17.2785C0.296524 17.3877 0.353175 17.4875 0.432845 17.5671C0.512514 17.6468 0.612238 17.7035 0.721464 17.7311C0.830691 17.7587 0.945358 17.7563 1.05333 17.7242L3.29083 17.0575C3.98769 16.8498 4.6218 16.4718 5.13583 15.9575L15.2608 5.83249Z" fill="#858585"/>
-                        </svg>
+                            <Icon src={pencil}/>
                     </button>
                </RightWrapper>
             </ProductListFilterWrapper>
@@ -156,71 +154,30 @@ const ProductListPage = () => {
                         <ProductImage src={product.image} alt={product.productName}/>
                         <ProductInfoWrapper>
                             <div>
-                                <div>{product.productName}</div>
-                                <div>{product.productPrice}</div>
-                                <div>{product.description}</div>
+                                <ProductName>{product.productName}</ProductName>
+                                <ProductPrice>{product.productPrice + " 원"}</ProductPrice>
+                                <ProductDescription>{product.description}</ProductDescription>
                             </div>
                             <IconWrapper onClick={() => {handleHeart(index)}}>
-                               
-                                    
                                     <Icon src={unlike} fill="grayBgColor"/>
-                                
-                                
-                                
-                                   
-                                         
-                                   
-                                       
-                                    
-                               
                             </IconWrapper>
                         </ProductInfoWrapper>
                     </ProductItem>
                 ))}     
             </ProductListContainer>
-            <PaginationContainer>
-                <PageButton
-                    onClick={() => onPageChange(currentPage > 1 ? currentPage - 1 : 1)}>
-                    <ArrowIcon  alt="Previous" >
-                        <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.75 16.5L1.25 9L8.75 1.5" stroke="#858585" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </ArrowIcon>
-                </PageButton>
-                {pages.map((page, index) => (
-                    <PageButton
-                    key={index}
-                    onClick={() => onPageChange(page)}
-                    isActive={currentPage === page}
-                    >
-                    {page}
-                    </PageButton>
-                ))}
-                <PageButton
-                    onClick={() =>
-                    onPageChange(
-                        currentPage < pages.length ? currentPage + 1 : pages.length
-                    )
-                    }
-                >
-                    <ArrowIcon alt="Next" flipped>
-                        <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.25 1.5L8.75 9L1.25 16.5" stroke="#858585" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </ArrowIcon>
-                </PageButton>
-            </PaginationContainer>        
-
+            <Pagination
+                pages={pages}
+                currentPage={currentPage}
+                onPageChange={onPageChange}
+            />
            
             {isVisible && (
-                <ModalComponent title="로그인이 필요한 기능입니다." 
-                                subText="로그인 페이지로 이동하시겠습니까?" 
-                                urlPath="/login" 
-                                isClosed={closeModal}/>
-                )};    
-                    
-                    
-                       
+                <ModalComponent 
+                    title="로그인이 필요한 기능입니다." 
+                    subText="로그인 페이지로 이동하시겠습니까?" 
+                    urlPath="/login" 
+                    isClosed={closeModal}/>
+                )}     
         </ProductListPageWrapper>
     );
 };
@@ -250,25 +207,20 @@ const ButtonDivs = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-around;
-   
-    }
 `;
 
 const Menu = styled.button`
     background-color:  ${props => (props.isActive ? "#EB4646" : "")};
-    &:active {
-        background-color: #EB4646;
-        border: 1px solid #D1D4D8;
-    }
+    color:  ${props => (props.isActive ? "#FFFFFF" : "")};
     width: 80px;
     height: 30px;
-    border: 1px solid #D1D4D8;
+    border: 1px solid ${theme.border};
     border-radius: 15px;
     font-size: 12px;
     cursor: pointer;
     &:hover {
-        background-color: #D1D4D8;
-        color: white;
+        background-color: ${theme.border};
+        color: ${theme.black};
       }
 `;
 
@@ -276,12 +228,12 @@ const Selector = styled.select`
     margin-left: 5px;
     width: 92px;
     height: 30px;
-    border: 1px solid #D1D4D8;
+    border: 1px solid ${theme.border};
     border-radius: 15px;
     text-align: center;
     > option {
         &:hover {
-            background-color: #F4F4F4;
+            background-color: ${theme.grayBgColor};
         }
     }
 `;
@@ -291,12 +243,12 @@ const RightWrapper = styled.div`
     > button {
         width: 124px;
         height: 40px;
-        border: 1px solid #FFFFFF;
+        border: 1px solid ${theme.white};
         font-size: 14px;
         font-weight: 600;
         line-height: 16.94px;
         padding-right: 5px;
-        background-color: #FFFFFF;
+        background-color: ${theme.grayBgColor};
         cursor: pointer;
         
         > svg {
@@ -327,15 +279,37 @@ const ProductImage = styled.img`
   height: 100%;
   border-radius: 10px;
   background-color: red;
+  margin-bottom: 10px;
 `;
 
 const ProductInfoWrapper = styled.div`
     display: flex;
 `;
 
+const ProductName = styled.div`
+    font-size: 17px;
+    font-weight: 500;
+    line-heigh: 19.36px;
+    margin-bottom: 5px;
+`;
+
+const ProductPrice = styled.div`
+    font-size: 17px;
+    font-weight: 600;
+    line-heigh: 16.94px;
+    margin-bottom: 5px;
+`;
+
+const ProductDescription = styled.div`
+    font-size: 14px;
+    font-weight: 500;
+    line-heigh: 16.94px;
+`;
+
 const IconWrapper = styled.div`
     padding: 10px;
     height: 100%
+    background-color: ${theme.grayBgColor};
 `;
 
 const Icon = styled.img`
