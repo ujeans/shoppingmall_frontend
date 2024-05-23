@@ -1,9 +1,8 @@
-import React , { useEffect, useState } from 'react';
+import React , { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
 const ModalComponent = ( {title, subText, urlPath, isClosed} ) => {
-    
     const navigate = useNavigate();
     const [url, setUrl] = useState("");
 
@@ -13,22 +12,34 @@ const ModalComponent = ( {title, subText, urlPath, isClosed} ) => {
     };
     
     return (
+    <Wrapper>
         <ModalWrapper>
-                <Modal>
-                    <ModalTop>
-                        <ModalTitle>{title}</ModalTitle>
-                        <SmallTitle>{subText}</SmallTitle>
-                    </ModalTop>
-                    <ModalBottom>
-                        <CancelButton onClick={isClosed}>취소</CancelButton>
-                        <OkButton onClick={() => moveToPage()}>확인</OkButton>
-                    </ModalBottom>
-                </Modal>
+            <Modal>
+                <ModalTop>
+                    <ModalTitle>{title}</ModalTitle>
+                    <SmallTitle>{subText}</SmallTitle>
+                </ModalTop>
+                <ModalBottom>
+                    <CancelButton onClick={isClosed}>취소</CancelButton>
+                    <OkButton onClick={() => moveToPage()}>확인</OkButton>
+                </ModalBottom>
+            </Modal>
         </ModalWrapper>
+    </Wrapper>
+               
     );
 };
 
 export default ModalComponent;
+
+const Wrapper = styled.div`
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0,0.5);
+`;
 
 const ModalWrapper = styled.div`
     position: fixed;
