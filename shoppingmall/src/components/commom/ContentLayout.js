@@ -1,13 +1,20 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 // assets
 import LeftArrowIcon from "../../assets/LeftArrow.svg";
 
 const ContentLayout = ({ children, title }) => {
+  const navigate = useNavigate();
+
+  const onCancel = () => {
+    navigate(-1);
+  };
+
   return (
     <Container>
       <Wrapper>
         <Top>
-          <ArrowIcon src={LeftArrowIcon} />
+          <ArrowIcon src={LeftArrowIcon} onClick={onCancel} />
           <Title>{title}</Title>
         </Top>
         {children}
@@ -33,7 +40,7 @@ const Wrapper = styled.div`
 const Top = styled.div`
   display: flex;
   align-items: center;
-  margin: 40px;
+  margin: 40px 0;
 `;
 
 const ArrowIcon = styled.img`
