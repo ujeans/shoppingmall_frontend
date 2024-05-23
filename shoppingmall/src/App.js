@@ -20,8 +20,8 @@ function App() {
       <AppLayout>
         <Routes>
           <Route path="/settings" element={<MyPage />} />
-          <Route path="/" element={<ProductListPage/>}/>
-          <Route path="/write"  element={<ProductWritePage/>}/>
+          <Route path="/" element={<ProductListPage />} />
+          <Route path="/write" element={<ProductWritePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/sell" element={<Sell />} />
