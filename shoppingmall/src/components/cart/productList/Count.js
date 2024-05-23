@@ -27,12 +27,12 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid #d1d4d8;
+  border-right: 1px solid ${props => props.theme.border};
 `;
 
 const Wrapper = styled.div`
   display: flex;
-  border: 1px solid #d1d4d8;
+  border: 1px solid ${props => props.theme.border};
 `;
 
 const CountBox = styled.div`
@@ -40,7 +40,7 @@ const CountBox = styled.div`
   justify-content: center;
   align-items: center;
   padding: 6px 8px;
-  border-right: 1px solid #d1d4d8;
+  border-right: 1px solid ${props => props.theme.border};
   font-weight: bold;
   cursor: pointer;
 

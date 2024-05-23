@@ -3,45 +3,38 @@ import styled from "styled-components";
 
 const TotalSum = () => {
   return (
-    <>
-      <ProductsListWrapper>
-        <ListHeader>
-          <PaymentText>총 주문금액</PaymentText>
-          <PaymentText>총 주문금액</PaymentText>
-          <PaymentText>총 결제금액</PaymentText>
-        </ListHeader>
-        <PaymentWrapper>
-          <PaymentText>
-            <Box>
-              <PaymentPrice>179,000원</PaymentPrice>
-              <TotalCount>총 1개</TotalCount>
-            </Box>
-          </PaymentText>
-          <PaymentText>
-            <PaymentPrice>0원</PaymentPrice>
-          </PaymentText>
-          <PaymentText>
+    <Container>
+      <Header>
+        <PaymentText>총 주문금액</PaymentText>
+        <PaymentText>총 주문금액</PaymentText>
+        <PaymentText>총 결제금액</PaymentText>
+      </Header>
+      <PaymentWrapper>
+        <PaymentText>
+          <PaymentBox>
             <PaymentPrice>179,000원</PaymentPrice>
-          </PaymentText>
-        </PaymentWrapper>
-      </ProductsListWrapper>
-    </>
+            <TotalCount>총 1개</TotalCount>
+          </PaymentBox>
+        </PaymentText>
+        <PaymentText>
+          <PaymentPrice>0원</PaymentPrice>
+        </PaymentText>
+        <PaymentText>
+          <PaymentPrice>179,000원</PaymentPrice>
+        </PaymentText>
+      </PaymentWrapper>
+    </Container>
   );
 };
 
 export default TotalSum;
 
-const ProductsListWrapper = styled.div`
+const Container = styled.div`
   border-top: 2px solid black;
   border-bottom: 1px solid black;
-
-  &.empty-cart {
-    display: flex;
-    justify-content: center;
-  }
 `;
 
-const ListHeader = styled.div`
+const Header = styled.div`
   width: 100%;
   height: 70px;
   display: flex;
@@ -59,10 +52,10 @@ const PaymentText = styled.div`
 const PaymentWrapper = styled.div`
   display: flex;
   padding: 30px 0;
-  border-top: 1px solid #d1d4d8;
+  border-top: 1px solid ${props => props.theme.border};
 `;
 
-const Box = styled.div`
+const PaymentBox = styled.div`
   display: flex;
   flex-direction: column;
 `;

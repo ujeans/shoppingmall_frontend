@@ -60,20 +60,11 @@ const ProductInfo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  &.list {
-    border-right: 1px solid #d1d4d8;
-  }
 `;
 
 const Icon = styled.img`
   width: 20px;
   cursor: pointer;
-
-  &.x-circle {
-    margin: 25px 15px 0 0;
-    margin-bottom: auto;
-  }
 `;
 
 const Count = styled.div`
@@ -82,10 +73,6 @@ const Count = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  &.list {
-    border-right: 1px solid #d1d4d8;
-  }
 `;
 
 const OrderAmount = styled.div`
@@ -105,8 +92,8 @@ const DeleteBtn = styled.button`
   padding: 10px 12px;
   margin-right: 10px;
   background: none;
-  border: 1px solid #858585;
-  color: #858585;
+  border: 1px solid ${props => props.theme.grayTextIcon};
+  color: ${props => props.theme.grayTextIcon};
   cursor: pointer;
 
   &:hover {
@@ -123,14 +110,14 @@ const ButtonWrapper = styled.div`
 
 const Btn = styled.button`
   padding: 12px 20px;
-  border: 1px solid #858585;
+  border: 1px solid ${props => props.theme.grayTextIcon};
   background: none;
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
 
   &:hover {
-    color: #eb4646;
+    color: ${props => props.theme.mainColor};
   }
 
   &.check-out {
@@ -138,8 +125,9 @@ const Btn = styled.button`
     border: none;
     background-color: black;
     color: white;
+
     &:hover {
-      color: #eb4646;
+      color: ${props => props.theme.mainColor};
     }
   }
 `;

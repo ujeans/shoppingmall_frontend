@@ -33,7 +33,7 @@ const Wrapper = styled.div`
   margin-bottom: 30px;
   padding: 0 20px;
   border-radius: 15px;
-  background-color: #f4f4f4;
+  background-color: ${props => props.theme.grayBgColor};
 `;
 
 const ProfileLeftBox = styled.div`
@@ -51,7 +51,7 @@ const EditBtn = styled.button`
   padding: 10px 22px;
   border: none;
   border-radius: 5px;
-  background-color: #eb4646;
+  background-color: ${props => props.theme.mainColor};
   color: white;
   cursor: pointer;
 `;

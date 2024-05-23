@@ -31,7 +31,7 @@ const OrderBtn = styled.button`
   padding: 10px 12px;
   border: none;
   color: white;
-  background-color: #eb4646;
+  background-color: ${props => props.theme.mainColor};
   font-weight: bold;
   font-size: 12px;
   cursor: pointer;

@@ -26,7 +26,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid #d1d4d8;
+  border-right: 1px solid ${props => props.theme.border};
 `;
 
 const Wrapper = styled.div`

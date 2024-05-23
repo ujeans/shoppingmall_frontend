@@ -48,7 +48,7 @@ const MyDealBox = styled.div`
   height: 61px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #d1d4d8;
+  border-bottom: 1px solid ${props => props.theme.border};
 `;
 
 const Icon = styled.img`

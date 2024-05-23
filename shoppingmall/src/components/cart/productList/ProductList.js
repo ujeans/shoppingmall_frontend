@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  border-top: 1px solid #d1d4d8;
+  border-top: 1px solid ${props => props.theme.border};
 `;
 
 const Checkbox = styled.div`
@@ -47,9 +47,4 @@ const Checkbox = styled.div`
 const Icon = styled.img`
   width: 20px;
   cursor: pointer;
-
-  &.x-circle {
-    margin: 25px 15px 0 0;
-    margin-bottom: auto;
-  }
 `;
