@@ -41,16 +41,3 @@ const EmptyCartMessage = styled.div`
   font-size: 18px;
   font-weight: bold;
 `;
-
-const Btn = styled.button`
-  padding: 12px 20px;
-  border: 1px solid ${props => props.theme.grayTextIcon};
-  background: none;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-
-  &:hover {
-    color: ${props => props.theme.mainColor};
-  }
-`;
