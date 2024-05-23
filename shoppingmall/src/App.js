@@ -7,11 +7,11 @@ import AppLayout from "./components/commom/AppLayout";
 // pages
 import MyPage from "./pages/myPage/MyPage";
 import ProductListPage from "./pages/productPage/ProductListPage";
-import ProductWritePage from "./pages/productPage/ProductWritePage";
 import Login from "../src/components/userAccount/Login";
 import Signup from "./components/userAccount/Signup";
 import Sell from "./pages/sellPage/SellPage";
 import ProductRegistration from "./pages/ProductRegistrationPage/ProductRegistrationPage";
+import ProductDetailPage from "./pages/productPage/ProductDetailPage";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/settings" element={<MyPage />} />
           <Route path="/" element={<ProductListPage/>}/>
-          <Route path="/write"  element={<ProductWritePage/>}/>
+          <Route path="/product/:id" element={<ProductDetailPage/>}/>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/sell" element={<Sell />} />
