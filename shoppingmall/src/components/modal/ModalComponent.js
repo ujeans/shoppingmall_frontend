@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
 const ModalComponent = ( {title, subText, urlPath, isClosed} ) => {
-    
     const navigate = useNavigate();
     const [url, setUrl] = useState("");
 
@@ -13,11 +12,12 @@ const ModalComponent = ( {title, subText, urlPath, isClosed} ) => {
     };
     
     return (
+    <Wrapper>
         <ModalWrapper>
-             <Modal>
+            <Modal>
                 <ModalTop>
-                    <Title>{title}</Title>
-                    <SubTitle>{subText}</SubTitle>
+                    <ModalTitle>{title}</ModalTitle>
+                    <SmallTitle>{subText}</SmallTitle>
                 </ModalTop>
                 <ModalBottom>
                     <CancelButton onClick={isClosed}>취소</CancelButton>
@@ -25,15 +25,26 @@ const ModalComponent = ( {title, subText, urlPath, isClosed} ) => {
                 </ModalBottom>
             </Modal>
         </ModalWrapper>
-       
+    </Wrapper>
+               
     );
 };
 
 export default ModalComponent;
 
+const Wrapper = styled.div`
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0,0.5);
+`;
+
 const ModalWrapper = styled.div`
     position: fixed;
-    top: 50%;
+    background-color: white;
+    top: 40%;
     left: 50%;
     /* 위아래 너비를 준 상태에서 가로 50%, 세로 50%를 이동시킬 수 있다 (= 한가운데 배치) */
     transform: translate(-50%, -50%);
@@ -44,37 +55,36 @@ const ModalWrapper = styled.div`
 
 const Modal = styled.div`
     position: relative;
-    width: 669px;
+    width: 600px;
     border-radius: 10px;
-    border: 1px solid #FFFFFF;
     display: flex;
     flex-direction: column;
-    background-color: gray;
 `;
 
 const ModalTop = styled.div`
-
-    width: 100%;
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-    background-color: #FFFFFF;
+    background-color: white;
+    justify-content: flex-start;
+    margin-left: 10%;
 `;
 
-const Title = styled.div`
-
-
-
-
-`;
-
-const SubTitle = styled.div`
-
-
-
+const ModalTitle = styled.div`
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 24.2px;
+    font-weight: 600;
+    margin-bottom: 10px;
 
 `;
 
+const SmallTitle = styled.small`
+    font-size: 14px;
+    color: #858585;
+
+
+`;
 
 const ModalBottom = styled.div`
     height: 77px;
@@ -82,19 +92,16 @@ const ModalBottom = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
-    > button {
-        width: 67px;
-        height: 44px;
-        margin-right: 15px;
-        border-radius: 10px;
-        border: 1px solid #D9D9D9;
-    }
 `;
 
 const CancelButton = styled.button`
     background-color: #FFFFFF;
     font-size: 14px;
+    width: 67px;
+    height: 44px;
+    margin-right: 15px;
+    border-radius: 10px;
+    border: 1px solid #D9D9D9;
 `;
 
 
@@ -102,4 +109,9 @@ const OkButton = styled.button`
     background-color: #EB4646;
     font-size: 14px;
     color: white;
+    width: 67px;
+    height: 44px;
+    margin-right: 15px;
+    border-radius: 10px;
+    border: 1px solid #D9D9D9;
 `;
