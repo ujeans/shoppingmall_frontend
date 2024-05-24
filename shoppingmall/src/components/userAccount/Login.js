@@ -22,9 +22,23 @@ const Login = () => {
     }));
   };
 
-  const isInVaild =
-    user.email && user.password.length >= 8 && user.password.length <= 20;
+  //유효성 검사
+  const isValidEmail = (email) => {
+    var regExp =
+      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    console.log("이메일 유효성 검사 :: ", regExp.test(email), email);
+    return regExp.test(email);
+  };
 
+  const isvaildPassword = (password) => {
+    var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$/;
+    console.log("비밀번호 유효성 검사 :: ", regExp.test(password), password);
+    return regExp.test(password);
+  };
+
+  const isValid = isValidEmail(user.email) && isvaildPassword(user.password);
+
+  //navigate
   const navigate = useNavigate();
   const moveToSignup = () => {
     navigate("/signup");
@@ -83,7 +97,7 @@ const Login = () => {
           </InputContainer>
         </InputWrapper>
 
-        <SubmitButton disabled={!isInVaild} onClick={submitLogin}>
+        <SubmitButton disabled={!isValid} onClick={submitLogin}>
           로그인
         </SubmitButton>
         <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
@@ -142,6 +156,7 @@ const Icon = styled.img`
 
 const Input = styled.input`
   width: 465px;
+  height: 56px;
   text-indent: 12px;
   border: none;
   &::placeholder {
