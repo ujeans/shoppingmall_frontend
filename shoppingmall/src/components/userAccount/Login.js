@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 //svg
 import email from "../../assets/email.svg";
 import password from "../../assets/password.svg";
+import ModalComponent from "../modal/ModalComponent";
 
 const Login = () => {
   //로그인 정보
@@ -30,13 +31,13 @@ const Login = () => {
     return regExp.test(email);
   };
 
-  const isvaildPassword = (password) => {
+  const isvalidPassword = (password) => {
     var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$/;
     console.log("비밀번호 유효성 검사 :: ", regExp.test(password), password);
     return regExp.test(password);
   };
 
-  const isValid = isValidEmail(user.email) && isvaildPassword(user.password);
+  const isValid = isValidEmail(user.email) && isvalidPassword(user.password);
 
   //navigate
   const navigate = useNavigate();
@@ -62,9 +63,15 @@ const Login = () => {
         throw new Error("이메일과 비밀번호를 확인하세요");
       }
     } catch (error) {
+      // setModalMessage("로그인 실패: 이메일과 비밀번호를 확인하세요"); // 에러 메시지 설정
+      // setShowModal(true); // 모달 표시
       console.error("에러", error);
     }
   };
+
+  //모달
+  // const [showModal, setShowModal] = useState(false); // 모달 상태 추가
+  // const [modalMessage, setModalMessage] = useState(""); // 모달 메시지 상태 추가
 
   return (
     <>
@@ -102,6 +109,14 @@ const Login = () => {
         </SubmitButton>
         <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
       </Wrapper>
+      {/* {showModal && ( // 모달 표시 조건 추가
+        <ModalComponent
+          title="오류"
+          subText={modalMessage}
+          urlPath="/login"
+          isClosed={() => setShowModal(false)}
+        />
+      )} */}
     </>
   );
 };
