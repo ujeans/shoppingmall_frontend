@@ -1,14 +1,35 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 // assets
 import checkbox from "../../assets/checkbox.svg";
 // components
 import ProductList from "./productList/ProductList";
 import TotalSum from "./TotalSum";
+import Modal from "../commom/Modal/Modal";
+// styles
+import {
+  BlackBtn,
+  Container,
+  Header,
+  WhiteBtn,
+} from "../../style/CommonStyles";
 
 const FilledCart = ({ cartItems }) => {
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navigateToPage = () => {
+    navigate("/");
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
   return (
     <>
-      <Wrapper>
+      <Container borderBottom={false}>
         <Header>
           <Checkbox>
             <Icon src={checkbox} />
@@ -18,35 +39,36 @@ const FilledCart = ({ cartItems }) => {
           <OrderAmount>주문금액</OrderAmount>
         </Header>
         <ProductList cartItems={cartItems} />
-      </Wrapper>
+      </Container>
       <BtnWrapper>
         <DeleteBtn>선택상품 삭제</DeleteBtn>
         <DeleteBtn>품절상품 삭제</DeleteBtn>
       </BtnWrapper>
       <TotalSum />
       <ButtonWrapper>
-        <Btn>CONTINUE SHOPPING</Btn>
-        <Btn className="check-out">CHECK OUT</Btn>
+        <Btn padding=" 12px 20px" fontSize="20px" onClick={navigateToPage}>
+          CONTINUE SHOPPING
+        </Btn>
+        <BlackBtn padding=" 12px 20px" fontSize="20px" onClick={openModal}>
+          CHECK OUT
+        </BlackBtn>
+        {isOpen && (
+          <Modal
+            open={isOpen}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+            title="결제 완료"
+            subText="결제 완료되었습니다. 홈으로 이동하시겠습니까?"
+            navigateToPage={navigateToPage}
+          />
+        )}
       </ButtonWrapper>
     </>
   );
 };
 
 export default FilledCart;
-
-const Wrapper = styled.div`
-  border-top: 2px solid black;
-  border-bottom: 1px solid black;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  font-size: 18px;
-  font-weight: bold;
-`;
 
 const Checkbox = styled.div`
   width: 6%;
@@ -108,26 +130,6 @@ const ButtonWrapper = styled.div`
   margin-top: 30px;
 `;
 
-const Btn = styled.button`
-  padding: 12px 20px;
-  border: 1px solid ${props => props.theme.grayTextIcon};
-  background: none;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-
-  &:hover {
-    color: ${props => props.theme.mainColor};
-  }
-
-  &.check-out {
-    margin-left: 10px;
-    border: none;
-    background-color: black;
-    color: white;
-
-    &:hover {
-      color: ${props => props.theme.mainColor};
-    }
-  }
+const Btn = styled(WhiteBtn)`
+  margin-right: 10px;
 `;

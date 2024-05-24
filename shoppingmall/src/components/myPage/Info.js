@@ -45,7 +45,6 @@ const InfoText = styled.div`
   display: flex;
   align-items: center;
   padding-left: 15px;
-  border-radius: 10px;
   border: 1px solid ${props => props.theme.border};
   color: #b1b5b9;
 `;
