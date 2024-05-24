@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../style/theme";
-import { useNavigate } from "react-router-dom";
+import { isValidEmail, isValidPassword, isValidPhone } from "./Vaildators";
+import InputField from "./InputField";
+import Navigation from "../nav/Navigation";
+
 //svg
 import email from "../../assets/email.svg";
 import password from "../../assets/password.svg";
@@ -12,7 +15,7 @@ import userCircle from "../../assets/userCircle.svg";
 
 const Signup = () => {
   //유저 정보
-  const [userInfo, setUserInfo] = useState({
+  const [user, setUser] = useState({
     email: "",
     password: "",
     passwordCheck: "",
@@ -24,48 +27,30 @@ const Signup = () => {
   });
 
   //이미지 미리보기
-  // const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setUserInfo((userInfo) => ({
-      ...userInfo,
+    setUser((user) => ({
+      ...user,
       [name]: value,
     }));
   };
 
   //유효성 검사
 
-  const isValidEmail = (email) => {
-    var regExp =
-      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    console.log("이메일 유효성 검사 :: ", regExp.test(email), email);
-    return regExp.test(email);
-  };
-
-  const isValidPassword = (password) => {
-    var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$/;
-    console.log("비밀번호 유효성 검사 :: ", regExp.test(password), password);
-    return regExp.test(password);
-  };
-
-  const isValidPhone = (phone) => {
-    var regExp = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/;
-    console.log("핸드폰번호 유효성 검사 :: ", regExp.test(phone), phone);
-  };
-
   const isValid =
     isValidEmail &&
     isValidPassword &&
     isValidPhone &&
-    userInfo.name &&
-    userInfo.addr &&
-    userInfo.nickname &&
-    userInfo.password === userInfo.passwordCheck;
+    user.name &&
+    user.addr &&
+    user.nickname &&
+    user.password === user.passwordCheck;
 
   //회원가입
   const submitSignup = async () => {
-    console.log(userInfo);
+    console.log(user);
     try {
       await fetch("/signup", {
         method: "POST",
@@ -73,12 +58,12 @@ const Signup = () => {
           "Content-Type": "application/json; charset=utf-8",
         },
         body: JSON.stringify({
-          email: userInfo.email,
-          password: userInfo.password,
-          name: userInfo.name,
-          phone: userInfo.phone,
-          addr: userInfo.addr,
-          nickname: userInfo.nickname,
+          email: user.email,
+          password: user.password,
+          name: user.name,
+          phone: user.phone,
+          addr: user.addr,
+          nickname: user.nickname,
         }),
       });
 
@@ -91,6 +76,7 @@ const Signup = () => {
     }
   };
 
+  //이미지 파일 처리
   const fileInputRef = React.createRef();
 
   const handleImageClick = () => {
@@ -100,19 +86,20 @@ const Signup = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // 파일 처리 로직 추가
-      console.log(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setUser((user) => ({
+        ...user,
+        img: file,
+      }));
     }
   };
 
-  const navigate = useNavigate();
-  const moveToLogin = () => {
-    navigate("/login", userInfo);
-    console.log(userInfo);
-  };
-  const moveToHome = () => {
-    navigate("/");
-  };
+  //navigate
+  const { moveToHome, moveToLogin } = Navigation();
 
   return (
     <>
@@ -120,76 +107,50 @@ const Signup = () => {
         <Title onClick={moveToHome}>super24</Title>
         <Info>회원정보를 입력해주세요</Info>
         <InputWrapper>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={email} />
-            </IconWrapper>
-            <Input
-              placeholder="아이디(이메일)"
-              type="email"
-              value={userInfo.email}
-              name="email"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={password} />
-            </IconWrapper>
-            <Input
-              placeholder="비밀번호"
-              type="password"
-              value={userInfo.password}
-              name="password"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={password} />
-            </IconWrapper>
-            <Input
-              placeholder="비밀번호 확인"
-              type="password"
-              value={userInfo.passwordCheck}
-              name="passwordCheck"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={people} />
-            </IconWrapper>
-            <Input
-              placeholder="이름"
-              value={userInfo.name}
-              name="name"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={phone} />
-            </IconWrapper>
-            <Input
-              type="number"
-              placeholder="휴대폰 번호"
-              value={userInfo.phone}
-              name="phone"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={home} />
-            </IconWrapper>
-            <Input
-              placeholder="주소"
-              value={userInfo.addr}
-              name="addr"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
+          <InputField
+            iconSrc={email}
+            placeholder="아이디(이메일)"
+            value={user.email}
+            name="email"
+            onChange={handleInputChange}
+          />
+          <InputField
+            iconSrc={password}
+            placeholder="비밀번호"
+            type="password"
+            value={user.password}
+            name="password"
+            onChange={handleInputChange}
+          />
+          <InputField
+            iconSrc={password}
+            placeholder="비밀번호 확인"
+            type="password"
+            value={user.passwordCheck}
+            name="passwordCheck"
+            onChange={handleInputChange}
+          />
+          <InputField
+            iconSrc={people}
+            placeholder="이름"
+            value={user.name}
+            name="name"
+            onChange={handleInputChange}
+          />
+          <InputField
+            iconSrc={phone}
+            placeholder="휴대폰 번호"
+            value={user.phone}
+            name="phone"
+            onChange={handleInputChange}
+          />
+          <InputField
+            iconSrc={home}
+            placeholder="주소"
+            value={user.addr}
+            name="addr"
+            onChange={handleInputChange}
+          />
           <FileInfo>
             나를 나타내는 프로필 사진과 닉네임으로 등록하면 이웃들이 안심할 수
             있어요.
@@ -202,16 +163,24 @@ const Signup = () => {
               ref={fileInputRef}
               onChange={handleFileChange}
             />
-            <ImageButton
-              src={userCircle}
-              alt="파일 선택 버튼"
-              onClick={handleImageClick}
-            />
+            {preview ? (
+              <PreviewImage
+                src={preview}
+                alt="미리보기 이미지"
+                onClick={handleImageClick}
+              />
+            ) : (
+              <ImageButton
+                src={userCircle}
+                alt="파일 선택 버튼"
+                onClick={handleImageClick}
+              />
+            )}
           </FileInputWrapper>
 
           <InputNickname
             placeholder="닉네임"
-            value={userInfo.nickname}
+            value={user.nickname}
             name="nickname"
             onChange={handleInputChange}
           />
@@ -257,45 +226,15 @@ const InputWrapper = styled.div`
   margin-bottom: 104px;
 `;
 
-const InputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 463px;
-  margin-bottom: 15px;
-  border: 1px solid ${theme.border};
-`;
-
-const Input = styled.input`
-  text-indent: 12px;
-  border: none;
-  &::placeholder {
-    color: ${theme.placeholderText};
-  }
-`;
-
 const InputNickname = styled.input`
   width: 463px;
   height: 43px;
+  text-indent: 12px;
   border: none;
   border-bottom: 1px solid ${theme.border};
   &::placeholder {
     color: ${theme.placeholderText};
   }
-`;
-
-const IconWrapper = styled.div`
-  width: 54px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${theme.grayBgColor};
-  border-right: 1px solid ${theme.border};
-`;
-
-const Icon = styled.img`
-  width: 24px;
-  height: 24px;
 `;
 
 const FileInputWrapper = styled.div`
@@ -320,6 +259,14 @@ const FileInput = styled.input`
 const ImageButton = styled.img`
   width: 150px;
   height: 150px;
+  cursor: pointer;
+`;
+
+const PreviewImage = styled.img`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
   cursor: pointer;
 `;
 
