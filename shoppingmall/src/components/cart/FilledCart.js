@@ -53,6 +53,7 @@ const FilledCart = ({
           cartItems={cartItems}
           setCartItems={setCartItems}
           allChecked={allChecked}
+          onDeleteSelected={onDeleteSelected}
         />
       </Container>
       <BtnWrapper>
