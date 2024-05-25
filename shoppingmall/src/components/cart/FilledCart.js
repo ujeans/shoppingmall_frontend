@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 // assets
 import checkbox from "../../assets/checkbox.svg";
+import checkedbox from "../../assets/checkedbox.svg";
 // components
 import ProductList from "./productList/ProductList";
 import TotalSum from "./TotalSum";
@@ -15,7 +16,7 @@ import {
   WhiteBtn,
 } from "../../style/CommonStyles";
 
-const FilledCart = ({ cartItems }) => {
+const FilledCart = ({ cartItems, allChecked, onToggleAllChecked }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,21 +25,25 @@ const FilledCart = ({ cartItems }) => {
   };
 
   const openModal = () => {
-    setIsOpen(true);
+    setIsOpen(!setIsOpen);
   };
 
   return (
     <>
       <Container borderBottom={false}>
         <Header>
-          <Checkbox>
-            <Icon src={checkbox} />
+          <Checkbox
+            src={checkbox}
+            onClick={onToggleAllChecked}
+            checked={allChecked}
+          >
+            {allChecked ? <Icon src={checkedbox} /> : <Icon src={checkbox} />}
           </Checkbox>
           <ProductInfo>상품정보</ProductInfo>
           <Count>수량</Count>
           <OrderAmount>주문금액</OrderAmount>
         </Header>
-        <ProductList cartItems={cartItems} />
+        <ProductList cartItems={cartItems} allChecked={allChecked} />
       </Container>
       <BtnWrapper>
         <DeleteBtn>선택상품 삭제</DeleteBtn>

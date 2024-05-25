@@ -34,13 +34,22 @@ const products = [
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState(products);
+  const [allChecked, setAllChecked] = useState(false);
+
+  const handleAllChecked = () => {
+    setAllChecked(!allChecked);
+  };
 
   return (
     <ContentLayout title={"장바구니"} width="800px">
       {cartItems.length === 0 ? (
         <EmptyCart />
       ) : (
-        <FilledCart cartItems={cartItems} />
+        <FilledCart
+          cartItems={cartItems}
+          allChecked={allChecked}
+          onToggleAllChecked={handleAllChecked}
+        />
       )}
     </ContentLayout>
   );
