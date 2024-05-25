@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState } from "react";
 // assets
 import checkbox from "../../../assets/checkbox.svg";
 // components
@@ -7,20 +8,44 @@ import Count from "./Count";
 import OrderAmount from "./OrderAmount";
 
 const ProductList = ({ cartItems }) => {
+  const [count, setCount] = useState(
+    cartItems.reduce((acc, item) => {
+      acc[item.cart_item_id] = item.quantity;
+      return acc;
+    }, {})
+  );
+
+  const updateCount = (id, newCount) => {
+    setCount(prevCounts => ({
+      ...prevCounts,
+      [id]: newCount,
+    }));
+  };
+
   return (
     <>
-      {cartItems.map((product, idx) => (
-        <Container key={product.id}>
-          <Wrapper>
-            <Checkbox>
-              <Icon src={checkbox} />
-            </Checkbox>
-            <Info product={product} />
-            <Count />
-            <OrderAmount product={product} />
-          </Wrapper>
-        </Container>
-      ))}
+      {cartItems.map(product => {
+        const totalPrice =
+          parseInt(product.price.replace(/,/g, ""), 10) *
+          count[product.cart_item_id];
+        return (
+          <Container key={product.cart_item_id}>
+            <Wrapper>
+              <Checkbox>
+                <Icon src={checkbox} />
+              </Checkbox>
+              <Info product={product} />
+              <Count
+                quantity={count[product.cart_item_id]}
+                onUpdateCount={newCount =>
+                  updateCount(product.cart_item_id, newCount)
+                }
+              />
+              <OrderAmount totalPrice={totalPrice} />
+            </Wrapper>
+          </Container>
+        );
+      })}
     </>
   );
 };

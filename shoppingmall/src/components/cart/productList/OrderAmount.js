@@ -2,10 +2,10 @@ import styled from "styled-components";
 // styles
 import { BlackBtn } from "../../../style/CommonStyles";
 
-const OrderAmount = ({ product }) => {
+const OrderAmount = ({ totalPrice }) => {
   return (
     <Container>
-      <OrderPrice>{product.price}원</OrderPrice>
+      <OrderPrice>{totalPrice.toLocaleString()}원</OrderPrice>
       <BlackBtn padding="10px 12px">BUY NOW</BlackBtn>
     </Container>
   );

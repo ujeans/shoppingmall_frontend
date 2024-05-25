@@ -6,9 +6,30 @@ import EmptyCart from "../../components/cart/EmptyCart";
 import FilledCart from "../../components/cart/FilledCart";
 
 const products = [
-  { id: 1, name: "상품명1", price: "174,000", user: "아이디1" },
-  { id: 2, name: "상품명2", price: "200,000", user: "아이디2" },
-  { id: 3, name: "상품명3", price: "200,000", user: "아이디3" },
+  {
+    cart_item_id: 1,
+    product_id: 1,
+    quantity: 1,
+    name: "상품명1",
+    price: "174,000",
+    user: "아이디1",
+  },
+  {
+    cart_item_id: 2,
+    product_id: 2,
+    quantity: 1,
+    name: "상품명2",
+    price: "200,000",
+    user: "아이디2",
+  },
+  {
+    cart_item_id: 3,
+    product_id: 3,
+    quantity: 1,
+    name: "상품명3",
+    price: "200,000",
+    user: "아이디3",
+  },
 ];
 
 const Cart = () => {

@@ -3,16 +3,26 @@ import styled from "styled-components";
 import minus from "../../../assets/minus.svg";
 import plus from "../../../assets/plus.svg";
 
-const Count = () => {
+const Count = ({ quantity, onUpdateCount }) => {
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      onUpdateCount(quantity - 1);
+    }
+  };
+
+  const handleIncrease = () => {
+    onUpdateCount(quantity + 1);
+  };
+
   return (
     <Container>
       <Wrapper>
-        <CountBox>
-          <img src={minus} />
+        <CountBox onClick={handleDecrease}>
+          <img src={minus} alt="minus" />
         </CountBox>
-        <CountBox className="count">1</CountBox>
-        <CountBox>
-          <img src={plus} />
+        <CountBox className="count">{quantity}</CountBox>
+        <CountBox onClick={handleIncrease}>
+          <img src={plus} alt="plus" />
         </CountBox>
       </Wrapper>
     </Container>
