@@ -116,7 +116,7 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   width: 548px;
-  height: 650px;
+  height: 680px;
 `;
 
 const Row = styled.div`
@@ -135,7 +135,7 @@ const Title = styled.div`
   align-items: flex-start;
   width: 105px;
   height: 67px;
-  margin: 21px 0 21px 18px;
+  margin-left: 18px;
   font-family: Inter;
   font-size: 15px;
   font-weight: 500;
