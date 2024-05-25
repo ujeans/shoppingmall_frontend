@@ -59,7 +59,7 @@ const ProductList = ({ cartItems, allChecked }) => {
                 onClick={() => toggleCheck(product.cart_item_id)}
                 checked={checkedItems[product.cart_item_id]}
               >
-                {allChecked ? (
+                {checkedItems[product.cart_item_id] ? (
                   <Icon src={checkedbox} />
                 ) : (
                   <Icon src={checkbox} />
