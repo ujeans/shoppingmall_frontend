@@ -16,7 +16,13 @@ import {
   WhiteBtn,
 } from "../../style/CommonStyles";
 
-const FilledCart = ({ cartItems, allChecked, onToggleAllChecked }) => {
+const FilledCart = ({
+  cartItems,
+  setCartItems,
+  allChecked,
+  onToggleAllChecked,
+  onDeleteSelected,
+}) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -43,10 +49,14 @@ const FilledCart = ({ cartItems, allChecked, onToggleAllChecked }) => {
           <Count>수량</Count>
           <OrderAmount>주문금액</OrderAmount>
         </Header>
-        <ProductList cartItems={cartItems} allChecked={allChecked} />
+        <ProductList
+          cartItems={cartItems}
+          setCartItems={setCartItems}
+          allChecked={allChecked}
+        />
       </Container>
       <BtnWrapper>
-        <DeleteBtn>선택상품 삭제</DeleteBtn>
+        <DeleteBtn onClick={onDeleteSelected}>선택상품 삭제</DeleteBtn>
         <DeleteBtn>품절상품 삭제</DeleteBtn>
       </BtnWrapper>
       <TotalSum />

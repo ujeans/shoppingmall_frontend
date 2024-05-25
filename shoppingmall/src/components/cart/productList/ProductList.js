@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // assets
 import checkbox from "../../../assets/checkbox.svg";
 import checkedbox from "../../../assets/checkedbox.svg";
@@ -8,41 +8,25 @@ import Info from "./Info";
 import Count from "./Count";
 import OrderAmount from "./OrderAmount";
 
-const ProductList = ({ cartItems, allChecked }) => {
+const ProductList = ({ cartItems, setCartItems }) => {
   const [count, setCount] = useState(
     cartItems.reduce((acc, item) => {
       acc[item.cart_item_id] = item.quantity;
       return acc;
     }, {})
   );
-
-  const [checkedItems, setCheckedItems] = useState(
-    cartItems.reduce((acc, item) => {
-      acc[item.cart_item_id] = false;
-      return acc;
-    }, {})
-  );
-
-  useEffect(() => {
-    setCheckedItems(
-      cartItems.reduce((acc, item) => {
-        acc[item.cart_item_id] = allChecked;
-        return acc;
-      }, {})
+  const toggleCheck = id => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.cart_item_id === id ? { ...item, checked: !item.checked } : item
+      )
     );
-  }, [allChecked, cartItems]);
+  };
 
   const updateCount = (id, newCount) => {
     setCount(prevCounts => ({
       ...prevCounts,
       [id]: newCount,
-    }));
-  };
-
-  const toggleCheck = id => {
-    setCheckedItems(prevCheckedItems => ({
-      ...prevCheckedItems,
-      [id]: !prevCheckedItems[id],
     }));
   };
 
@@ -57,9 +41,9 @@ const ProductList = ({ cartItems, allChecked }) => {
             <Wrapper>
               <Checkbox
                 onClick={() => toggleCheck(product.cart_item_id)}
-                checked={checkedItems[product.cart_item_id]}
+                checked={product.checked}
               >
-                {checkedItems[product.cart_item_id] ? (
+                {product.checked ? (
                   <Icon src={checkedbox} />
                 ) : (
                   <Icon src={checkbox} />

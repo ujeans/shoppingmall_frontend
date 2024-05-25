@@ -38,6 +38,13 @@ const Cart = () => {
 
   const handleAllChecked = () => {
     setAllChecked(!allChecked);
+    setCartItems(prevItems =>
+      prevItems.map(item => ({ ...item, checked: !allChecked }))
+    );
+  };
+
+  const handleDeleteSelected = () => {
+    setCartItems(prevItems => prevItems.filter(item => !item.checked));
   };
 
   return (
@@ -47,8 +54,10 @@ const Cart = () => {
       ) : (
         <FilledCart
           cartItems={cartItems}
+          setCartItems={setCartItems}
           allChecked={allChecked}
           onToggleAllChecked={handleAllChecked}
+          onDeleteSelected={handleDeleteSelected}
         />
       )}
     </ContentLayout>
