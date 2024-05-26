@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 // assets
-import LeftArrowIcon from "../../assets/LeftArrow.svg";
+import LeftArrowIcon from "../../assets/leftarrow.svg";
 
 const ContentLayout = ({ children, title, width }) => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: ${props => props.width};
+  width: ${(props) => props.width};
   min-height: calc(100vh - 67px);
   height: fit-content;
 `;
