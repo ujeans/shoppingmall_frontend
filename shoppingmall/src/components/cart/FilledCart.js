@@ -32,7 +32,9 @@ const FilledCart = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const navigateToPage = () => {
-    navigate("/");
+    const orderItems = onOrder();
+
+    navigate("/order-details", { state: { orderItems } });
   };
 
   const openModal = () => {
