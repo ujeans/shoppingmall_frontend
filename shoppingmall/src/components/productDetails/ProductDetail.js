@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 // svg
 import leftarrow from "../../assets/leftarrow.svg";
 import profileimage from "../../assets/profileimage.svg";
 import unlike from "../../assets/unlike.svg";
 
-const ProductDetail = () => {
+const ProductDetail = ({product}) => {
+    const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
+
+    const navigateToPage = () => {
+      navigate("/");
+    };
+  
+    const openModal = () => {
+      setIsOpen(true);
+    };
+
     return (
         <ProductDetailWrapper>
             <Container>
                 <Header>
-                    <BackIcon src={leftarrow} />
+                    <BackIcon src={leftarrow} onClick={navigateToPage} />
                     <ProductTitle>상품 정보</ProductTitle>
                 </Header>
                 <ImageWrapper>
@@ -73,6 +85,7 @@ const BackIcon = styled.img`
     width: 24px;
     height: 24px;
     margin-right: 380px;
+    cursor: pointer;
 `;
 
 const ProductTitle = styled.div`
@@ -131,6 +144,7 @@ const HeartIcon = styled.img`
     width: 20px;
     height: 18.3px;
     margin-top: 11px;
+    cursor: pointer;
 `;
 
 const BorderLine = styled.div`
