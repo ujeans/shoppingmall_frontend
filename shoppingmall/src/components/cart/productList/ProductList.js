@@ -8,7 +8,7 @@ import Info from "./Info";
 import Count from "./Count";
 import OrderAmount from "./OrderAmount";
 
-const ProductList = ({ cartItems, setCartItems, onDeleteSelected }) => {
+const ProductList = ({ cartItems, setCartItems, onDeleteItem }) => {
   const [count, setCount] = useState(
     cartItems.reduce((acc, item) => {
       acc[item.cart_item_id] = item.quantity;
@@ -30,12 +30,6 @@ const ProductList = ({ cartItems, setCartItems, onDeleteSelected }) => {
     }));
   };
 
-  const handleDeleteItem = id => {
-    setCartItems(prevItems =>
-      prevItems.filter(item => item.cart_item_id !== id)
-    );
-  };
-
   return (
     <>
       {cartItems.map(product => {
@@ -55,7 +49,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteSelected }) => {
                   <Icon src={checkbox} />
                 )}
               </Checkbox>
-              <Info product={product} onDeleteItem={handleDeleteItem} />
+              <Info product={product} onDeleteItem={onDeleteItem} />
               <Count
                 quantity={count[product.cart_item_id]}
                 onUpdateCount={newCount =>

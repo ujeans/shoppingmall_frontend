@@ -15,7 +15,7 @@ const OrderAmount = ({ totalPrice }) => {
   };
 
   const openModal = () => {
-    setIsOpen(true);
+    setIsOpen(!isOpen);
   };
 
   return (

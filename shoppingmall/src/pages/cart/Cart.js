@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
 // assets
 import EmptyCart from "../../components/cart/EmptyCart";
 import FilledCart from "../../components/cart/FilledCart";
 
-const products = [
+const cart_products = [
   {
     cart_item_id: 1,
     product_id: 1,
@@ -33,8 +33,23 @@ const products = [
 ];
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(products);
+  const [cartItems, setCartItems] = useState(cart_products);
   const [allChecked, setAllChecked] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    const totalAmount = cartItems.reduce((acc, item) => {
+      return acc + parseInt(item.price.replace(/,/g, ""), 10) * item.quantity;
+    }, 0);
+
+    const totalCount = cartItems.reduce((acc, item) => {
+      return acc + item.quantity;
+    }, 0);
+
+    setTotalAmount(totalAmount);
+    setTotalCount(totalCount);
+  }, [cartItems]);
 
   const handleAllChecked = () => {
     setAllChecked(!allChecked);
@@ -45,6 +60,12 @@ const Cart = () => {
 
   const handleDeleteSelected = () => {
     setCartItems(prevItems => prevItems.filter(item => !item.checked));
+  };
+
+  const handleDeleteItem = id => {
+    setCartItems(prevItems =>
+      prevItems.filter(item => item.cart_item_id !== id)
+    );
   };
 
   return (
@@ -58,6 +79,9 @@ const Cart = () => {
           allChecked={allChecked}
           onToggleAllChecked={handleAllChecked}
           onDeleteSelected={handleDeleteSelected}
+          onDeleteItem={handleDeleteItem}
+          totalAmount={totalAmount}
+          totalCount={totalCount}
         />
       )}
     </ContentLayout>

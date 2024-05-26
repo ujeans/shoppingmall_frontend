@@ -22,6 +22,9 @@ const FilledCart = ({
   allChecked,
   onToggleAllChecked,
   onDeleteSelected,
+  onDeleteItem,
+  totalAmount,
+  totalCount,
 }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -31,18 +34,14 @@ const FilledCart = ({
   };
 
   const openModal = () => {
-    setIsOpen(!setIsOpen);
+    setIsOpen(!isOpen);
   };
 
   return (
     <>
       <Container borderBottom={false}>
         <Header>
-          <Checkbox
-            src={checkbox}
-            onClick={onToggleAllChecked}
-            checked={allChecked}
-          >
+          <Checkbox onClick={onToggleAllChecked} checked={allChecked}>
             {allChecked ? <Icon src={checkedbox} /> : <Icon src={checkbox} />}
           </Checkbox>
           <ProductInfo>상품정보</ProductInfo>
@@ -52,15 +51,21 @@ const FilledCart = ({
         <ProductList
           cartItems={cartItems}
           setCartItems={setCartItems}
-          allChecked={allChecked}
-          onDeleteSelected={onDeleteSelected}
+          // allChecked={allChecked}
+          onDeleteItem={onDeleteItem}
         />
       </Container>
       <BtnWrapper>
         <DeleteBtn onClick={onDeleteSelected}>선택상품 삭제</DeleteBtn>
-        <DeleteBtn>품절상품 삭제</DeleteBtn>
+        <DeleteBtn
+          onClick={() =>
+            setCartItems(prevItems => prevItems.filter(item => !item.soldOut))
+          }
+        >
+          품절상품 삭제
+        </DeleteBtn>
       </BtnWrapper>
-      <TotalSum />
+      <TotalSum totalAmount={totalAmount} totalCount={totalCount} />
       <ButtonWrapper>
         <Btn padding=" 12px 20px" fontSize="20px" onClick={navigateToPage}>
           CONTINUE SHOPPING
