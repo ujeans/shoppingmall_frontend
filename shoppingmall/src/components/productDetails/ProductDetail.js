@@ -73,7 +73,7 @@ const Container = styled.div`
     align-items: center;
     max-width: 1300px;
     height: 830px;
-    margin: 57px 81px 0px 300px;
+    margin: 57px 20% 0px 300px;
 `;
 
 const Header = styled.div`
@@ -116,14 +116,14 @@ const ImageWrapper = styled.div`
 const LeftArrow = styled.img`
     position: absolute;
     top: 410px;
-    left: 580px;
+    left: 480px;
     cursor: pointer;
 `;
 
 const RightArrow = styled.img`
     position: absolute;
     top: 410px;
-    right: 510px;
+    right: 444px;
     cursor: pointer;
 `;
 
@@ -209,7 +209,7 @@ const Cagetgory = styled.div`
 const CartButton = styled.button`
     width: 250px;
     height: 40px;
-    margin: 49px 0px 0px 50%;
+    margin: 49px 0px 0px 40%;
     border: none;
     border-radius: 10px;
     font-size: 15px;
