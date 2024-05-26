@@ -58,9 +58,7 @@ const Container = styled.div`
     align-items: center;
     max-width: 1300px;
     height: 830px;
-    margin-top: 57px;
-    margin-left: 81px;
-    margin-right: 81px;
+    margin: 57px 81px 0px 81px;
 `;
 
 const Header = styled.div`
@@ -80,9 +78,9 @@ const BackIcon = styled.img`
 const ProductTitle = styled.div`
     width: 110px;
     height: 29px;
+    margin-top: 3px;
     font-weight: bold;
     font-size: 24px;
-    margin-top: 3px;
 `;
 
 const ImageWrapper = styled.div`
@@ -179,8 +177,7 @@ const Cagetgory = styled.div`
 const CartButton = styled.button`
     width: 250px;
     height: 40px;
-    margin-top: 49px;
-    margin-left: 40%;
+    margin: 49px 0px 0px 40%;
     border: none;
     border-radius: 10px;
     font-size: 15px;
