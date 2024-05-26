@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { theme } from "../../style/theme";
 import styled from "styled-components";
-import ModalComponent from "../modal/ModalComponent";
+
 
 // svg
 import pencil from "../../assets/pencil.svg";
@@ -13,7 +13,7 @@ const ProductFilter = () => {
   const navigate = useNavigate();
   const [btnActive, setBtnActive] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const selectList = [
     { id: 1, value: "all", name: "전체" },
@@ -80,12 +80,6 @@ const ProductFilter = () => {
         </ButtonDivs>
       </ButtonWrapper>
       {isVisible && (
-        // <ModalComponent
-        //   title="로그인이 필요한 기능입니다."
-        //   subText="로그인 페이지로 이동하시겠습니까?"
-        //   urlPath="/login"
-        //   isClosed={closeModal}
-        // />
         <Modal
               open={isVisible} 
               onClose={closeModal} 
