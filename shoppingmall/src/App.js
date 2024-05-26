@@ -31,7 +31,6 @@ function App() {
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/sell" element={<Sell />} />
           <Route path="/order-details" element={<OrderDetailsPage />} />
-
         </Routes>
       </AppLayout>
     </ThemeProvider>
