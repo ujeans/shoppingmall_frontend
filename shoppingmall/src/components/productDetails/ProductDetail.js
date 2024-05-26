@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import leftarrow from "../../assets/leftarrow.svg";
 import profileimage from "../../assets/profileimage.svg";
 import unlike from "../../assets/unlike.svg";
+import rightarrow from "../../assets/rightarrow.svg";
 
 const ProductDetail = ({product}) => {
     const navigate = useNavigate();
@@ -28,6 +29,8 @@ const ProductDetail = ({product}) => {
                 </Header>
                 <ImageWrapper>
                     <ProductImage src="https://via.placeholder.com/400/#D9D9D9"/>
+                    <LeftArrow src={leftarrow}/> 
+                    <RightArrow src={rightarrow}/>
                 </ImageWrapper>
                 <ContentWrapper>
                     <UserInfo>
@@ -105,9 +108,24 @@ const ImageWrapper = styled.div`
 `;
 
  const ProductImage = styled.img`
-    width: 400px
+    position: relative;
+    width: 400px;
     height: 400px;
     border-radius: 10px;
+`;
+
+const LeftArrow = styled.img`
+    position: absolute;
+    top: 410px;
+    left: 480px;
+    cursor: pointer;
+`;
+
+const RightArrow = styled.img`
+    position: absolute;
+    top: 410px;
+    right: 630px;
+    cursor: pointer;
 `;
 
 const ContentWrapper = styled.div`
