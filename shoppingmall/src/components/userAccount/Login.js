@@ -4,6 +4,7 @@ import { theme } from "../../style/theme";
 import InputField from "./InputField";
 import { isValidEmail, isValidPassword } from "./Vaildators";
 import Navigation from "../nav/Navigation";
+import Modal from "../commom/Modal/Modal";
 
 //svg
 import email from "../../assets/email.svg";
@@ -24,6 +25,14 @@ const Login = () => {
     }));
   };
 
+  //모달
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   //유효성 검사
   const isValid = isValidEmail(user.email) && isValidPassword(user.password);
 
@@ -42,6 +51,8 @@ const Login = () => {
         throw new Error("이메일과 비밀번호를 확인하세요");
       }
     } catch (error) {
+      setModalMessage("이메일과 비밀번호를 확인하세요");
+      setIsModalOpen(true);
       console.error("에러", error);
     }
   };
@@ -75,6 +86,14 @@ const Login = () => {
         </SubmitButton>
         <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
       </Wrapper>
+      {isModalOpen && (
+        <Modal
+          onClose={closeModal}
+          title="로그인 실패"
+          subText={modalMessage}
+          navigateToPage={closeModal}
+        />
+      )}
     </>
   );
 };
