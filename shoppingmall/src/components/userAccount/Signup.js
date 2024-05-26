@@ -7,6 +7,8 @@ import email from "../../assets/email.svg";
 import password from "../../assets/password.svg";
 import people from "../../assets/people.svg";
 import phone from "../../assets/phone.svg";
+import home from "../../assets/home.svg";
+import userCircle from "../../assets/userCircle.svg";
 
 const Signup = () => {
   //유저 정보
@@ -70,18 +72,33 @@ const Signup = () => {
     }
   };
 
+  const fileInputRef = React.createRef();
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // 파일 처리 로직 추가
+      console.log(file.name);
+    }
+  };
+
   const navigate = useNavigate();
   const moveToLogin = () => {
     navigate("/login", userInfo);
     console.log(userInfo);
   };
+  const moveToHome = () => {
+    navigate("/");
+  };
 
   return (
     <>
       <Wrapper>
-        <Title>
-          <Header>super24</Header>
-        </Title>
+        <Title onClick={moveToHome}>super24</Title>
         <Info>회원정보를 입력해주세요</Info>
         <InputWrapper>
           <InputContainer>
@@ -145,7 +162,7 @@ const Signup = () => {
           </InputContainer>
           <InputContainer>
             <IconWrapper>
-              <Icon src={phone} />
+              <Icon src={home} />
             </IconWrapper>
             <Input
               placeholder="주소"
@@ -154,19 +171,31 @@ const Signup = () => {
               onChange={handleInputChange}
             />
           </InputContainer>
-
+          <FileInfo>
+            나를 나타내는 프로필 사진과 닉네임으로 등록하면 이웃들이 안심할 수
+            있어요.
+          </FileInfo>
           <FileInputWrapper>
-            <FileInfo>나를 나타내는 프로필 사진을 등록해주세요</FileInfo>
-            <Input type="file" accept="image/*" name="img" />
-          </FileInputWrapper>
-          <InputContainer>
-            <Input
-              placeholder="닉네임"
-              value={userInfo.nickname}
-              name="nickname"
-              onChange={handleInputChange}
+            <FileInput
+              type="file"
+              accept="image/*"
+              name="img"
+              ref={fileInputRef}
+              onChange={handleFileChange}
             />
-          </InputContainer>
+            <ImageButton
+              src={userCircle}
+              alt="파일 선택 버튼"
+              onClick={handleImageClick}
+            />
+          </FileInputWrapper>
+
+          <InputNickname
+            placeholder="닉네임"
+            value={userInfo.nickname}
+            name="nickname"
+            onChange={handleInputChange}
+          />
         </InputWrapper>
         <SubmitButton disabled={!isVaild} onClick={submitSignup}>
           가입하기
@@ -182,24 +211,19 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
 `;
 
-const Title = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Header = styled.h2`
+const Title = styled.h2`
   padding: 10px;
   font-weight: bold;
   font-size: 30px;
-  margin: 30px;
+  margin: 58px;
+  cursor: pointer;
 `;
 
-const Info = styled.h2`
-  font-weight: 800;
+const Info = styled.div`
+  font-weight: 600;
+  font-size: 20px;
   margin-bottom: 20px;
   width: 100%;
   max-width: 465px;
@@ -211,53 +235,78 @@ const InputWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-bottom: 104px;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
-  max-width: 465px;
-  margin-bottom: 10px;
-  border: 1px solid #000000;
-`;
-
-const IconWrapper = styled.div`
-  padding: 10px;
-  height: 100%
-  background-color: ${theme.grayBgColor};
-  border-right: 1px solid #000000;
-`;
-
-const Icon = styled.img`
-  background-color: ${theme.grayBgColor};
+  width: 463px;
+  margin-bottom: 15px;
+  border: 1px solid ${theme.border};
 `;
 
 const Input = styled.input`
-  width: 100%;
-  height: 62px;
   text-indent: 12px;
   border: none;
-  outline: none;
-  border-radius: 0 5px 5px 0;
   &::placeholder {
     color: ${theme.placeholderText};
   }
+`;
+
+const InputNickname = styled.input`
+  width: 463px;
+  height: 43px;
+  border: none;
+  border-bottom: 1px solid ${theme.border};
+  &::placeholder {
+    color: ${theme.placeholderText};
+  }
+`;
+
+const IconWrapper = styled.div`
+  width: 54px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${theme.grayBgColor};
+  border-right: 1px solid ${theme.border};
+`;
+
+const Icon = styled.img`
+  width: 24px;
+  height: 24px;
 `;
 
 const FileInputWrapper = styled.div`
   width: 100%;
   max-width: 465px;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const FileInfo = styled.span`
-  display: flex;
-  margin: 10px 0 10px 0;
+const FileInfo = styled.div`
+  font-size: 13px;
+  color: ${theme.grayTextIcon};
+  margin: 11px 0 36px 0;
+`;
+
+const FileInput = styled.input`
+  display: none;
+`;
+
+const ImageButton = styled.img`
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
 `;
 
 const SubmitButton = styled.button`
   width: 100%;
+  margin-bottom: 43px;
   max-width: 465px;
   height: 45px;
   border-radius: 10px;

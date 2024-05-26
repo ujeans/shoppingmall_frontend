@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import mypage from "../../assets/mypage.svg";
 import cart from "../../assets/cart.svg";
 
-const Nav = () => {
+const Nav = ({ children }) => {
   // eslint-disable-next-line
   const [isLoggedIn, setLoggedIn] = useState(false);
 
@@ -29,30 +29,33 @@ const Nav = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title onClick={moveToHome}>super24</Title>
-        <ButtonWrapper>
-          {isLoggedIn ? (
-            <>
-              <MyPageButton onClick={moveToMypage}>
-                <Icon src={mypage} />
-                <ButtonText>마이페이지</ButtonText>
-              </MyPageButton>
-              <CartButton onClick={moveToCart}>
-                <Icon src={cart} />
-                <ButtonText>장바구니</ButtonText>
-              </CartButton>
-            </>
-          ) : (
-            <>
-              <LoginButton onClick={moveToLogin}>로그인</LoginButton>
-              <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
-            </>
-          )}
-        </ButtonWrapper>
-      </Wrapper>
-    </Container>
+    <>
+      <Container>
+        <Wrapper>
+          <Title onClick={moveToHome}>super24</Title>
+          <ButtonWrapper>
+            {isLoggedIn ? (
+              <>
+                <MyPageButton onClick={moveToMypage}>
+                  <Icon src={mypage} />
+                  <ButtonText>마이페이지</ButtonText>
+                </MyPageButton>
+                <CartButton onClick={moveToCart}>
+                  <Icon src={cart} />
+                  <ButtonText>장바구니</ButtonText>
+                </CartButton>
+              </>
+            ) : (
+              <>
+                <LoginButton onClick={moveToLogin}>로그인</LoginButton>
+                <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
+              </>
+            )}
+          </ButtonWrapper>
+        </Wrapper>
+      </Container>
+      <ContentWrapper>{children}</ContentWrapper>
+    </>
   );
 };
 export default Nav;
@@ -64,10 +67,14 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
 `;
 
 const Wrapper = styled.div`
-  width: 1100px;
+  width: 1267px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -122,10 +129,14 @@ const CartButton = styled.button`
 `;
 
 const ButtonText = styled.div`
-  font-weight: bold;
+  font-weight: 500;
 `;
 
 const Icon = styled.img`
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
+`;
+
+const ContentWrapper = styled.div`
+  padding-top: 67px; /* 내비게이션 바의 높이와 동일하게 설정 */
 `;
