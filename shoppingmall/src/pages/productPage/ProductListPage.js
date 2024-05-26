@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { useNavigate , Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { theme } from "../../style/theme";
 import ModalComponent from "../../components/modal/ModalComponent";
 import Pagination from "../../components/sellpage/PaginationArea";
@@ -103,84 +103,6 @@ const ProductListPage = () => {
     setIsLike(() => {
       const newLike = [...isChecked];
       newLike[index] = !newLike[index];
-      return newLike;
-    });
-  };
-
-  return (
-    <ProductListPageWrapper>
-      <ProductListFilterWrapper>
-        <LeftWrapper>
-          <ButtonDivs>
-            <Menu
-              onClick={() => handleClickButton(0)}
-              isActive={btnActive === 0}
-            >
-              추천순
-            </Menu>
-            <Menu
-              onClick={() => handleClickButton(1)}
-              isActive={btnActive === 1}
-            >
-              가격 낮은순
-            </Menu>
-            <Menu
-              onClick={() => handleClickButton(2)}
-              isActive={btnActive === 2}
-            >
-              가격 높은순
-            </Menu>
-          </ButtonDivs>
-          <Selector name="category">
-            <option value="cloth">의류</option>
-            <option value="home">가전</option>
-            <option value="digital">디지털</option>
-          </Selector>
-        </LeftWrapper>
-        <RightWrapper>
-          <button onClick={checkLogin}>
-            상품 등록 &nbsp;
-            <Icon src={pencil} />
-          </button>
-        </RightWrapper>
-      </ProductListFilterWrapper>
-      <ProductListContainer>
-        {productList.map((product, index) => (
-          <ProductItem key={index} productsPerRow={productsPerRow}>
-            <ProductImage src={product.image} alt={product.productName} />
-            <ProductInfoWrapper>
-              <div>
-                <ProductName>{product.productName}</ProductName>
-                <ProductPrice>{product.productPrice + " 원"}</ProductPrice>
-                <ProductDescription>{product.description}</ProductDescription>
-              </div>
-              <IconWrapper
-                onClick={() => {
-                  handleHeart(index);
-                }}
-              >
-                <Icon src={unlike} fill="grayBgColor" />
-              </IconWrapper>
-            </ProductInfoWrapper>
-          </ProductItem>
-        ))}
-      </ProductListContainer>
-      <Pagination
-        pages={pages}
-        currentPage={currentPage}
-        onPageChange={onPageChange}
-      />
-
-      {isVisible && (
-        <ModalComponent
-          title="로그인이 필요한 기능입니다."
-          subText="로그인 페이지로 이동하시겠습니까?"
-          urlPath="/login"
-          isClosed={closeModal}
-        />
-      )}
-    </ProductListPageWrapper>
-  );
 };
 
 export default ProductListPage;
@@ -266,14 +188,6 @@ const ProductListContainer = styled.div`
   justify-content: center;
 `;
 
-const ProductItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 2px;
-  margin: 10px;
-  width: calc(100% / ${(props) => props.productsPerRow} - 20px);
-  box-sizing: border-box;
-`;
 
 const ProductImage = styled.img`
   width: 100%;
@@ -317,36 +231,4 @@ const Icon = styled.img`
   background-color: ${(props) => (props.isActive ? "#EB4646" : "#f4f4f4")};
 `;
 
-const PaginationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px;
-`;
 
-const PageButton = styled.button`
-  color: ${(props) => (props.isActive ? "white" : "#858585")};
-  background-color: ${(props) => (props.isActive ? "#EB4646" : "#f4f4f4")};
-  width: 45px;
-  height: 45px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #eb4646;
-    color: white;
-  }
-`;
-
-const ArrowIcon = styled.div`
-  width: 10px;
-  height: 18px;
-  &:hover {
-    background-color: #eb4646;
-    color: white;
-  }
-`;
