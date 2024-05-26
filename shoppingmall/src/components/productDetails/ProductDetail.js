@@ -184,4 +184,5 @@ const CartButton = styled.button`
     font-weight: bold;
     background-color: #EB4646;
     color: white;
+    cursor:pointer;
 `;
