@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { theme } from "../../style/theme";
 import styled from "styled-components";
 
-
 // svg
 import pencil from "../../assets/pencil.svg";
 import categorydropdown from "../../assets/categorydropdown.svg";
