@@ -1,32 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../style/theme";
-import { useNavigate } from "react-router-dom";
+import Navigation from "./Navigation";
 
 //svg
 import mypage from "../../assets/mypage.svg";
 import cart from "../../assets/cart.svg";
 
 const Nav = ({ children }) => {
-  // eslint-disable-next-line
   const [isLoggedIn, setLoggedIn] = useState(false);
-
-  const navigate = useNavigate();
-  const moveToHome = () => {
-    navigate("/");
-  };
-  const moveToLogin = () => {
-    navigate("/login");
-  };
-  const moveToSignup = () => {
-    navigate("/signup");
-  };
-  const moveToMypage = () => {
-    navigate("/mypage");
-  };
-  const moveToCart = () => {
-    navigate("/cart");
-  };
+  const { moveToHome, moveToSignup, moveToLogin, moveToMypage, moveToCart } =
+    Navigation();
 
   return (
     <>

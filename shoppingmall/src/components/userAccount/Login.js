@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../style/theme";
-import { useNavigate } from "react-router-dom";
+import InputField from "./InputField";
+import { isValidEmail, isValidPassword } from "./Vaildators";
+import Navigation from "../nav/Navigation";
 
 //svg
 import email from "../../assets/email.svg";
@@ -23,29 +25,7 @@ const Login = () => {
   };
 
   //유효성 검사
-  const isValidEmail = (email) => {
-    var regExp =
-      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    console.log("이메일 유효성 검사 :: ", regExp.test(email), email);
-    return regExp.test(email);
-  };
-
-  const isvaildPassword = (password) => {
-    var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$/;
-    console.log("비밀번호 유효성 검사 :: ", regExp.test(password), password);
-    return regExp.test(password);
-  };
-
-  const isValid = isValidEmail(user.email) && isvaildPassword(user.password);
-
-  //navigate
-  const navigate = useNavigate();
-  const moveToSignup = () => {
-    navigate("/signup");
-  };
-  const moveToHome = () => {
-    navigate("/");
-  };
+  const isValid = isValidEmail(user.email) && isValidPassword(user.password);
 
   //로그인 실행
   const submitLogin = async () => {
@@ -66,35 +46,28 @@ const Login = () => {
     }
   };
 
+  //navigate
+  const { moveToHome, moveToSignup } = Navigation();
   return (
     <>
       <Wrapper>
         <Title onClick={moveToHome}>super24</Title>
         <InputWrapper>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={email} />
-            </IconWrapper>
-            <Input
-              placeholder="아이디(이메일)"
-              value={user.email}
-              name="email"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={password} />
-            </IconWrapper>
-
-            <Input
-              placeholder="비밀번호"
-              type="password"
-              value={user.password}
-              name="password"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
+          <InputField
+            iconSrc={email}
+            placeholder="아이디(이메일)"
+            value={user.email}
+            name="email"
+            onChange={handleInputChange}
+          />
+          <InputField
+            iconSrc={password}
+            placeholder="비밀번호"
+            type="password"
+            value={user.password}
+            name="password"
+            onChange={handleInputChange}
+          />
         </InputWrapper>
 
         <SubmitButton disabled={!isValid} onClick={submitLogin}>
@@ -129,40 +102,6 @@ const InputWrapper = styled.div`
   align-items: center;
   width: 100%;
   margin: 262px 0 66px 0;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 463px;
-  margin-bottom: 15px;
-  border: 1px solid ${theme.border};
-`;
-
-const IconWrapper = styled.div`
-  width: 54px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${theme.grayBgColor};
-  border-right: 1px solid ${theme.border};
-`;
-
-const Icon = styled.img`
-  width: 24px;
-  height: 24px;
-`;
-
-const Input = styled.input`
-  width: 465px;
-  height: 56px;
-  text-indent: 12px;
-  border: none;
-  &::placeholder {
-    color: ${({ theme }) => theme.placeholderText};
-    color: ${theme.placeholderText};
-  }
 `;
 
 const SubmitButton = styled.button`
