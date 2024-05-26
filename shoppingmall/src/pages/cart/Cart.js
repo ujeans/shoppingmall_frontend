@@ -81,6 +81,12 @@ const Cart = () => {
     );
   };
 
+  const handleOrder = () => {
+    const selectedItems = cartItems.filter(item => item.checked);
+    console.log("Selected items:", selectedItems); // 디버깅을 위해 추가
+    return selectedItems;
+  };
+
   return (
     <ContentLayout title={"장바구니"} width="800px">
       {cartItems.length === 0 ? (
@@ -88,14 +94,15 @@ const Cart = () => {
       ) : (
         <FilledCart
           cartItems={cartItems}
-          setCartItems={setCartItems}
           allChecked={allChecked}
+          totalAmount={totalAmount}
+          totalCount={totalCount}
+          setCartItems={setCartItems}
           onToggleAllChecked={handleAllChecked}
           onDeleteSelected={handleDeleteSelected}
           onDeleteSoldOut={handleDeleteSoldOut}
           onDeleteItem={handleDeleteItem}
-          totalAmount={totalAmount}
-          totalCount={totalCount}
+          onOrder={handleOrder}
         />
       )}
     </ContentLayout>

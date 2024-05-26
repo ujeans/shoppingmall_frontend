@@ -20,12 +20,13 @@ const FilledCart = ({
   cartItems,
   setCartItems,
   allChecked,
+  totalAmount,
+  totalCount,
   onToggleAllChecked,
   onDeleteSelected,
   onDeleteSoldOut,
   onDeleteItem,
-  totalAmount,
-  totalCount,
+  onOrder,
 }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +54,7 @@ const FilledCart = ({
           cartItems={cartItems}
           setCartItems={setCartItems}
           onDeleteItem={onDeleteItem}
+          onOrder={onOrder}
         />
       </Container>
       <BtnWrapper>

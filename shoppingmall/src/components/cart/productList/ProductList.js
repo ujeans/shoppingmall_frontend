@@ -8,13 +8,14 @@ import Info from "./Info";
 import Count from "./Count";
 import OrderAmount from "./OrderAmount";
 
-const ProductList = ({ cartItems, setCartItems, onDeleteItem }) => {
+const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
   const [count, setCount] = useState(
     cartItems.reduce((acc, item) => {
       acc[item.cart_item_id] = item.quantity;
       return acc;
     }, {})
   );
+
   const toggleCheck = id => {
     setCartItems(prevItems =>
       prevItems.map(item =>
@@ -63,7 +64,11 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem }) => {
                 }
                 disabled={product.soldOut}
               />
-              <OrderAmount product={product} totalPrice={totalPrice} />
+              <OrderAmount
+                product={product}
+                totalPrice={totalPrice}
+                onOrder={onOrder}
+              />
             </Wrapper>
           </Container>
         );

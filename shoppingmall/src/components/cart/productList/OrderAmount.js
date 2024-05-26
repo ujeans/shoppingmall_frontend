@@ -6,12 +6,14 @@ import { BlackBtn } from "../../../style/CommonStyles";
 // components
 import Modal from "../../commom/Modal/Modal";
 
-const OrderAmount = ({ product, totalPrice }) => {
+const OrderAmount = ({ product, totalPrice, onOrder }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const navigateToPage = () => {
-    navigate("/order-details");
+    const orderItems = onOrder();
+
+    navigate("/order-details", { state: { orderItems } });
   };
 
   const openModal = () => {

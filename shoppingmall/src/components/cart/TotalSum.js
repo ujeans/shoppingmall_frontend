@@ -7,7 +7,7 @@ const TotalSum = ({ totalAmount, totalCount }) => {
     <Container borderBottom={true}>
       <Header>
         <PaymentText>총 주문금액</PaymentText>
-        <PaymentText>총 주문금액</PaymentText>
+        <PaymentText>배송비</PaymentText>
         <PaymentText>총 결제금액</PaymentText>
       </Header>
       <PaymentWrapper>
