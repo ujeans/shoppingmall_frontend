@@ -1,9 +1,10 @@
-import React from "react";
 import styled from "styled-components";
+// styles
+import { Container, Header } from "../../style/CommonStyles";
 
 const TotalSum = () => {
   return (
-    <Container>
+    <Container borderBottom={true}>
       <Header>
         <PaymentText>총 주문금액</PaymentText>
         <PaymentText>총 주문금액</PaymentText>
@@ -29,20 +30,6 @@ const TotalSum = () => {
 
 export default TotalSum;
 
-const Container = styled.div`
-  border-top: 2px solid black;
-  border-bottom: 1px solid black;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  font-size: 18px;
-  font-weight: bold;
-`;
-
 const PaymentText = styled.div`
   width: 34%;
   display: flex;
@@ -52,7 +39,6 @@ const PaymentText = styled.div`
 const PaymentWrapper = styled.div`
   display: flex;
   padding: 30px 0;
-  border-top: 1px solid ${props => props.theme.border};
 `;
 
 const PaymentBox = styled.div`

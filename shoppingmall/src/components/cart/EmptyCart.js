@@ -1,23 +1,32 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+// styles
+import { Container, WhiteBtn } from "../../style/CommonStyles";
 
 const EmptyCart = () => {
+  const navigate = useNavigate();
+
+  const navigateToPage = () => {
+    navigate("/");
+  };
+
   return (
-    <Container>
+    <EmptyContainer borderBottom={true}>
       <Wrapper>
         <EmptyCartMessage>장바구니에 담은 상품이 없습니다.</EmptyCartMessage>
-        <Btn>CONTINUE SHOPPING</Btn>
+        <WhiteBtn padding="12px 20px" fontSize="20px" onClick={navigateToPage}>
+          CONTINUE SHOPPING
+        </WhiteBtn>
       </Wrapper>
-    </Container>
+    </EmptyContainer>
   );
 };
 
 export default EmptyCart;
 
-const Container = styled.div`
+const EmptyContainer = styled(Container)`
   display: flex;
   justify-content: center;
-  border-top: 2px solid black;
-  border-bottom: 1px solid black;
 `;
 
 const Wrapper = styled.div`
@@ -27,20 +36,8 @@ const Wrapper = styled.div`
 `;
 
 const EmptyCartMessage = styled.div`
+  display: flex;
   margin-bottom: 60px;
   font-size: 18px;
   font-weight: bold;
-`;
-
-const Btn = styled.button`
-  padding: 12px 20px;
-  border: 1px solid ${props => props.theme.grayTextIcon};
-  background: none;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-
-  &:hover {
-    color: ${props => props.theme.mainColor};
-  }
 `;

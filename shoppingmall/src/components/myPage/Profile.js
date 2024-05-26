@@ -1,6 +1,8 @@
 import styled from "styled-components";
 // assets
 import profile from "../../assets/profile.svg";
+// styles
+import { BlackBtn } from "../../style/CommonStyles";
 
 const Profile = () => {
   return (
@@ -10,7 +12,7 @@ const Profile = () => {
           <ProfileImg src={profile} />
           <NickName>사용자이름</NickName>
         </ProfileLeftBox>
-        <EditBtn>사진 변경</EditBtn>
+        <BlackBtn padding="10px 25px">사진 변경</BlackBtn>
       </Wrapper>
     </Container>
   );
@@ -32,7 +34,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
   margin-bottom: 30px;
   padding: 0 20px;
-  border-radius: 15px;
   background-color: ${props => props.theme.grayBgColor};
 `;
 
@@ -46,12 +47,3 @@ const ProfileImg = styled.img`
 `;
 
 const NickName = styled.div``;
-
-const EditBtn = styled.button`
-  padding: 10px 22px;
-  border: none;
-  border-radius: 5px;
-  background-color: ${props => props.theme.mainColor};
-  color: white;
-  cursor: pointer;
-`;

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 // assets
 import LeftArrowIcon from "../../assets/LeftArrow.svg";
 
-const ContentLayout = ({ children, title }) => {
+const ContentLayout = ({ children, title, width }) => {
   const navigate = useNavigate();
 
   const onCancel = () => {
@@ -12,7 +12,7 @@ const ContentLayout = ({ children, title }) => {
 
   return (
     <Container>
-      <Wrapper>
+      <Wrapper width={width}>
         <Top>
           <ArrowIcon src={LeftArrowIcon} onClick={onCancel} />
           <Title>{title}</Title>
@@ -34,7 +34,9 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 800px;
+  width: ${props => props.width};
+  min-height: calc(100vh - 67px);
+  height: fit-content;
 `;
 
 const Top = styled.div`

@@ -1,12 +1,7 @@
-import styled from "styled-components";
 import { useState } from "react";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
 // assets
-import checkbox from "../../assets/checkbox.svg";
-import xCircle from "../../assets/x-circle.svg";
-import minus from "../../assets/minus.svg";
-import plus from "../../assets/plus.svg";
 import EmptyCart from "../../components/cart/EmptyCart";
 import FilledCart from "../../components/cart/FilledCart";
 
@@ -20,7 +15,7 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState(products);
 
   return (
-    <ContentLayout title={"장바구니"}>
+    <ContentLayout title={"장바구니"} width="800px">
       {cartItems.length === 0 ? (
         <EmptyCart />
       ) : (
