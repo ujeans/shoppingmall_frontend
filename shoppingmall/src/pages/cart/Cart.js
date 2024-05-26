@@ -13,6 +13,7 @@ const cart_products = [
     name: "상품명1",
     price: "174,000",
     user: "아이디1",
+    soldOut: false,
   },
   {
     cart_item_id: 2,
@@ -21,6 +22,7 @@ const cart_products = [
     name: "상품명2",
     price: "200,000",
     user: "아이디2",
+    soldOut: true,
   },
   {
     cart_item_id: 3,
@@ -29,6 +31,7 @@ const cart_products = [
     name: "상품명3",
     price: "200,000",
     user: "아이디3",
+    soldOut: false,
   },
 ];
 
@@ -40,11 +43,17 @@ const Cart = () => {
 
   useEffect(() => {
     const totalAmount = cartItems.reduce((acc, item) => {
-      return acc + parseInt(item.price.replace(/,/g, ""), 10) * item.quantity;
+      if (!item.soldOut) {
+        return acc + parseInt(item.price.replace(/,/g, ""), 10) * item.quantity;
+      }
+      return acc;
     }, 0);
 
     const totalCount = cartItems.reduce((acc, item) => {
-      return acc + item.quantity;
+      if (!item.soldOut) {
+        return acc + item.quantity;
+      }
+      return acc;
     }, 0);
 
     setTotalAmount(totalAmount);
@@ -60,6 +69,10 @@ const Cart = () => {
 
   const handleDeleteSelected = () => {
     setCartItems(prevItems => prevItems.filter(item => !item.checked));
+  };
+
+  const handleDeleteSoldOut = () => {
+    setCartItems(prevItems => prevItems.filter(item => !item.soldOut));
   };
 
   const handleDeleteItem = id => {
@@ -79,6 +92,7 @@ const Cart = () => {
           allChecked={allChecked}
           onToggleAllChecked={handleAllChecked}
           onDeleteSelected={handleDeleteSelected}
+          onDeleteSoldOut={handleDeleteSoldOut}
           onDeleteItem={handleDeleteItem}
           totalAmount={totalAmount}
           totalCount={totalCount}

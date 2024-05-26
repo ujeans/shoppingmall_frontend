@@ -61,8 +61,9 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem }) => {
                 onUpdateCount={newCount =>
                   updateCount(product.cart_item_id, newCount)
                 }
+                disabled={product.soldOut}
               />
-              <OrderAmount totalPrice={totalPrice} />
+              <OrderAmount product={product} totalPrice={totalPrice} />
             </Wrapper>
           </Container>
         );

@@ -22,6 +22,7 @@ const FilledCart = ({
   allChecked,
   onToggleAllChecked,
   onDeleteSelected,
+  onDeleteSoldOut,
   onDeleteItem,
   totalAmount,
   totalCount,
@@ -56,13 +57,7 @@ const FilledCart = ({
       </Container>
       <BtnWrapper>
         <DeleteBtn onClick={onDeleteSelected}>선택상품 삭제</DeleteBtn>
-        <DeleteBtn
-          onClick={() =>
-            setCartItems(prevItems => prevItems.filter(item => !item.soldOut))
-          }
-        >
-          품절상품 삭제
-        </DeleteBtn>
+        <DeleteBtn onClick={onDeleteSoldOut}>품절상품 삭제</DeleteBtn>
       </BtnWrapper>
       <TotalSum totalAmount={totalAmount} totalCount={totalCount} />
       <ButtonWrapper>

@@ -6,7 +6,7 @@ import { BlackBtn } from "../../../style/CommonStyles";
 // components
 import Modal from "../../commom/Modal/Modal";
 
-const OrderAmount = ({ totalPrice }) => {
+const OrderAmount = ({ product, totalPrice }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,10 +20,16 @@ const OrderAmount = ({ totalPrice }) => {
 
   return (
     <Container>
-      <OrderPrice>{totalPrice.toLocaleString()}원</OrderPrice>
-      <BlackBtn padding="10px 12px" onClick={openModal}>
-        BUY NOW
-      </BlackBtn>
+      {product.soldOut ? (
+        <SoldOutText>sold out</SoldOutText>
+      ) : (
+        <>
+          <OrderPrice>{totalPrice.toLocaleString()}원</OrderPrice>
+          <BlackBtn padding="10px 12px" onClick={openModal}>
+            BUY NOW
+          </BlackBtn>
+        </>
+      )}
       {isOpen && (
         <Modal
           open={isOpen}
@@ -48,6 +54,12 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const SoldOutText = styled.div`
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
 `;
 
 const OrderPrice = styled.div`
