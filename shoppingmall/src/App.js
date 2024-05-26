@@ -23,15 +23,15 @@ function App() {
         <Routes>
           <Route path="/settings" element={<MyPage />} />
           <Route path="/" element={<ProductListPage />} />
+          <Route path="/write" element={<Write />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/" element={<ProductListPage />} />
-          <Route path="/write" element={<ProductWritePage />} /> 
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/sell" element={<Sell />} />
           <Route path="/order-details" element={<OrderDetailsPage />} />
+
         </Routes>
       </AppLayout>
     </ThemeProvider>
