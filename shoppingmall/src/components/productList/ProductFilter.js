@@ -12,7 +12,7 @@ const ProductFilter = () => {
   const navigate = useNavigate();
   const [btnActive, setBtnActive] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const selectList = [
     { id: 1, value: "all", name: "전체" },
@@ -27,7 +27,7 @@ const ProductFilter = () => {
 
   const checkLogin = () => {
     if (isLogin === true) {
-      navigate("/PR");
+      navigate("/write");
       setIsVisible(false);
     } else {
       setIsVisible(true);
