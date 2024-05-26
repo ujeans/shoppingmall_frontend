@@ -2,7 +2,7 @@ import styled from "styled-components";
 // styles
 import { Container, Header } from "../../style/CommonStyles";
 
-const TotalSum = () => {
+const TotalSum = ({ totalAmount, totalCount }) => {
   return (
     <Container borderBottom={true}>
       <Header>
@@ -13,15 +13,15 @@ const TotalSum = () => {
       <PaymentWrapper>
         <PaymentText>
           <PaymentBox>
-            <PaymentPrice>179,000원</PaymentPrice>
-            <TotalCount>총 1개</TotalCount>
+            <PaymentPrice>{totalAmount.toLocaleString()}원</PaymentPrice>
+            <TotalCount>총 {totalCount}개</TotalCount>
           </PaymentBox>
         </PaymentText>
         <PaymentText>
           <PaymentPrice>0원</PaymentPrice>
         </PaymentText>
         <PaymentText>
-          <PaymentPrice>179,000원</PaymentPrice>
+          <PaymentPrice>{totalAmount.toLocaleString()}원</PaymentPrice>
         </PaymentText>
       </PaymentWrapper>
     </Container>
