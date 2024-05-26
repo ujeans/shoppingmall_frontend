@@ -28,6 +28,12 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem }) => {
       ...prevCounts,
       [id]: newCount,
     }));
+
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.cart_item_id === id ? { ...item, quantity: newCount } : item
+      )
+    );
   };
 
   return (

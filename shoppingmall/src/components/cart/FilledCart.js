@@ -51,7 +51,6 @@ const FilledCart = ({
         <ProductList
           cartItems={cartItems}
           setCartItems={setCartItems}
-          // allChecked={allChecked}
           onDeleteItem={onDeleteItem}
         />
       </Container>
