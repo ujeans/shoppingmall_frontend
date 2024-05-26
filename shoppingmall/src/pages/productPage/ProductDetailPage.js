@@ -1,9 +1,10 @@
 import React from 'react';
+import ProductDetail from "../../components/productDetails/ProductDetail";
 
 const ProductDetailPage = () => {
     return (
         <div>
-            상품상세페이지
+            <ProductDetail/>
         </div>
     );
 };
