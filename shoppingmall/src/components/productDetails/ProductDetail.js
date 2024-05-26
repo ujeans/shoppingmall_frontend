@@ -73,7 +73,7 @@ const Container = styled.div`
     align-items: center;
     max-width: 1300px;
     height: 830px;
-    margin: 57px 81px 0px 81px;
+    margin: 57px 81px 0px 300px;
 `;
 
 const Header = styled.div`
@@ -108,7 +108,6 @@ const ImageWrapper = styled.div`
 `;
 
  const ProductImage = styled.img`
-    position: relative;
     width: 400px;
     height: 400px;
     border-radius: 10px;
@@ -117,20 +116,21 @@ const ImageWrapper = styled.div`
 const LeftArrow = styled.img`
     position: absolute;
     top: 410px;
-    left: 480px;
+    left: 580px;
     cursor: pointer;
 `;
 
 const RightArrow = styled.img`
     position: absolute;
     top: 410px;
-    right: 630px;
+    right: 510px;
     cursor: pointer;
 `;
 
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
 `;
 
 const UserInfo = styled.div`
@@ -209,7 +209,7 @@ const Cagetgory = styled.div`
 const CartButton = styled.button`
     width: 250px;
     height: 40px;
-    margin: 49px 0px 0px 40%;
+    margin: 49px 0px 0px 50%;
     border: none;
     border-radius: 10px;
     font-size: 15px;
