@@ -35,22 +35,46 @@ const Signup = () => {
       ...user,
       [name]: value,
     }));
+    setFieldErrors((errors) => ({
+      ...errors,
+      [name]: false,
+    }));
   };
 
   //유효성 검사
 
-  const isValid =
-    isValidEmail &&
-    isValidPassword &&
-    isValidPhone &&
-    user.name &&
-    user.addr &&
-    user.nickname &&
-    user.password === user.passwordCheck;
+  const validateFields = () => {
+    const errors = {
+      email: !user.email || !isValidEmail(user.email),
+      password: !user.password || !isValidPassword(user.password),
+      passwordCheck:
+        !user.passwordCheck || user.password !== user.passwordCheck,
+      name: !user.name,
+      phone: !user.phone || !isValidPhone(user.phone),
+      addr: !user.addr,
+      nickname: !user.nickname,
+    };
+    setFieldErrors(errors);
+    console.log(errors);
+    return !Object.values(errors).some((error) => error);
+  };
+
+  const [fieldErrors, setFieldErrors] = useState({
+    email: false,
+    password: false,
+    passwordCheck: false,
+    name: false,
+    phone: false,
+    addr: false,
+    nickname: false,
+  });
 
   //회원가입
   const submitSignup = async () => {
     console.log(user);
+    if (!validateFields()) {
+      return;
+    }
     try {
       await fetch("/signup", {
         method: "POST",
@@ -72,6 +96,8 @@ const Signup = () => {
       // }
       moveToLogin();
     } catch (error) {
+      setModalMessage("이메일과 비밀번호를 확인하세요");
+      setIsModalOpen(true);
       console.error("에러", error);
     }
   };
@@ -98,6 +124,14 @@ const Signup = () => {
     }
   };
 
+  //모달
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   //navigate
   const { moveToHome, moveToLogin } = Navigation();
 
@@ -113,6 +147,8 @@ const Signup = () => {
             value={user.email}
             name="email"
             onChange={handleInputChange}
+            error={fieldErrors.email}
+            errorMessage={"유효한 이메일을 입력해주세요."}
           />
           <InputField
             iconSrc={password}
@@ -121,6 +157,8 @@ const Signup = () => {
             value={user.password}
             name="password"
             onChange={handleInputChange}
+            error={fieldErrors.password}
+            errorMessage={"유효한 비밀번호를 입력해주세요."}
           />
           <InputField
             iconSrc={password}
@@ -129,28 +167,40 @@ const Signup = () => {
             value={user.passwordCheck}
             name="passwordCheck"
             onChange={handleInputChange}
+            error={fieldErrors.passwordCheck}
+            errorMessage={"비밀번호가 일치하지 않습니다."}
           />
+
           <InputField
             iconSrc={people}
             placeholder="이름"
             value={user.name}
             name="name"
             onChange={handleInputChange}
+            error={fieldErrors.name}
+            errorMessage={"이름을 입력해주세요"}
           />
+
           <InputField
             iconSrc={phone}
             placeholder="휴대폰 번호"
             value={user.phone}
             name="phone"
             onChange={handleInputChange}
+            error={fieldErrors.phone}
+            errorMessage={"유효한 휴대폰 번호를 입력해주세요"}
           />
+
           <InputField
             iconSrc={home}
             placeholder="주소"
             value={user.addr}
             name="addr"
             onChange={handleInputChange}
+            error={fieldErrors.addr}
+            errorMessage={"주소를 입력해주세요"}
           />
+
           <FileInfo>
             나를 나타내는 프로필 사진과 닉네임으로 등록하면 이웃들이 안심할 수
             있어요.
@@ -183,9 +233,11 @@ const Signup = () => {
             value={user.nickname}
             name="nickname"
             onChange={handleInputChange}
+            error={fieldErrors.nickname}
+            errorMessage={"닉네임을 입력해주세요"}
           />
         </InputWrapper>
-        <SubmitButton disabled={!isValid} onClick={submitSignup}>
+        <SubmitButton disabled={!validateFields} onClick={submitSignup}>
           가입하기
         </SubmitButton>
       </Wrapper>
@@ -223,7 +275,7 @@ const InputWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 104px;
+  padding-bottom: 104px;
 `;
 
 const InputNickname = styled.input`

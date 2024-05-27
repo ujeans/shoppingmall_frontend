@@ -14,4 +14,5 @@ export const isValidPassword = (password) => {
 export const isValidPhone = (phone) => {
   var regExp = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/;
   console.log("핸드폰번호 유효성 검사 :: ", regExp.test(phone), phone);
+  return regExp.test(phone);
 };

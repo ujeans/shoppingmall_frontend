@@ -9,29 +9,38 @@ const InputField = ({
   value,
   name,
   onChange,
+  error,
+  errorMessage,
 }) => (
-  <InputContainer>
-    <IconWrapper>
-      <Icon src={iconSrc} />
-    </IconWrapper>
-    <Input
-      placeholder={placeholder}
-      type={type}
-      value={value}
-      name={name}
-      onChange={onChange}
-    />
-  </InputContainer>
+  <Wrapper>
+    <InputContainer error={error}>
+      <IconWrapper>
+        <Icon src={iconSrc} />
+      </IconWrapper>
+      <Input
+        placeholder={placeholder}
+        type={type}
+        value={value}
+        name={name}
+        onChange={onChange}
+        error={error}
+      />
+    </InputContainer>
+    {error && <ErrorMessage>{errorMessage}</ErrorMessage>}
+  </Wrapper>
 );
 
 export default InputField;
+const Wrapper = styled.div`
+  margin-bottom: 15px;
+`;
 
 const InputContainer = styled.div`
   display: flex;
   align-items: center;
   width: 463px;
-  margin-bottom: 15px;
   border: 1px solid ${theme.border};
+  ${({ error }) => error && `border-color:red;`}
 `;
 
 const IconWrapper = styled.div`
@@ -54,8 +63,17 @@ const Input = styled.input`
   height: 56px;
   text-indent: 12px;
   border: none;
+  outline: none;
   &::placeholder {
     color: ${({ theme }) => theme.placeholderText};
     color: ${theme.placeholderText};
   }
+`;
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 12px;
+  text-indent: 47px;
+  padding-top: 5px;
+  width: 465px;
+  text-align: left;
 `;
