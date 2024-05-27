@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -8,16 +8,11 @@ import profileimage from "../../assets/profileimage.svg";
 import unlike from "../../assets/unlike.svg";
 import rightarrow from "../../assets/rightarrow.svg";
 
-const ProductDetail = ({product}) => {
+const ProductDetail = () => {
     const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
 
     const navigateToPage = () => {
       navigate("/");
-    };
-  
-    const openModal = () => {
-      setIsOpen(true);
     };
 
     return (
