@@ -41,8 +41,7 @@ const UserInfo = styled.div`
     justify-content: start;
     width: 400px;
     height: 55px;
-    margin-top: 25px;
-    marigin-bottom: 14px;
+    margin: 25px 0px 14px 0px;
 `;
 
 const UserImage = styled.img`
@@ -55,8 +54,7 @@ const UserImage = styled.img`
 const UserName = styled.div`
     width: 756px;
     height: 19px;
-    margin-top: 15px;
-    margin-bottom: 30px;
+    margin: 15px 0px 30px 0px;
     font-size: 16px;
     font-weight: bold;
 `;
@@ -71,7 +69,6 @@ const HeartIcon = styled.img`
 const BorderLine = styled.div`
     width: 400px;
     border-bottom: 1px solid #D1D4D8;
-    margin-top: 14px;
     margin-bottom: 26px;
 `;
 
@@ -98,7 +95,7 @@ const Description = styled.div`
     width: 400px;
     height: 19px;
     margin-top: 16px;
-    fonst-size: 16px;
+    font-size: 16px;
 `;
 
 const Cagetgory = styled.div`
