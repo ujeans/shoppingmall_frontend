@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { theme } from "../../style/theme";
 import styled from "styled-components";
 import Pagination from "../sellpage/PaginationArea";
-import ProductFilter from "./ProductFilter";
+import ProductFilter from "./ProducFilter";
 // svg
 import unlike from "../../assets/unlike.svg";
 const ProductList = () => {
@@ -12,70 +12,56 @@ const ProductList = () => {
   const [productList, setProductList] = useState([
     {
       id: 1,
-      image: "https://via.placeholder.com/160/#D9D9D9",
+      image: "https://via.placeholder.com/150/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 2,
-      image: "https://via.placeholder.com/160/#D9D9D9",
+      image: "https://via.placeholder.com/150/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 3,
-      image: "https://via.placeholder.com/160/#D9D9D9",
+      image: "https://via.placeholder.com/150/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 4,
-      image: "https://via.placeholder.com/160/#D9D9D9",
+      image: "https://via.placeholder.com/150/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 5,
-      image: "https://via.placeholder.com/160/#D9D9D9",
+      image: "https://via.placeholder.com/150/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 6,
-      image: "https://via.placeholder.com/160/#D9D9D9",
+      image: "https://via.placeholder.com/150/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 7,
-      image: "https://via.placeholder.com/160/#D9D9D9",
+      image: "https://via.placeholder.com/150/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 8,
-      image: "https://via.placeholder.com/160/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-    {
-      id: 9,
-      image: "https://via.placeholder.com/160/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-    {
-      id: 10,
-      image: "https://via.placeholder.com/160/#D9D9D9",
+      image: "https://via.placeholder.com/150/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
@@ -104,116 +90,148 @@ const ProductList = () => {
   };
 
   return (
-    <ProductListPageWrapper>
-      <ProductFilter />
-      <ProductListContainer>
-        {productList.map((product, index) => (
-          <ProductItem
-            key={index}
-            productsPerRow={productsPerRow}
-            onClick={() => {
-              clickProduct(product.id);
-            }}
-          >
-            <ProductImage src={product.image} alt={product.productName} />
-            <ProductInfoWrapper>
-              <div>
-                <ProductName>{product.productName}</ProductName>
-                <ProductPrice>{product.productPrice + " 원"}</ProductPrice>
-                <ProductDescription>{product.description}</ProductDescription>
-              </div>
-              <IconWrapper
-                onClick={() => {
-                  handleHeart(index);
-                }}
-              >
-                <Icon src={unlike} fill="grayBgColor" />
-              </IconWrapper>
-            </ProductInfoWrapper>
-          </ProductItem>
-        ))}
-      </ProductListContainer>
-      <Pagination
-        pages={pages}
-        currentPage={currentPage}
-        onPageChange={onPageChange}
-      />
-    </ProductListPageWrapper>
+    <Wrapper>
+       <Container>
+            <ProductFilter />
+            <ListContainer>
+                    <CardList>
+                        {productList.map((product, index) => (
+                            <Item
+                            key={index}
+                            productsPerRow={productsPerRow}
+                            onClick={() => {
+                                clickProduct(product.id);}}
+                            >
+                                <ImageWrapper>
+                                    <Image  src={product.image} alt={product.productName}/>
+                                </ImageWrapper>
+                                <InfoWrapper>
+                                    <Info>
+                                        <ProductName>{product.productName}</ProductName>
+                                        <ProductPrice>{product.productPrice + " 원"}</ProductPrice>
+                                        <ProductDescription>{product.description}</ProductDescription>
+                                    </Info>
+                                    <IconWrapper>
+                                        <Icon src={unlike}/>
+                                    </IconWrapper>
+                                </InfoWrapper>
+                            </Item> 
+                        ))}   
+                    </CardList>
+            </ListContainer>        
+           
+       </Container> 
+       <Pagination
+                pages={pages}
+                currentPage={currentPage}
+                onPageChange={onPageChange}
+            />
+    </Wrapper>
   );
 };
 
 export default ProductList;
 
-const ProductListPageWrapper = styled.div`
-  display: flex;
-  width: 1920px;
-  hegith: 1080px;
-  max-width: 1100px;
-  margin-left: 16%;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: space-around;
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 100%;
+    height: 1050px;
 `;
 
-const ProductListContainer = styled.div`
-  display: flex;
-  width: 1060px;
-  padding: 0 0;
-  margin: 20px 0px 64px 10px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    margin-top: 32px;
 `;
 
-const ProductItem = styled.div`
-  display: flex;
-  box-sizing: border-box;
-  width: 164px;
-  padding: 0 0;
-  margin: 0px 6px 24px 10px;
-  flex-direction: column;
-  cursor: pointer;
+const ListContainer = styled.div`
+    display: flex;
+    justify-content: center; 
+    width: 100%;
+    height: 100%;
+    margin-top: 28px;
 `;
 
-const ProductImage = styled.img`
-  width: 160px;
-  height: 160px;
-  padding-bottom: 7px;
-  border-radius: 5px;
+const CardList = styled.div`
+    display: flex;
+    justify-content: center; 
+    width: 100%;
+    height:500px;
+    flex-wrap: wrap;
 `;
 
-const ProductInfoWrapper = styled.div`
-  display: flex;
-  width: 164px;
-  height: 58px;
-  flex-direction: row;
-  justify-content: flex-start;
+const Item = styled.div`
+    width: 294px;
+    height:220px;
+    margin-right: 20px;
+    &:nth-child(4) {
+        margin-right:0px;
+    }
+    &:nth-child(8) {
+        margin-right:0px;
+    }
+`;
+
+
+const ImageWrapper = styled.div`
+    width: 100%;
+    height: 150px;
+    border: 1px solid white;
+    border-radius: 3%;
+`;
+
+const Image = styled.img`
+    width: 100%;
+    height: 150px;
+    border-radius: 3%;
+    object-fit: cover;
+`;
+
+const InfoWrapper = styled.div`
+    display: flex;
+    justify-content: start;
+    width: 100%;
+    height: 26%;
+    margin-top: 8px;
+`;
+
+const Info = styled.div`
+    width: 200px;
+    height: 100%;
 `;
 
 const ProductName = styled.div`
-  padding-bottom: 3px;
-  font-size: 17px;
-  font-weight: 500;
-  line-heigh: 19.36px;
+    width: 100px;
+    height: 19px;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
 `;
 
 const ProductPrice = styled.div`
-  padding-bottom: 8px;
-  font-size: 17px;
-  font-weight: 600;
-  line-heigh: 16.94px;
+    width: 66px;
+    height: 17px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
 `;
 
 const ProductDescription = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  line-heigh: 16.94px;
+    width: 100px;
+    height: 17px;
+    font-size: 14px;
+    font-weight: bold;
 `;
 
 const IconWrapper = styled.div`
-  margin-left: 62px;
-  background-color: ${theme.white};
+    margin-left: 100px;
 `;
 
 const Icon = styled.img`
-  background-color: ${(props) => (props.isChecked ? "#EB4646" : "#f4f4f4")};
+    background-color: none;
 `;
