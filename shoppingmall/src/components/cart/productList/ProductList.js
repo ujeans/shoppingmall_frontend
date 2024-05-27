@@ -62,7 +62,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
                 onUpdateCount={newCount =>
                   updateCount(product.cartItemId, newCount)
                 }
-                disabled={product.soldOut}
+                disabled={product.stock === 0}
               />
               <OrderAmount
                 product={product}

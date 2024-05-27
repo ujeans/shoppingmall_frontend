@@ -72,7 +72,7 @@ const Cart = () => {
   };
 
   const handleDeleteSoldOut = () => {
-    setCartItems(prevItems => prevItems.filter(item => !item.soldOut));
+    setCartItems(prevItems => prevItems.filter(item => item.stock !== 0));
   };
 
   const handleDeleteItem = id => {
