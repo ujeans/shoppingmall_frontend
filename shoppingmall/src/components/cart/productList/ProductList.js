@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // assets
 import checkbox from "../../../assets/checkbox.svg";
 import checkedbox from "../../../assets/checkedbox.svg";
@@ -9,12 +9,16 @@ import Count from "./Count";
 import OrderAmount from "./OrderAmount";
 
 const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
-  const [count, setCount] = useState(
-    cartItems.reduce((acc, item) => {
-      acc[item.cart_item_id] = item.quantity;
+  const [count, setCount] = useState({});
+
+  useEffect(() => {
+    // cartItems가 변경될 때 count 상태를 동기화
+    const initialCount = cartItems.reduce((acc, item) => {
+      acc[item.productId] = item.quantity;
       return acc;
-    }, {})
-  );
+    }, {});
+    setCount(initialCount);
+  }, [cartItems]);
 
   const toggleCheck = id => {
     setCartItems(prevItems =>
@@ -40,9 +44,9 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
   return (
     <>
       {cartItems.map(product => {
-        const totalPrice =
-          parseInt(product.price.replace(/,/g, ""), 10) *
-          count[product.cart_item_id];
+        const totalPrice = product.price * count[product.productId];
+
+        console.log(count[product.productId]);
         return (
           <Container key={product.cart_item_id}>
             <Wrapper>
@@ -58,7 +62,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
               </Checkbox>
               <Info product={product} onDeleteItem={onDeleteItem} />
               <Count
-                quantity={count[product.cart_item_id]}
+                quantity={product.quantity}
                 onUpdateCount={newCount =>
                   updateCount(product.cart_item_id, newCount)
                 }

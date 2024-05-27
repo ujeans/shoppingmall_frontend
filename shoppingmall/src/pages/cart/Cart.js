@@ -5,46 +5,47 @@ import ContentLayout from "../../components/commom/ContentLayout";
 import EmptyCart from "../../components/cart/EmptyCart";
 import FilledCart from "../../components/cart/FilledCart";
 
-const cart_products = [
-  {
-    cart_item_id: 1,
-    product_id: 1,
-    quantity: 1,
-    name: "상품명1",
-    price: "174,000",
-    user: "아이디1",
-    soldOut: false,
-  },
-  {
-    cart_item_id: 2,
-    product_id: 2,
-    quantity: 1,
-    name: "상품명2",
-    price: "200,000",
-    user: "아이디2",
-    soldOut: true,
-  },
-  {
-    cart_item_id: 3,
-    product_id: 3,
-    quantity: 1,
-    name: "상품명3",
-    price: "200,000",
-    user: "아이디3",
-    soldOut: false,
-  },
-];
-
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(cart_products);
+  const [cartItems, setCartItems] = useState([]);
   const [allChecked, setAllChecked] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+          },
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          const text = await response.text();
+          throw new TypeError(`Received non-JSON response: ${text}`);
+        }
+
+        const data = await response.json();
+        setCartItems(data.map(item => ({ ...item, checked: false })));
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+
+    fetchCartItems();
+  }, []);
+
+  useEffect(() => {
     const totalAmount = cartItems.reduce((acc, item) => {
       if (!item.soldOut) {
-        return acc + parseInt(item.price.replace(/,/g, ""), 10) * item.quantity;
+        return acc + item.price * item.quantity;
       }
       return acc;
     }, 0);
@@ -76,9 +77,7 @@ const Cart = () => {
   };
 
   const handleDeleteItem = id => {
-    setCartItems(prevItems =>
-      prevItems.filter(item => item.cart_item_id !== id)
-    );
+    setCartItems(prevItems => prevItems.filter(item => item.productId !== id));
   };
 
   const handleOrder = () => {
