@@ -10,16 +10,20 @@ const Cart = () => {
   const [allChecked, setAllChecked] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+  const userId = 15;
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
-          },
-          cache: "no-store",
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/cart/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            },
+            cache: "no-store",
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
