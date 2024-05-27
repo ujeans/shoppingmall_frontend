@@ -1,49 +1,28 @@
 import { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
 // assets
 import EmptyContentLayout from "../../components/commom/EmptyContentLayout";
 import FilledCart from "../../components/cart/FilledCart";
+// hooks
+import useFetchData from "../../hooks/useFetchData";
+import { LoadingSpinner } from "../../style/CommonStyles";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const userId = 15;
+  const cartUrl = `${process.env.REACT_APP_API_URL}/cart/${userId}`;
+
+  const {
+    data: cartItems,
+    setData: setCartItems,
+    loading,
+    error,
+  } = useFetchData(cartUrl);
+
   const [allChecked, setAllChecked] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-  const userId = 15;
-
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/cart/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
-            },
-            cache: "no-store",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          const text = await response.text();
-          throw new TypeError(`Received non-JSON response: ${text}`);
-        }
-
-        const data = await response.json();
-        setCartItems(data.map(item => ({ ...item, checked: false })));
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-
-    fetchCartItems();
-  }, []);
 
   useEffect(() => {
     const totalAmount = cartItems.reduce((acc, item) => {
@@ -87,6 +66,17 @@ const Cart = () => {
     const selectedItems = cartItems.filter(item => item.checked);
     return selectedItems;
   };
+
+  if (loading) {
+    return (
+      <LoadingSpinner>
+        <ClipLoader size={150} />
+      </LoadingSpinner>
+    );
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <ContentLayout title={"장바구니"} width="1000px">
