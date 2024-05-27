@@ -13,7 +13,7 @@ const Info = ({ product, onDeleteItem }) => {
           <Price>{product.price.toLocaleString()}원</Price>
         </InfoBox>
       </Wrapper>
-      <Icon src={xCircle} onClick={() => onDeleteItem(product.cart_item_id)} />
+      <Icon src={xCircle} onClick={() => onDeleteItem(product.cartItemId)} />
     </Container>
   );
 };

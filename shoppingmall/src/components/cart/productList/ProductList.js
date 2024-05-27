@@ -20,7 +20,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
   const toggleCheck = id => {
     setCartItems(prevItems =>
       prevItems.map(item =>
-        item.cart_item_id === id ? { ...item, checked: !item.checked } : item
+        item.cartItemId === id ? { ...item, checked: !item.checked } : item
       )
     );
   };
