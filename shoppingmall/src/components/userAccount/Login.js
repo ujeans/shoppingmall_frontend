@@ -9,6 +9,7 @@ import Modal from "../commom/Modal/Modal";
 //svg
 import email from "../../assets/email.svg";
 import password from "../../assets/password.svg";
+import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
 
 const Login = () => {
   //로그인 정보
@@ -120,33 +121,23 @@ const InputWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 262px 0 66px 0;
+  margin: 220px 0 66px 0;
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled(BlackBtn)`
   width: 100%;
   max-width: 465px;
   height: 45px;
-  border-radius: 10px;
-  border: 0px;
-  background-color: ${theme.mainColor};
-  color: #ffffff;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 15px;
   cursor: pointer;
 `;
 
-const SignupButton = styled.button`
+const SignupButton = styled(WhiteBtn)`
   width: 465px;
   height: 45px;
   font-weight: 700;
   font-size: 18px;
-  border: 1px solid ${theme.border};
-  border-radius: 10px;
-  background-color: #ffffff;
   cursor: pointer;
-  &:hover {
-    background-color: ${theme.border};
-  }
 `;

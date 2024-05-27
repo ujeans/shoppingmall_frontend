@@ -12,6 +12,7 @@ import people from "../../assets/people.svg";
 import phone from "../../assets/phone.svg";
 import home from "../../assets/home.svg";
 import userCircle from "../../assets/userCircle.svg";
+import { BlackBtn } from "../../style/CommonStyles";
 
 const Signup = () => {
   //유저 정보
@@ -23,7 +24,7 @@ const Signup = () => {
     phone: "",
     addr: "",
     nickname: "",
-    img: null,
+    img: "",
   });
 
   //이미지 미리보기
@@ -76,7 +77,7 @@ const Signup = () => {
       return;
     }
     try {
-      await fetch("/signup", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -91,9 +92,9 @@ const Signup = () => {
         }),
       });
 
-      // if (!response.ok) {
-      //   throw new Error("회원가입에 실패하였습니다.");
-      // }
+      if (!response.ok) {
+        throw new Error("회원가입에 실패하였습니다.");
+      }
       moveToLogin();
     } catch (error) {
       setModalMessage("이메일과 비밀번호를 확인하세요");
@@ -322,19 +323,14 @@ const PreviewImage = styled.img`
   cursor: pointer;
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled(BlackBtn)`
   width: 100%;
   margin-bottom: 43px;
   max-width: 465px;
   height: 45px;
-  border-radius: 10px;
-  border: none;
-  background-color: ${theme.mainColor};
-  color: #ffffff;
   font-weight: 700;
   cursor: pointer;
-  &:disabled {
-    background-color: "#F4F4F4";
+  S &:disabled {
     cursor: not-allowed;
   }
 `;
