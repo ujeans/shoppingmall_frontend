@@ -8,7 +8,6 @@ const OrderDetailsList = () => {
   const location = useLocation();
   const { orderItems } = location.state || { orderItems: [] };
 
-  console.log("orderItems", orderItems);
   return (
     <>
       <Header>
@@ -18,8 +17,8 @@ const OrderDetailsList = () => {
         <PaymentAmount>결제금액</PaymentAmount>
       </Header>
       {orderItems.map((item, index) => {
-        console.log(item);
         const totalPayment = item.price * item.quantity;
+
         return (
           <ListWrapper key={index}>
             <OrderDate>{item.created_at}</OrderDate>
