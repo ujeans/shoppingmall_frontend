@@ -1,6 +1,5 @@
 import React from "react";
 import ProductComponent from "../../components/productwritepage/ProductComponent";
-import PageLayout from "../../components/commom/PageLayout";
 import ContentLayout from "../../components/commom/ContentLayout";
 
 const ProductRegistrationPage = () => {

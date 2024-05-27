@@ -7,6 +7,8 @@ import dateIcon from "../../assets/date.svg";
 import plusIcon from "../../assets/plus.svg";
 import deleteIcon from "../../assets/delete.svg";
 
+import { Container } from "../../style/CommonStyles";
+
 const ProductComponent = () => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
@@ -94,83 +96,87 @@ const ProductComponent = () => {
 
   return (
     <Wrapper>
-      <Content>
-        <MainWrapper>
-          <Title>상품명</Title>
-          <TitleInput
-            type="text"
-            placeholder="상품명을 입력해주세요."
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <ContentWrapper>
-            <ImageWrapper>
-              <Title>이미지</Title>
-              <MainImage>
-                {images.length > 0 && <img src={images[0]} alt="Main Image" />}
-              </MainImage>
-              <ImageInputWrapper>
-                <ImageButton>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageChange}
-                    style={{ display: "none" }}
-                    ref={fileInputRef}
-                    disabled={remainingImages <= 0}
+      <Container borderBottom="true">
+        <Content>
+          <MainWrapper>
+            <Title>상품명</Title>
+            <TitleInput
+              type="text"
+              placeholder="상품명을 입력해주세요."
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <ContentWrapper>
+              <ImageWrapper>
+                <Title>이미지</Title>
+                <MainImage>
+                  {images.length > 0 && (
+                    <img src={images[0]} alt="Main Image" />
+                  )}
+                </MainImage>
+                <ImageInputWrapper>
+                  <ImageButton>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageChange}
+                      style={{ display: "none" }}
+                      ref={fileInputRef}
+                      disabled={remainingImages <= 0}
+                    />
+                    <PlusIcon />
+                    <ImageCounter>
+                      {images.length}/{maxImages}
+                    </ImageCounter>
+                  </ImageButton>
+                  <ImagePreviewWrapper>{renderImages()}</ImagePreviewWrapper>
+                </ImageInputWrapper>
+              </ImageWrapper>
+              <SubContentWrapper>
+                <Title>가격</Title>
+                <Input
+                  type="text"
+                  placeholder="₩ 가격을 입력해주세요."
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+                <Title>판매 기간</Title>
+                <DateContainer>
+                  <DateIcon onClick={handleSDateIconClick} />
+                  <StyledDatePicker
+                    id="Sdate"
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="시작 날짜를 선택하세요."
                   />
-                  <PlusIcon />
-                  <ImageCounter>
-                    {images.length}/{maxImages}
-                  </ImageCounter>
-                </ImageButton>
-                <ImagePreviewWrapper>{renderImages()}</ImagePreviewWrapper>
-              </ImageInputWrapper>
-            </ImageWrapper>
-            <SubContentWrapper>
-              <Title>가격</Title>
-              <Input
-                type="text"
-                placeholder="₩ 가격을 입력해주세요."
-                onChange={(e) => setPrice(e.target.value)}
-              />
-              <Title>판매 기간</Title>
-              <DateContainer>
-                <DateIcon onClick={handleSDateIconClick} />
-                <StyledDatePicker
-                  id="Sdate"
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                  dateFormat="yyyy-MM-dd"
-                  placeholderText="시작 날짜를 선택하세요."
+                  <Datetext>~</Datetext>
+                  <DateIcon onClick={handleEDateIconClick} />
+                  <StyledDatePicker
+                    id="Edate"
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="종료 날짜를 선택하세요."
+                  />
+                </DateContainer>
+                <Title>재고</Title>
+                <Input
+                  type="text"
+                  placeholder="재고수량을 입력해주세요."
+                  onChange={(e) => setCount(e.target.value)}
                 />
-                <Datetext>~</Datetext>
-                <DateIcon onClick={handleEDateIconClick} />
-                <StyledDatePicker
-                  id="Edate"
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
-                  dateFormat="yyyy-MM-dd"
-                  placeholderText="종료 날짜를 선택하세요."
+                <Title>상세 설명</Title>
+                <TextArea
+                  placeholder="게시글 내용을 작성해주세요."
+                  onChange={(e) => setDescription(e.target.value)}
                 />
-              </DateContainer>
-              <Title>재고</Title>
-              <Input
-                type="text"
-                placeholder="재고수량을 입력해주세요."
-                onChange={(e) => setCount(e.target.value)}
-              />
-              <Title>상세 설명</Title>
-              <TextArea
-                placeholder="게시글 내용을 작성해주세요."
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </SubContentWrapper>
-          </ContentWrapper>
-          <Title>카테고리</Title>
-          <DevBox />
-        </MainWrapper>
-      </Content>
+              </SubContentWrapper>
+            </ContentWrapper>
+            <Title>카테고리</Title>
+            <DevBox />
+          </MainWrapper>
+        </Content>
+      </Container>
       <FooterWrapper>
         <ComppletedButton onClick={handleSubmit}>작성 완료</ComppletedButton>
       </FooterWrapper>
@@ -271,7 +277,7 @@ const StyledDatePicker = styled(DatePicker)`
   height: 36px;
   padding-left: 7px;
   position: relative;
-  z-index: -1;
+
   background-color: #f4f4f4;
   border: 1px solid #ccc;
 `;
@@ -347,7 +353,6 @@ const PlusIcon = styled.div`
 const ImagePreview = styled.div`
   display: flex;
   position: relative;
-  z-index: -1;
   width: 55px;
   height: 55px;
   border: 1px solid #ccc;
@@ -361,7 +366,7 @@ const ImagePreview = styled.div`
 
 const MainImage = styled.div`
   position: relative;
-  z-index: -1;
+
   width: 400px;
   height: 400px;
   border: 1px solid #ccc;
@@ -373,22 +378,9 @@ const MainImage = styled.div`
   }
 `;
 
-const DeleteButton = styled.button`
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background-color: transparent;
-  background-image: url(${deleteIcon});
-  background-size: cover;
-  cursor: pointer;
-  border: none;
-`;
-
 const DevBox = styled.div`
   position: relative;
-  z-index: -1;
+
   width: 1028px;
   height: 130px;
   border: 1px solid #ccc;
@@ -399,13 +391,25 @@ const ComppletedButton = styled.button`
   height: 40px;
   font-size: 16px;
   font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  margin: 120px 0 45px 0;
-  background: #eb4646;
+  background: black;
   color: white;
+  border: 1px solid black;
+  margin: 120px 0 45px 0;
   cursor: pointer;
   &:hover {
-    border: 1px solid #ccc;
+    color: ${(props) => props.theme.mainColor};
   }
+`;
+
+const DeleteButton = styled.button`
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background-color: transparent;
+  background-image: url(${deleteIcon});
+  background-size: cover;
+  cursor: pointer;
+  border: none;
 `;
