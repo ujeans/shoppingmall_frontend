@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 // assets
 import checkbox from "../../assets/checkbox.svg";
+import checkedbox from "../../assets/checkedbox.svg";
 // components
 import ProductList from "./productList/ProductList";
 import TotalSum from "./TotalSum";
@@ -15,36 +16,54 @@ import {
   WhiteBtn,
 } from "../../style/CommonStyles";
 
-const FilledCart = ({ cartItems }) => {
+const FilledCart = ({
+  cartItems,
+  setCartItems,
+  allChecked,
+  totalAmount,
+  totalCount,
+  onToggleAllChecked,
+  onDeleteSelected,
+  onDeleteSoldOut,
+  onDeleteItem,
+  onOrder,
+}) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const navigateToPage = () => {
-    navigate("/");
+    const orderItems = onOrder();
+
+    navigate("/order-details", { state: { orderItems } });
   };
 
   const openModal = () => {
-    setIsOpen(true);
+    setIsOpen(!isOpen);
   };
 
   return (
     <>
       <Container borderBottom={false}>
         <Header>
-          <Checkbox>
-            <Icon src={checkbox} />
+          <Checkbox onClick={onToggleAllChecked} checked={allChecked}>
+            {allChecked ? <Icon src={checkedbox} /> : <Icon src={checkbox} />}
           </Checkbox>
           <ProductInfo>상품정보</ProductInfo>
           <Count>수량</Count>
           <OrderAmount>주문금액</OrderAmount>
         </Header>
-        <ProductList cartItems={cartItems} />
+        <ProductList
+          cartItems={cartItems}
+          setCartItems={setCartItems}
+          onDeleteItem={onDeleteItem}
+          onOrder={onOrder}
+        />
       </Container>
       <BtnWrapper>
-        <DeleteBtn>선택상품 삭제</DeleteBtn>
-        <DeleteBtn>품절상품 삭제</DeleteBtn>
+        <DeleteBtn onClick={onDeleteSelected}>선택상품 삭제</DeleteBtn>
+        <DeleteBtn onClick={onDeleteSoldOut}>품절상품 삭제</DeleteBtn>
       </BtnWrapper>
-      <TotalSum />
+      <TotalSum totalAmount={totalAmount} totalCount={totalCount} />
       <ButtonWrapper>
         <Btn padding=" 12px 20px" fontSize="20px" onClick={navigateToPage}>
           CONTINUE SHOPPING

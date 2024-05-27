@@ -1,25 +1,109 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
 // assets
 import EmptyCart from "../../components/cart/EmptyCart";
 import FilledCart from "../../components/cart/FilledCart";
 
-const products = [
-  { id: 1, name: "상품명1", price: "174,000", user: "아이디1" },
-  { id: 2, name: "상품명2", price: "200,000", user: "아이디2" },
-  { id: 3, name: "상품명3", price: "200,000", user: "아이디3" },
+const cart_products = [
+  {
+    cart_item_id: 1,
+    product_id: 1,
+    quantity: 1,
+    name: "상품명1",
+    price: "174,000",
+    user: "아이디1",
+    soldOut: false,
+  },
+  {
+    cart_item_id: 2,
+    product_id: 2,
+    quantity: 1,
+    name: "상품명2",
+    price: "200,000",
+    user: "아이디2",
+    soldOut: true,
+  },
+  {
+    cart_item_id: 3,
+    product_id: 3,
+    quantity: 1,
+    name: "상품명3",
+    price: "200,000",
+    user: "아이디3",
+    soldOut: false,
+  },
 ];
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(products);
+  const [cartItems, setCartItems] = useState(cart_products);
+  const [allChecked, setAllChecked] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    const totalAmount = cartItems.reduce((acc, item) => {
+      if (!item.soldOut) {
+        return acc + parseInt(item.price.replace(/,/g, ""), 10) * item.quantity;
+      }
+      return acc;
+    }, 0);
+
+    const totalCount = cartItems.reduce((acc, item) => {
+      if (!item.soldOut) {
+        return acc + item.quantity;
+      }
+      return acc;
+    }, 0);
+
+    setTotalAmount(totalAmount);
+    setTotalCount(totalCount);
+  }, [cartItems]);
+
+  const handleAllChecked = () => {
+    setAllChecked(!allChecked);
+    setCartItems(prevItems =>
+      prevItems.map(item => ({ ...item, checked: !allChecked }))
+    );
+  };
+
+  const handleDeleteSelected = () => {
+    setCartItems(prevItems => prevItems.filter(item => !item.checked));
+  };
+
+  const handleDeleteSoldOut = () => {
+    setCartItems(prevItems => prevItems.filter(item => !item.soldOut));
+  };
+
+  const handleDeleteItem = id => {
+    setCartItems(prevItems =>
+      prevItems.filter(item => item.cart_item_id !== id)
+    );
+  };
+
+  const handleOrder = () => {
+    const selectedItems = cartItems.filter(item => item.checked);
+    console.log("Selected items:", selectedItems); // 디버깅을 위해 추가
+    return selectedItems;
+  };
 
   return (
     <ContentLayout title={"장바구니"} width="800px">
       {cartItems.length === 0 ? (
         <EmptyCart />
       ) : (
-        <FilledCart cartItems={cartItems} />
+        <FilledCart
+          cartItems={cartItems}
+          allChecked={allChecked}
+          totalAmount={totalAmount}
+          totalCount={totalCount}
+          setCartItems={setCartItems}
+          onToggleAllChecked={handleAllChecked}
+          onDeleteSelected={handleDeleteSelected}
+          onDeleteSoldOut={handleDeleteSoldOut}
+          onDeleteItem={handleDeleteItem}
+          onOrder={handleOrder}
+        />
       )}
     </ContentLayout>
   );

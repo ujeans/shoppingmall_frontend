@@ -1,8 +1,14 @@
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
+
 // styles
 import { Header } from "../../style/CommonStyles";
 
 const OrderDetailsList = () => {
+  const location = useLocation();
+  const { orderItems } = location.state || { orderItems: [] };
+
+  console.log("orderItems", orderItems);
   return (
     <>
       <Header>
@@ -11,15 +17,22 @@ const OrderDetailsList = () => {
         <OrderNumber>주문번호</OrderNumber>
         <PaymentAmount>결제금액</PaymentAmount>
       </Header>
-      <ListWrapper>
-        <OrderDate>2024-05-23</OrderDate>
-        <OrderDetailsItem>
-          <Image></Image>
-          <div>상품이름</div>
-        </OrderDetailsItem>
-        <OrderNumberItem>2024-05-23</OrderNumberItem>
-        <PaymentAmount>173,000원</PaymentAmount>
-      </ListWrapper>
+      {orderItems.map((item, index) => (
+        <ListWrapper key={index}>
+          <OrderDate>{item.created_at}</OrderDate>
+          <OrderDetailsItem>
+            <Image src={item.image || ""} alt={item.name} />
+            <div>{item.name}</div>
+          </OrderDetailsItem>
+          <OrderNumberItem>{item.order_history_id}</OrderNumberItem>
+          <PaymentAmount>
+            {(
+              parseInt(item.price.replace(/,/g, ""), 10) * item.quantity
+            ).toLocaleString()}
+            원
+          </PaymentAmount>
+        </ListWrapper>
+      ))}
     </>
   );
 };

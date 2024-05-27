@@ -2,7 +2,7 @@ import styled from "styled-components";
 // assets
 import xCircle from "../../../assets/x-circle.svg";
 
-const Info = ({ product }) => {
+const Info = ({ product, onDeleteItem }) => {
   return (
     <Container>
       <Wrapper>
@@ -13,7 +13,7 @@ const Info = ({ product }) => {
           <Price>{product.price}원</Price>
         </InfoBox>
       </Wrapper>
-      <Icon src={xCircle} />
+      <Icon src={xCircle} onClick={() => onDeleteItem(product.cart_item_id)} />
     </Container>
   );
 };
