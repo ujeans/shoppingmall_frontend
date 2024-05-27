@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { theme } from "../../style/theme";
 import styled from "styled-components";
 import Pagination from "../sellpage/PaginationArea";
 import ProductFilter from "./ProducFilter";
