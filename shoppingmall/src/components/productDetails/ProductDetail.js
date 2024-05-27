@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 // svg
+import { FiCircle } from "react-icons/fi";
 import leftarrow from "../../assets/leftarrow.svg";
 import profileimage from "../../assets/profileimage.svg";
 import unlike from "../../assets/unlike.svg";
 import rightarrow from "../../assets/rightarrow.svg";
+
 
 const ProductDetail = () => {
     const navigate = useNavigate();
@@ -26,6 +28,11 @@ const ProductDetail = () => {
                     <ProductImage src="https://via.placeholder.com/400/#D9D9D9"/>
                     <LeftArrow src={leftarrow}/> 
                     <RightArrow src={rightarrow}/>
+                    <CarouselButtons>
+                        <PaginationButton />
+                        <PaginationButton />
+                        <PaginationButton />
+                    </CarouselButtons>
                 </ImageWrapper>
                 <ContentWrapper>
                     <UserInfo>
@@ -121,6 +128,19 @@ const RightArrow = styled.img`
     right: 444px;
     cursor: pointer;
 `;
+
+const CarouselButtons = styled.div`
+    position: absolute;
+    cursor: pointer;
+    top: 580px;
+    right: 600px;
+`;
+
+const PaginationButton = styled(FiCircle)`
+    margin-right: 4px;
+    background-color: none;
+`;
+
 
 const ContentWrapper = styled.div`
     display: flex;
