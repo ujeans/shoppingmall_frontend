@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
 // assets
 import checkbox from "../../../assets/checkbox.svg";
 import checkedbox from "../../../assets/checkedbox.svg";
@@ -9,16 +10,12 @@ import Count from "./Count";
 import OrderAmount from "./OrderAmount";
 
 const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
-  const [count, setCount] = useState({});
-
-  useEffect(() => {
-    // cartItems가 변경될 때 count 상태를 동기화
-    const initialCount = cartItems.reduce((acc, item) => {
-      acc[item.productId] = item.quantity;
+  const [count, setCount] = useState(
+    cartItems.reduce((acc, item) => {
+      acc[item.cartItemId] = item.quantity;
       return acc;
-    }, {});
-    setCount(initialCount);
-  }, [cartItems]);
+    }, {})
+  );
 
   const toggleCheck = id => {
     setCartItems(prevItems =>
@@ -36,7 +33,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
 
     setCartItems(prevItems =>
       prevItems.map(item =>
-        item.cart_item_id === id ? { ...item, quantity: newCount } : item
+        item.cartItemId === id ? { ...item, quantity: newCount } : item
       )
     );
   };
@@ -44,14 +41,13 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
   return (
     <>
       {cartItems.map(product => {
-        const totalPrice = product.price * count[product.productId];
+        const totalPrice = product.price * product.quantity;
 
-        console.log(count[product.productId]);
         return (
-          <Container key={product.cart_item_id}>
+          <Container key={product.cartItemId}>
             <Wrapper>
               <Checkbox
-                onClick={() => toggleCheck(product.cart_item_id)}
+                onClick={() => toggleCheck(product.cartItemId)}
                 checked={product.checked}
               >
                 {product.checked ? (
@@ -64,7 +60,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
               <Count
                 quantity={product.quantity}
                 onUpdateCount={newCount =>
-                  updateCount(product.cart_item_id, newCount)
+                  updateCount(product.cartItemId, newCount)
                 }
                 disabled={product.soldOut}
               />

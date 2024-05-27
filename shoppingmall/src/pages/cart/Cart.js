@@ -33,7 +33,6 @@ const Cart = () => {
 
         const data = await response.json();
         setCartItems(data.map(item => ({ ...item, checked: false })));
-        console.log(data);
       } catch (error) {
         console.error("Error fetching cart items:", error);
       }
@@ -77,7 +76,7 @@ const Cart = () => {
   };
 
   const handleDeleteItem = id => {
-    setCartItems(prevItems => prevItems.filter(item => item.productId !== id));
+    setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
   };
 
   const handleOrder = () => {
