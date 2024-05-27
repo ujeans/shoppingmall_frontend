@@ -50,6 +50,7 @@ const ProductComponent = () => {
           }
           return newImages;
         });
+        fileInputRef.current.value = null;
       })
       .catch((error) => {
         console.error("이미지를 읽는 동안 오류가 발생했습니다.", error);
@@ -73,6 +74,13 @@ const ProductComponent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // 유효성 검사
+    const isValid = validateForm();
+    if (!isValid) {
+      return;
+    }
+
     const formData = {
       title,
       price,
@@ -92,6 +100,70 @@ const ProductComponent = () => {
 
   const handleEDateIconClick = () => {
     document.getElementById("Edate").focus();
+  };
+
+  // 유효성 검사 함수
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {};
+
+    // 상품명 검사
+    if (title.length < 3 || title.length > 20) {
+      errors.title = "상품명은 3자 이상 20자 이하여야 합니다.";
+      isValid = false;
+    }
+
+    // 가격 검사
+    const priceValue = parseFloat(price);
+    if (isNaN(priceValue) || priceValue < 1) {
+      errors.price = "가격은 1 이상 숫자만 입력 가능합니다.";
+      isValid = false;
+    }
+
+    // 시작 날짜가 존재하지 않으면 오류
+    if (!startDate) {
+      errors.startDate = "시작 날짜를 선택해주세요.";
+      isValid = false;
+    }
+
+    // 종료 날짜가 존재하지 않으면 오류
+    if (!endDate) {
+      errors.endDate = "종료 날짜를 선택해주세요.";
+      isValid = false;
+    }
+
+    // 시작 날짜가 종료 날짜보다 늦으면 오류
+    if (startDate && endDate && startDate > endDate) {
+      errors.startDate = "시작 날짜는 종료 날짜보다 먼저여야 합니다.";
+      isValid = false;
+    }
+
+    // 재고 검사
+    const countValue = parseFloat(count);
+    if (isNaN(countValue) || countValue < 1) {
+      errors.count = "재고는 1 이상 숫자만 입력 가능합니다.";
+      isValid = false;
+    }
+
+    // 상세 설명 검사
+    if (description.length < 10) {
+      errors.description = "상세 설명은 10자 이상 입력해주세요.";
+      isValid = false;
+    }
+
+    // 이미지 수 검사
+    if (images.length < 1) {
+      errors.images = "이미지는 최소 1개 이상 등록해야 합니다.";
+      isValid = false;
+    }
+
+    // 에러가 있으면 메시지 출력
+    if (!isValid) {
+      console.log("유효성 검사 실패:", errors);
+      // 여기에 모달로 메시지 출력하거나 다른 방식으로 사용자에게 알림
+    }
+
+    return isValid;
   };
 
   return (
