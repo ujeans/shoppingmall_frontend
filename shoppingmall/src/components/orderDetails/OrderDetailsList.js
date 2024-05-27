@@ -17,22 +17,21 @@ const OrderDetailsList = () => {
         <OrderNumber>주문번호</OrderNumber>
         <PaymentAmount>결제금액</PaymentAmount>
       </Header>
-      {orderItems.map((item, index) => (
-        <ListWrapper key={index}>
-          <OrderDate>{item.created_at}</OrderDate>
-          <OrderDetailsItem>
-            <Image src={item.image || ""} alt={item.name} />
-            <div>{item.name}</div>
-          </OrderDetailsItem>
-          <OrderNumberItem>{item.order_history_id}</OrderNumberItem>
-          <PaymentAmount>
-            {(
-              parseInt(item.price.replace(/,/g, ""), 10) * item.quantity
-            ).toLocaleString()}
-            원
-          </PaymentAmount>
-        </ListWrapper>
-      ))}
+      {orderItems.map((item, index) => {
+        console.log(item);
+        const totalPayment = item.price * item.quantity;
+        return (
+          <ListWrapper key={index}>
+            <OrderDate>{item.created_at}</OrderDate>
+            <OrderDetailsItem>
+              <Image src={item.image || ""} alt={item.name} />
+              <div>{item.name}</div>
+            </OrderDetailsItem>
+            <OrderNumberItem>{item.order_history_id}</OrderNumberItem>
+            <PaymentAmount>{totalPayment.toLocaleString()}원</PaymentAmount>
+          </ListWrapper>
+        );
+      })}
     </>
   );
 };
