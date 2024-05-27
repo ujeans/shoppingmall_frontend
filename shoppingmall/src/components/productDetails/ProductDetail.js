@@ -36,7 +36,8 @@ export default ProductDetail;
 
 const ProductDetailWrapper = styled.div`
     width: 1920px;
-    hegith: 1080px;
+    // hegith: 1080px;
+    hegith: 100%;
     max-width: 1300px;
     margin-bottom: 50px;
     background-color: white;
@@ -48,7 +49,8 @@ const Container = styled.div`
     justify-content: start;
     align-items: center;
     max-width: 1300px;
-    height: 830px;
+    // height: 830px;
+    hegith: 100%;
     margin: 57px 20% 0px 300px;
 `;
 

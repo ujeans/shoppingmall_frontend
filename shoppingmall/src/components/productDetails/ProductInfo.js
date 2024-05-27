@@ -20,7 +20,7 @@ const ProductInfo = () => {
                 <ProductName>아디다스 펜츠</ProductName>
                 <ProductPrice>56,000원</ProductPrice>
                 <Description>
-                    상품설명
+                    상품 설명
                 </Description>
                 <Cagetgory>#옵션 #옵션</Cagetgory>
             </Content>
@@ -93,7 +93,8 @@ const ProductPrice = styled.div`
 
 const Description = styled.div`
     width: 400px;
-    height: 19px;
+    // height: 19px;
+    height: 100%;
     margin-top: 16px;
     font-size: 16px;
 `;
@@ -101,7 +102,7 @@ const Description = styled.div`
 const Cagetgory = styled.div`
     width: 100px;
     height: 18px;
-    margin-top: 75px;
+    margin-top: 85px;
     font-size: 15px;
     color: #858585;
 `;
