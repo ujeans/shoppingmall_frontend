@@ -27,7 +27,7 @@ const ProductFilter = () => {
 
   const checkLogin = () => {
     if (isLogin === true) {
-      navigate("/PR");
+      navigate("/write");
       setIsVisible(false);
     } else {
       setIsVisible(true);
