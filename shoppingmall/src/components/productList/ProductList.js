@@ -119,7 +119,6 @@ const ProductList = () => {
                         ))}   
                     </CardList>
             </ListContainer>        
-           
        </Container> 
        <Pagination
                 pages={pages}
@@ -137,37 +136,38 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: start;
     width: 100%;
-    height: 1050px;
+    height: 100%;
 `;
 
 const Container = styled.div`
     display: flex;
+    width: 100%;
+    height: 100%;
+    margin-top: 32px;
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    width: 100%;
-    margin-top: 32px;
 `;
 
 const ListContainer = styled.div`
     display: flex;
-    justify-content: center; 
     width: 100%;
     height: 100%;
     margin-top: 28px;
+    justify-content: center; 
 `;
 
 const CardList = styled.div`
     display: flex;
-    justify-content: center; 
     width: 100%;
     height:500px;
+    justify-content: center; 
     flex-wrap: wrap;
 `;
 
 const Item = styled.div`
     width: 294px;
-    height:220px;
+    height:250px;
     margin-right: 20px;
     &:nth-child(4) {
         margin-right:0px;
