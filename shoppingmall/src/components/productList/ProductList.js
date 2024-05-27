@@ -149,7 +149,7 @@ const ProductListPageWrapper = styled.div`
   width: 1920px;
   hegith: 1080px;
   max-width: 1100px;
-  margin: 0 auto;
+  margin-left: 16%;
   flex-direction: column;
   justify-content: space-around;
   align-items: space-around;

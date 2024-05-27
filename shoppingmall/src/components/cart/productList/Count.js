@@ -3,16 +3,30 @@ import styled from "styled-components";
 import minus from "../../../assets/minus.svg";
 import plus from "../../../assets/plus.svg";
 
-const Count = () => {
+const Count = ({ quantity, onUpdateCount, disabled }) => {
+  const handleDecrease = () => {
+    if (!disabled && quantity > 1) {
+      onUpdateCount(quantity - 1);
+    }
+  };
+
+  const handleIncrease = () => {
+    if (!disabled) {
+      onUpdateCount(quantity + 1);
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
-        <CountBox>
-          <img src={minus} />
+        <CountBox onClick={handleDecrease} disabled={disabled}>
+          <img src={minus} alt="minus" />
         </CountBox>
-        <CountBox className="count">1</CountBox>
-        <CountBox>
-          <img src={plus} />
+        <CountBox className="count" disabled={disabled}>
+          {quantity}
+        </CountBox>
+        <CountBox onClick={handleIncrease} disabled={disabled}>
+          <img src={plus} alt="plus" />
         </CountBox>
       </Wrapper>
     </Container>
@@ -51,4 +65,11 @@ const CountBox = styled.div`
     width: 17px;
     height: 22px;
   }
+
+  ${({ disabled }) =>
+    disabled &&
+    `
+  cursor: not-allowed;
+  opacity: 0.5;
+  `}
 `;

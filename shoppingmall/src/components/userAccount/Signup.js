@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../style/theme";
-import { useNavigate } from "react-router-dom";
+import { isValidEmail, isValidPassword, isValidPhone } from "./Vaildators";
+import InputField from "./InputField";
+import Navigation from "../nav/Navigation";
+
 //svg
 import email from "../../assets/email.svg";
 import password from "../../assets/password.svg";
@@ -12,7 +15,7 @@ import userCircle from "../../assets/userCircle.svg";
 
 const Signup = () => {
   //유저 정보
-  const [userInfo, setUserInfo] = useState({
+  const [user, setUser] = useState({
     email: "",
     password: "",
     passwordCheck: "",
@@ -24,29 +27,54 @@ const Signup = () => {
   });
 
   //이미지 미리보기
-  // const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setUserInfo((userInfo) => ({
-      ...userInfo,
+    setUser((user) => ({
+      ...user,
       [name]: value,
+    }));
+    setFieldErrors((errors) => ({
+      ...errors,
+      [name]: false,
     }));
   };
 
-  //isVaild
-  const isVaild =
-    userInfo.email &&
-    userInfo.name &&
-    userInfo.phone &&
-    userInfo.addr &&
-    userInfo.password.length >= 8 &&
-    userInfo.password.length <= 20 &&
-    userInfo.password === userInfo.passwordCheck;
+  //유효성 검사
+
+  const validateFields = () => {
+    const errors = {
+      email: !user.email || !isValidEmail(user.email),
+      password: !user.password || !isValidPassword(user.password),
+      passwordCheck:
+        !user.passwordCheck || user.password !== user.passwordCheck,
+      name: !user.name,
+      phone: !user.phone || !isValidPhone(user.phone),
+      addr: !user.addr,
+      nickname: !user.nickname,
+    };
+    setFieldErrors(errors);
+    console.log(errors);
+    return !Object.values(errors).some((error) => error);
+  };
+
+  const [fieldErrors, setFieldErrors] = useState({
+    email: false,
+    password: false,
+    passwordCheck: false,
+    name: false,
+    phone: false,
+    addr: false,
+    nickname: false,
+  });
 
   //회원가입
   const submitSignup = async () => {
-    console.log(userInfo);
+    console.log(user);
+    if (!validateFields()) {
+      return;
+    }
     try {
       await fetch("/signup", {
         method: "POST",
@@ -54,12 +82,12 @@ const Signup = () => {
           "Content-Type": "application/json; charset=utf-8",
         },
         body: JSON.stringify({
-          email: userInfo.email,
-          password: userInfo.password,
-          name: userInfo.name,
-          phone: userInfo.phone,
-          addr: userInfo.addr,
-          nickname: userInfo.nickname,
+          email: user.email,
+          password: user.password,
+          name: user.name,
+          phone: user.phone,
+          addr: user.addr,
+          nickname: user.nickname,
         }),
       });
 
@@ -68,10 +96,13 @@ const Signup = () => {
       // }
       moveToLogin();
     } catch (error) {
+      setModalMessage("이메일과 비밀번호를 확인하세요");
+      setIsModalOpen(true);
       console.error("에러", error);
     }
   };
 
+  //이미지 파일 처리
   const fileInputRef = React.createRef();
 
   const handleImageClick = () => {
@@ -81,19 +112,28 @@ const Signup = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // 파일 처리 로직 추가
-      console.log(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setUser((user) => ({
+        ...user,
+        img: file,
+      }));
     }
   };
 
-  const navigate = useNavigate();
-  const moveToLogin = () => {
-    navigate("/login", userInfo);
-    console.log(userInfo);
+  //모달
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
-  const moveToHome = () => {
-    navigate("/");
-  };
+
+  //navigate
+  const { moveToHome, moveToLogin } = Navigation();
 
   return (
     <>
@@ -101,76 +141,66 @@ const Signup = () => {
         <Title onClick={moveToHome}>super24</Title>
         <Info>회원정보를 입력해주세요</Info>
         <InputWrapper>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={email} />
-            </IconWrapper>
-            <Input
-              placeholder="아이디(이메일)"
-              type="email"
-              value={userInfo.email}
-              name="email"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={password} />
-            </IconWrapper>
-            <Input
-              placeholder="비밀번호"
-              type="password"
-              value={userInfo.password}
-              name="password"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={password} />
-            </IconWrapper>
-            <Input
-              placeholder="비밀번호 확인"
-              type="password"
-              value={userInfo.passwordCheck}
-              name="passwordCheck"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={people} />
-            </IconWrapper>
-            <Input
-              placeholder="이름"
-              value={userInfo.name}
-              name="name"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={phone} />
-            </IconWrapper>
-            <Input
-              type="number"
-              placeholder="휴대폰 번호"
-              value={userInfo.phone}
-              name="phone"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <IconWrapper>
-              <Icon src={home} />
-            </IconWrapper>
-            <Input
-              placeholder="주소"
-              value={userInfo.addr}
-              name="addr"
-              onChange={handleInputChange}
-            />
-          </InputContainer>
+          <InputField
+            iconSrc={email}
+            placeholder="아이디(이메일)"
+            value={user.email}
+            name="email"
+            onChange={handleInputChange}
+            error={fieldErrors.email}
+            errorMessage={"유효한 이메일을 입력해주세요."}
+          />
+          <InputField
+            iconSrc={password}
+            placeholder="비밀번호"
+            type="password"
+            value={user.password}
+            name="password"
+            onChange={handleInputChange}
+            error={fieldErrors.password}
+            errorMessage={"유효한 비밀번호를 입력해주세요."}
+          />
+          <InputField
+            iconSrc={password}
+            placeholder="비밀번호 확인"
+            type="password"
+            value={user.passwordCheck}
+            name="passwordCheck"
+            onChange={handleInputChange}
+            error={fieldErrors.passwordCheck}
+            errorMessage={"비밀번호가 일치하지 않습니다."}
+          />
+
+          <InputField
+            iconSrc={people}
+            placeholder="이름"
+            value={user.name}
+            name="name"
+            onChange={handleInputChange}
+            error={fieldErrors.name}
+            errorMessage={"이름을 입력해주세요"}
+          />
+
+          <InputField
+            iconSrc={phone}
+            placeholder="휴대폰 번호"
+            value={user.phone}
+            name="phone"
+            onChange={handleInputChange}
+            error={fieldErrors.phone}
+            errorMessage={"유효한 휴대폰 번호를 입력해주세요"}
+          />
+
+          <InputField
+            iconSrc={home}
+            placeholder="주소"
+            value={user.addr}
+            name="addr"
+            onChange={handleInputChange}
+            error={fieldErrors.addr}
+            errorMessage={"주소를 입력해주세요"}
+          />
+
           <FileInfo>
             나를 나타내는 프로필 사진과 닉네임으로 등록하면 이웃들이 안심할 수
             있어요.
@@ -183,21 +213,31 @@ const Signup = () => {
               ref={fileInputRef}
               onChange={handleFileChange}
             />
-            <ImageButton
-              src={userCircle}
-              alt="파일 선택 버튼"
-              onClick={handleImageClick}
-            />
+            {preview ? (
+              <PreviewImage
+                src={preview}
+                alt="미리보기 이미지"
+                onClick={handleImageClick}
+              />
+            ) : (
+              <ImageButton
+                src={userCircle}
+                alt="파일 선택 버튼"
+                onClick={handleImageClick}
+              />
+            )}
           </FileInputWrapper>
 
           <InputNickname
             placeholder="닉네임"
-            value={userInfo.nickname}
+            value={user.nickname}
             name="nickname"
             onChange={handleInputChange}
+            error={fieldErrors.nickname}
+            errorMessage={"닉네임을 입력해주세요"}
           />
         </InputWrapper>
-        <SubmitButton disabled={!isVaild} onClick={submitSignup}>
+        <SubmitButton disabled={!validateFields} onClick={submitSignup}>
           가입하기
         </SubmitButton>
       </Wrapper>
@@ -235,48 +275,18 @@ const InputWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 104px;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 463px;
-  margin-bottom: 15px;
-  border: 1px solid ${theme.border};
-`;
-
-const Input = styled.input`
-  text-indent: 12px;
-  border: none;
-  &::placeholder {
-    color: ${theme.placeholderText};
-  }
+  padding-bottom: 104px;
 `;
 
 const InputNickname = styled.input`
   width: 463px;
   height: 43px;
+  text-indent: 12px;
   border: none;
   border-bottom: 1px solid ${theme.border};
   &::placeholder {
     color: ${theme.placeholderText};
   }
-`;
-
-const IconWrapper = styled.div`
-  width: 54px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${theme.grayBgColor};
-  border-right: 1px solid ${theme.border};
-`;
-
-const Icon = styled.img`
-  width: 24px;
-  height: 24px;
 `;
 
 const FileInputWrapper = styled.div`
@@ -301,6 +311,14 @@ const FileInput = styled.input`
 const ImageButton = styled.img`
   width: 150px;
   height: 150px;
+  cursor: pointer;
+`;
+
+const PreviewImage = styled.img`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
   cursor: pointer;
 `;
 
