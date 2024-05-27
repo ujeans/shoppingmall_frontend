@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { theme } from "../../style/theme";
 import styled from "styled-components";
-import ModalComponent from "../modal/ModalComponent";
 
 // svg
 import pencil from "../../assets/pencil.svg";
 import categorydropdown from "../../assets/categorydropdown.svg";
+import Modal from "../commom/Modal/Modal";
 
 const ProductFilter = () => {
   const navigate = useNavigate();
@@ -33,6 +33,10 @@ const ProductFilter = () => {
       setIsVisible(true);
     }
   };
+
+  const navigateToPage = () => {
+    navigate("/login");
+  }
 
   const handleClickButton = (idx) => {
     setBtnActive(idx);
@@ -75,12 +79,12 @@ const ProductFilter = () => {
         </ButtonDivs>
       </ButtonWrapper>
       {isVisible && (
-        <ModalComponent
-          title="로그인이 필요한 기능입니다."
-          subText="로그인 페이지로 이동하시겠습니까?"
-          urlPath="/login"
-          isClosed={closeModal}
-        />
+        <Modal
+              open={isVisible} 
+              onClose={closeModal} 
+              title="로그인이 필요한 기능입니다." 
+              subText="로그인 페이지로 이동하시겠습니까?" 
+              navigateToPage={navigateToPage}/>
       )}
     </ProductListFilterWrapper>
   );
