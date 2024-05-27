@@ -56,7 +56,6 @@ const Signup = () => {
       nickname: !user.nickname,
     };
     setFieldErrors(errors);
-    console.log(errors);
     return !Object.values(errors).some((error) => error);
   };
 
@@ -77,6 +76,7 @@ const Signup = () => {
       return;
     }
     try {
+      console.log("try");
       const response = await fetch(`${process.env.REACT_APP_API_URL}/signup`, {
         method: "POST",
         headers: {
@@ -84,17 +84,22 @@ const Signup = () => {
         },
         body: JSON.stringify({
           email: user.email,
-          password: user.password,
-          name: user.name,
-          phone: user.phone,
-          addr: user.addr,
-          nickname: user.nickname,
+          user_password: user.password,
+          // user_name: user.name,
+          user_phone: user.phone,
+          user_addr: user.addr,
+          user_nickname: user.nickname,
+          user_img: user.img,
         }),
       });
+
+      const responseBody = await response.json();
+      console.log("body", responseBody);
 
       if (!response.ok) {
         throw new Error("회원가입에 실패하였습니다.");
       }
+      console.log(response);
       moveToLogin();
     } catch (error) {
       setModalMessage("이메일과 비밀번호를 확인하세요");
