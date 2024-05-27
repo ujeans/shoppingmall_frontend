@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
 // assets
-import EmptyCart from "../../components/cart/EmptyCart";
+import EmptyContentLayout from "../../components/commom/EmptyContentLayout";
 import FilledCart from "../../components/cart/FilledCart";
 
 const Cart = () => {
@@ -85,9 +85,9 @@ const Cart = () => {
   };
 
   return (
-    <ContentLayout title={"장바구니"} width="800px">
+    <ContentLayout title={"장바구니"} width="1000px">
       {cartItems.length === 0 ? (
-        <EmptyCart />
+        <EmptyContentLayout content={"장바구니에 담은 상품이 없습니다."} />
       ) : (
         <FilledCart
           cartItems={cartItems}

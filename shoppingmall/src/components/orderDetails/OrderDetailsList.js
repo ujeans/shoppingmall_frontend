@@ -1,15 +1,10 @@
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
-
 // styles
-import { Header } from "../../style/CommonStyles";
+import { Container, Header } from "../../style/CommonStyles";
 
-const OrderDetailsList = () => {
-  const location = useLocation();
-  const { orderItems } = location.state || { orderItems: [] };
-
+const OrderDetailsList = ({ orderItems }) => {
   return (
-    <>
+    <Container borderBottom={false}>
       <Header>
         <OrderDate>주문일</OrderDate>
         <OrderDetails>주문내역</OrderDetails>
@@ -31,7 +26,7 @@ const OrderDetailsList = () => {
           </ListWrapper>
         );
       })}
-    </>
+    </Container>
   );
 };
 
