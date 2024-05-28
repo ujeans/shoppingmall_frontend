@@ -38,6 +38,7 @@ const ProductDetail = () => {
                     </Content>
                 </InfoContainer>    
             </Main>
+            <CartButton>장바구니 담기</CartButton>
         </Layout>
     );
 };
@@ -159,4 +160,17 @@ const Cagetgory = styled.div`
     margin-top: 65px;
     font-size: 15px;
     color: #858585;
+`;
+
+const CartButton = styled.button`
+    width: 250px;
+    height: 40px;
+    margin: 49px 0px 40px 40%;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #EB4646;
+    color: white;
+    cursor:pointer;
 `;
