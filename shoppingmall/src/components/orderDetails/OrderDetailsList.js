@@ -16,6 +16,14 @@ const OrderDetailsList = ({ orderItems }) => {
     return `ORD${formattedDate}-${String(orderId).padStart(7, "0")}`;
   };
 
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}.${month}.${day}`;
+  };
+
   return (
     <Container borderBottom={false}>
       <Header>
@@ -28,15 +36,16 @@ const OrderDetailsList = ({ orderItems }) => {
         const totalPayment = item.price * item.quantity;
         const orderNumber = formatOrderNumber(
           item.orderedItemId,
-          item.created_at
+          item.createAt
         );
+        const formattedDate = formatDate(item.createAt);
 
         return (
           <ListWrapper key={index}>
-            <OrderDate>{item.created_at}</OrderDate>
+            <OrderDate>{formattedDate}</OrderDate>
             <OrderDetailsItem>
-              <Image src={item.image || ""} alt={item.name} />
-              <div>{item.name}</div>
+              <Image src={item.imageUrl} alt={item.productName} />
+              <div>{item.productName}</div>
             </OrderDetailsItem>
             <OrderNumberItem>{orderNumber}</OrderNumberItem>
             <PaymentAmount>{totalPayment.toLocaleString()}원</PaymentAmount>

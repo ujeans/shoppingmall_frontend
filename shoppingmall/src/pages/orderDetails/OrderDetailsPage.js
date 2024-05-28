@@ -5,19 +5,20 @@ import { ClipLoader } from "react-spinners";
 import ContentLayout from "../../components/commom/ContentLayout";
 // styles
 import EmptyContentLayout from "../../components/commom/EmptyContentLayout";
-import OrderDetailsList from "../../components/orderDetails/OrderDetailsList";
 // hooks
 import useFetchData from "../../hooks/useFetchData";
 // styles
 import { LoadingSpinner } from "../../style/CommonStyles";
+import FilledOrder from "../../components/orderDetails/FilledOrder";
 
 const OrderDetailsPage = () => {
+  const location = useLocation();
+
   const userId = 15;
   const orderUrl = `${process.env.REACT_APP_API_URL}/order/${userId}`;
 
   const { data: orderItems, loading, error } = useFetchData(orderUrl);
 
-  const location = useLocation();
   const { orderItems: stateOrderItems = [] } = location.state || {
     orderItems: [],
   };
@@ -42,7 +43,7 @@ const OrderDetailsPage = () => {
       {itemsToDisplay.length === 0 ? (
         <EmptyContentLayout content={"주문내역에 상품이 없습니다."} />
       ) : (
-        <OrderDetailsList orderItems={itemsToDisplay} />
+        <FilledOrder itemsToDisplay={itemsToDisplay} />
       )}
     </ContentLayout>
   );
