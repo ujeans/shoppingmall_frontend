@@ -1,19 +1,19 @@
 import styled from "styled-components";
 
-const Info = () => {
+const Info = ({ userInfo }) => {
   return (
     <Container>
       <Wrapper>
         <InfoTitle>이메일</InfoTitle>
-        <InfoText>2222@gmail.com</InfoText>
+        <InfoText>{userInfo.email}</InfoText>
       </Wrapper>
       <Wrapper>
         <InfoTitle>주소</InfoTitle>
-        <InfoText>서울시 성북구</InfoText>
+        <InfoText>{userInfo.user_addr}</InfoText>
       </Wrapper>
       <Wrapper>
         <InfoTitle>전화번호</InfoTitle>
-        <InfoText>000-0000-0000</InfoText>
+        <InfoText>{userInfo.user_phone}</InfoText>
       </Wrapper>
     </Container>
   );

@@ -22,7 +22,7 @@ const OrderAmount = ({ product, totalPrice, onOrder }) => {
 
   return (
     <Container>
-      {product.soldOut ? (
+      {product.stock === 0 ? (
         <SoldOutText>sold out</SoldOutText>
       ) : (
         <>

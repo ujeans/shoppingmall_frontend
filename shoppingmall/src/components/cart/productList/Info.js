@@ -8,12 +8,12 @@ const Info = ({ product, onDeleteItem }) => {
       <Wrapper>
         <Image />
         <InfoBox>
-          <Nickname>{product.user}</Nickname>
-          <Name>{product.name}</Name>
-          <Price>{product.price}원</Price>
+          <Nickname>{product.userNickname}</Nickname>
+          <Name>{product.productName}</Name>
+          <Price>{product.price.toLocaleString()}원</Price>
         </InfoBox>
       </Wrapper>
-      <Icon src={xCircle} onClick={() => onDeleteItem(product.cart_item_id)} />
+      <Icon src={xCircle} onClick={() => onDeleteItem(product.cartItemId)} />
     </Container>
   );
 };

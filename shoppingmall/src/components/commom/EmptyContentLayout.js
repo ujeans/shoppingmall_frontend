@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 // styles
 import { Container, WhiteBtn } from "../../style/CommonStyles";
 
-const EmptyCart = () => {
+const EmptyCart = ({ content }) => {
   const navigate = useNavigate();
 
   const navigateToPage = () => {
@@ -13,7 +13,7 @@ const EmptyCart = () => {
   return (
     <EmptyContainer borderBottom={true}>
       <Wrapper>
-        <EmptyCartMessage>장바구니에 담은 상품이 없습니다.</EmptyCartMessage>
+        <EmptyCartMessage>{content}</EmptyCartMessage>
         <WhiteBtn padding="12px 20px" fontSize="20px" onClick={navigateToPage}>
           CONTINUE SHOPPING
         </WhiteBtn>
@@ -37,6 +37,7 @@ const Wrapper = styled.div`
 
 const EmptyCartMessage = styled.div`
   display: flex;
+  justify-content: center;
   margin-bottom: 60px;
   font-size: 18px;
   font-weight: bold;

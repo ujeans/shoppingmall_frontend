@@ -1,39 +1,32 @@
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
-
 // styles
-import { Header } from "../../style/CommonStyles";
+import { Container, Header } from "../../style/CommonStyles";
 
-const OrderDetailsList = () => {
-  const location = useLocation();
-  const { orderItems } = location.state || { orderItems: [] };
-
-  console.log("orderItems", orderItems);
+const OrderDetailsList = ({ orderItems }) => {
   return (
-    <>
+    <Container borderBottom={false}>
       <Header>
         <OrderDate>주문일</OrderDate>
         <OrderDetails>주문내역</OrderDetails>
         <OrderNumber>주문번호</OrderNumber>
         <PaymentAmount>결제금액</PaymentAmount>
       </Header>
-      {orderItems.map((item, index) => (
-        <ListWrapper key={index}>
-          <OrderDate>{item.created_at}</OrderDate>
-          <OrderDetailsItem>
-            <Image src={item.image || ""} alt={item.name} />
-            <div>{item.name}</div>
-          </OrderDetailsItem>
-          <OrderNumberItem>{item.order_history_id}</OrderNumberItem>
-          <PaymentAmount>
-            {(
-              parseInt(item.price.replace(/,/g, ""), 10) * item.quantity
-            ).toLocaleString()}
-            원
-          </PaymentAmount>
-        </ListWrapper>
-      ))}
-    </>
+      {orderItems.map((item, index) => {
+        const totalPayment = item.price * item.quantity;
+
+        return (
+          <ListWrapper key={index}>
+            <OrderDate>{item.created_at}</OrderDate>
+            <OrderDetailsItem>
+              <Image src={item.image || ""} alt={item.name} />
+              <div>{item.name}</div>
+            </OrderDetailsItem>
+            <OrderNumberItem>{item.order_history_id}</OrderNumberItem>
+            <PaymentAmount>{totalPayment.toLocaleString()}원</PaymentAmount>
+          </ListWrapper>
+        );
+      })}
+    </Container>
   );
 };
 
