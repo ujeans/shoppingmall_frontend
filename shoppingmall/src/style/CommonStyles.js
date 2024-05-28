@@ -44,3 +44,11 @@ export const WhiteBtn = styled.button`
     color: ${props => props.theme.mainColor};
   }
 `;
+
+// loading spinner
+export const LoadingSpinner = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

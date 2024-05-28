@@ -1,16 +1,15 @@
 import styled from "styled-components";
 // assets
-import profile from "../../assets/profile.svg";
 // styles
 import { BlackBtn } from "../../style/CommonStyles";
 
-const Profile = () => {
+const Profile = ({ userInfo }) => {
   return (
     <Container>
       <Wrapper>
         <ProfileLeftBox>
-          <ProfileImg src={profile} />
-          <NickName>사용자이름</NickName>
+          <ProfileImg src={userInfo.user_img} />
+          <NickName>{userInfo.user_nickname}</NickName>
         </ProfileLeftBox>
         <BlackBtn padding="10px 25px">사진 변경</BlackBtn>
       </Wrapper>
