@@ -3,6 +3,19 @@ import styled from "styled-components";
 import { Container, Header } from "../../style/CommonStyles";
 
 const OrderDetailsList = ({ orderItems }) => {
+  const formatOrderNumber = (orderId, date) => {
+    let formattedDate;
+    try {
+      formattedDate = new Date(date)
+        .toISOString()
+        .split("T")[0]
+        .replace(/-/g, "");
+    } catch (error) {
+      formattedDate = "00000000"; // 기본값
+    }
+    return `ORD${formattedDate}-${String(orderId).padStart(7, "0")}`;
+  };
+
   return (
     <Container borderBottom={false}>
       <Header>
@@ -13,6 +26,10 @@ const OrderDetailsList = ({ orderItems }) => {
       </Header>
       {orderItems.map((item, index) => {
         const totalPayment = item.price * item.quantity;
+        const orderNumber = formatOrderNumber(
+          item.orderedItemId,
+          item.created_at
+        );
 
         return (
           <ListWrapper key={index}>
@@ -21,7 +38,7 @@ const OrderDetailsList = ({ orderItems }) => {
               <Image src={item.image || ""} alt={item.name} />
               <div>{item.name}</div>
             </OrderDetailsItem>
-            <OrderNumberItem>{item.order_history_id}</OrderNumberItem>
+            <OrderNumberItem>{orderNumber}</OrderNumberItem>
             <PaymentAmount>{totalPayment.toLocaleString()}원</PaymentAmount>
           </ListWrapper>
         );
