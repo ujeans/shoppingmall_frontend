@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
-// assets
 import EmptyContentLayout from "../../components/commom/EmptyContentLayout";
 import FilledCart from "../../components/cart/FilledCart";
 // hooks
@@ -15,9 +14,9 @@ const Cart = () => {
 
   const {
     data: cartItems,
-    setData: setCartItems,
     loading,
     error,
+    setData: setCartItems,
   } = useFetchData(cartUrl);
 
   const [allChecked, setAllChecked] = useState(false);
@@ -25,22 +24,45 @@ const Cart = () => {
   const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
-    const totalAmount = cartItems.reduce((acc, item) => {
-      if (!item.soldOut) {
-        return acc + item.price * item.quantity;
-      }
-      return acc;
-    }, 0);
+    if (cartItems.length > 0) {
+      const totalAmount = cartItems.reduce((acc, item) => {
+        if (item.stock !== 0) {
+          return acc + item.price * item.quantity;
+        }
+        return acc;
+      }, 0);
 
-    const totalCount = cartItems.reduce((acc, item) => {
-      if (!item.soldOut) {
-        return acc + item.quantity;
-      }
-      return acc;
-    }, 0);
+      const totalCount = cartItems.reduce((acc, item) => {
+        if (item.stock !== 0) {
+          return acc + item.quantity;
+        }
+        return acc;
+      }, 0);
 
-    setTotalAmount(totalAmount);
-    setTotalCount(totalCount);
+      setTotalAmount(totalAmount);
+      setTotalCount(totalCount);
+    }
+  }, [cartItems]);
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      const totalAmount = cartItems.reduce((acc, item) => {
+        if (item.stock !== 0) {
+          return acc + item.price * item.quantity;
+        }
+        return acc;
+      }, 0);
+
+      const totalCount = cartItems.reduce((acc, item) => {
+        if (item.stock !== 0) {
+          return acc + item.quantity;
+        }
+        return acc;
+      }, 0);
+
+      setTotalAmount(totalAmount);
+      setTotalCount(totalCount);
+    }
   }, [cartItems]);
 
   const handleAllChecked = () => {
@@ -64,6 +86,7 @@ const Cart = () => {
 
   const handleOrder = () => {
     const selectedItems = cartItems.filter(item => item.checked);
+    console.log("Selected items:", selectedItems);
     return selectedItems;
   };
 

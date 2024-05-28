@@ -46,10 +46,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
         return (
           <Container key={product.cartItemId}>
             <Wrapper>
-              <Checkbox
-                onClick={() => toggleCheck(product.cartItemId)}
-                checked={product.checked}
-              >
+              <Checkbox onClick={() => toggleCheck(product.cartItemId)}>
                 {product.checked ? (
                   <Icon src={checkedbox} />
                 ) : (
@@ -94,6 +91,7 @@ const Checkbox = styled.div`
   width: 6%;
   display: flex;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const Icon = styled.img`
