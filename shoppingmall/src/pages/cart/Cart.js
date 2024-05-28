@@ -7,10 +7,12 @@ import FilledCart from "../../components/cart/FilledCart";
 // hooks
 import useFetchData from "../../hooks/useFetchData";
 import { LoadingSpinner } from "../../style/CommonStyles";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const userId = 15;
   const cartUrl = `${process.env.REACT_APP_API_URL}/cart/${userId}`;
+  const navigate = useNavigate();
 
   const {
     data: cartItems,
@@ -22,27 +24,6 @@ const Cart = () => {
   const [allChecked, setAllChecked] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-
-  useEffect(() => {
-    if (cartItems.length > 0) {
-      const totalAmount = cartItems.reduce((acc, item) => {
-        if (item.stock !== 0) {
-          return acc + item.price * item.quantity;
-        }
-        return acc;
-      }, 0);
-
-      const totalCount = cartItems.reduce((acc, item) => {
-        if (item.stock !== 0) {
-          return acc + item.quantity;
-        }
-        return acc;
-      }, 0);
-
-      setTotalAmount(totalAmount);
-      setTotalCount(totalCount);
-    }
-  }, [cartItems]);
 
   useEffect(() => {
     if (cartItems.length > 0) {
@@ -84,10 +65,40 @@ const Cart = () => {
     setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
   };
 
-  const handleOrder = () => {
+  const handleOrder = async () => {
     const selectedItems = cartItems.filter(item => item.checked);
-    console.log("Selected items:", selectedItems);
-    return selectedItems;
+    const orderedItems = [];
+
+    for (const item of selectedItems) {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/cart/${item.cartItemId}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(item),
+          }
+        );
+
+        const text = await response.text();
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status} - ${text}`);
+        }
+
+        try {
+          const data = JSON.parse(text);
+          orderedItems.push(data);
+        } catch (e) {
+          orderedItems.push({ message: text });
+        }
+      } catch (error) {
+        console.error("Error placing order:", error);
+      }
+    }
+    return orderedItems;
   };
 
   if (loading) {

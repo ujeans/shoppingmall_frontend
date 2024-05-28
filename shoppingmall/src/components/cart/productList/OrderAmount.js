@@ -10,9 +10,8 @@ const OrderAmount = ({ product, totalPrice, onOrder }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const navigateToPage = () => {
-    const orderItems = onOrder();
-
+  const navigateToPage = async () => {
+    const orderItems = await onOrder();
     navigate("/order-details", { state: { orderItems } });
   };
 

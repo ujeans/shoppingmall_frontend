@@ -31,10 +31,8 @@ const FilledCart = ({
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const navigateToPage = () => {
-    const orderItems = onOrder();
-
-    navigate("/order-details", { state: { orderItems } });
+  const nav = async () => {
+    navigate("/");
   };
 
   const openModal = () => {
@@ -65,7 +63,7 @@ const FilledCart = ({
       </BtnWrapper>
       <TotalSum totalAmount={totalAmount} totalCount={totalCount} />
       <ButtonWrapper>
-        <Btn padding=" 12px 20px" fontSize="20px" onClick={navigateToPage}>
+        <Btn padding=" 12px 20px" fontSize="20px" onClick={nav}>
           CONTINUE SHOPPING
         </Btn>
         <BlackBtn padding=" 12px 20px" fontSize="20px" onClick={openModal}>
@@ -79,7 +77,7 @@ const FilledCart = ({
             }}
             title="결제 완료"
             subText="결제 완료되었습니다. 홈으로 이동하시겠습니까?"
-            navigateToPage={navigateToPage}
+            // navigateToPage={navigateToPage}
           />
         )}
       </ButtonWrapper>

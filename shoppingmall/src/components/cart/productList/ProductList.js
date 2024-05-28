@@ -9,7 +9,13 @@ import Info from "./Info";
 import Count from "./Count";
 import OrderAmount from "./OrderAmount";
 
-const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
+const ProductList = ({
+  cartItems,
+  setCartItems,
+  onDeleteItem,
+  onOrder,
+  // navigate,
+}) => {
   const [count, setCount] = useState(
     cartItems.reduce((acc, item) => {
       acc[item.cartItemId] = item.quantity;
