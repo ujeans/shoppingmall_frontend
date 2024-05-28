@@ -6,6 +6,7 @@ import Navigation from "./Navigation";
 //svg
 import mypage from "../../assets/mypage.svg";
 import cart from "../../assets/cart.svg";
+import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
 
 const Nav = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -28,6 +29,7 @@ const Nav = ({ children }) => {
                   <Icon src={cart} />
                   <ButtonText>장바구니</ButtonText>
                 </CartButton>
+                <LogoutButton>로그아웃</LogoutButton>
               </>
             ) : (
               <>
@@ -73,25 +75,24 @@ const Title = styled.h2`
 
 const ButtonWrapper = styled.div``;
 
-const LoginButton = styled.button`
-  border-radius: 20px;
-  border: 0px;
-  background-color: ${theme.mainColor};
-  color: #ffffff;
+const LoginButton = styled(BlackBtn)`
   font-weight: 700;
   padding: 10px 17px 10px 17px;
   margin-right: 12px;
   cursor: pointer;
 `;
 
-const SignupButton = styled.button`
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
+const LogoutButton = styled(BlackBtn)`
+  font-weight: 700;
+  padding: 10px 17px 10px 17px;
+  margin-right: 12px;
+  cursor: pointer;
+`;
+
+const SignupButton = styled(WhiteBtn)`
   padding: 10px 17px 10px 17px;
   margin-right: 20px;
-  outline: 0;
   cursor: pointer;
-  background-color: #ffffff;
 `;
 
 const MyPageButton = styled.button`

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { theme } from "../../style/theme";
 import InputField from "./InputField";
 import { isValidEmail, isValidPassword } from "./Vaildators";
 import Navigation from "../nav/Navigation";
 import Modal from "../commom/Modal/Modal";
+import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
 
 //svg
 import email from "../../assets/email.svg";
@@ -39,17 +39,22 @@ const Login = () => {
   //로그인 실행
   const submitLogin = async () => {
     try {
-      const response = await fetch("/login", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
         },
-        body: JSON.stringify(user),
+        body: JSON.stringify({
+          email: user.email,
+          user_password: user.password,
+        }),
       });
 
       if (!response.ok) {
         throw new Error("이메일과 비밀번호를 확인하세요");
       }
+      console.log(response);
+      moveToHome();
     } catch (error) {
       setModalMessage("이메일과 비밀번호를 확인하세요");
       setIsModalOpen(true);
@@ -120,33 +125,23 @@ const InputWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 262px 0 66px 0;
+  margin: 220px 0 66px 0;
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled(BlackBtn)`
   width: 100%;
   max-width: 465px;
   height: 45px;
-  border-radius: 10px;
-  border: 0px;
-  background-color: ${theme.mainColor};
-  color: #ffffff;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 15px;
   cursor: pointer;
 `;
 
-const SignupButton = styled.button`
+const SignupButton = styled(WhiteBtn)`
   width: 465px;
   height: 45px;
   font-weight: 700;
   font-size: 18px;
-  border: 1px solid ${theme.border};
-  border-radius: 10px;
-  background-color: #ffffff;
   cursor: pointer;
-  &:hover {
-    background-color: ${theme.border};
-  }
 `;
