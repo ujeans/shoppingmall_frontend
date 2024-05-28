@@ -9,18 +9,18 @@ import deleteIcon from "../../assets/delete.svg";
 
 import { Container } from "../../style/CommonStyles";
 
-const ProductComponent = () => {
-  const [title, setTitle] = useState("");
+const ProductComponent = (Route) => {
+  const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
-  const [count, setCount] = useState("");
+  const [stock, setStock] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [images, setImages] = useState([]);
+  const [files, setFiles] = useState([]);
 
   const fileInputRef = useRef(null);
-  const maxImages = 10;
-  const remainingImages = maxImages - images.length;
+  const maxfiles = 10;
+  const remainingfiles = maxfiles - files.length;
 
   const handleImageChange = (e) => {
     const files = e.target.files;
@@ -43,12 +43,12 @@ const ProductComponent = () => {
 
     Promise.all(promises)
       .then((results) => {
-        setImages((prevImages) => {
-          const newImages = [...prevImages, ...results];
-          if (newImages.length > 10) {
-            return newImages.slice(newImages.length - 10);
+        setFiles((prevfiles) => {
+          const newfiles = [...prevfiles, ...results];
+          if (newfiles.length > 10) {
+            return newfiles.slice(newfiles.length - 10);
           }
-          return newImages;
+          return newfiles;
         });
         fileInputRef.current.value = null;
       })
@@ -58,15 +58,15 @@ const ProductComponent = () => {
   };
 
   const handleDeleteImage = (index) => {
-    const newImages = [...images];
-    newImages.splice(index, 1);
-    setImages(newImages);
+    const newfiles = [...files];
+    newfiles.splice(index, 1);
+    setFiles(newfiles);
   };
 
-  const renderImages = () => {
-    return images.map((image, index) => (
+  const renderfiles = () => {
+    return files.map((image, index) => (
       <ImagePreview key={index}>
-        <img src={image} alt={`Image ${index + 1}`} />
+        <img src={image} alt={`Uploaded file ${index + 1}`} />
         <DeleteButton onClick={() => handleDeleteImage(index)} />
       </ImagePreview>
     ));
@@ -82,13 +82,13 @@ const ProductComponent = () => {
     }
 
     const formData = {
-      title,
+      productName,
       price,
-      count,
+      stock,
       description,
       startDate,
       endDate,
-      images,
+      files,
     };
     console.log("제출:", formData);
     // 여기서 폼 데이터를 서버로 전송하는 작업을 수행할 수 있습니다.
@@ -108,8 +108,8 @@ const ProductComponent = () => {
     const errors = {};
 
     // 상품명 검사
-    if (title.length < 3 || title.length > 20) {
-      errors.title = "상품명은 3자 이상 20자 이하여야 합니다.";
+    if (productName.length < 3 || productName.length > 20) {
+      errors.productName = "상품명은 3자 이상 20자 이하여야 합니다.";
       isValid = false;
     }
 
@@ -139,9 +139,9 @@ const ProductComponent = () => {
     }
 
     // 재고 검사
-    const countValue = parseFloat(count);
-    if (isNaN(countValue) || countValue < 1) {
-      errors.count = "재고는 1 이상 숫자만 입력 가능합니다.";
+    const stockValue = parseFloat(stock);
+    if (isNaN(stockValue) || stockValue < 1) {
+      errors.stock = "재고는 1 이상 숫자만 입력 가능합니다.";
       isValid = false;
     }
 
@@ -152,8 +152,8 @@ const ProductComponent = () => {
     }
 
     // 이미지 수 검사
-    if (images.length < 1) {
-      errors.images = "이미지는 최소 1개 이상 등록해야 합니다.";
+    if (files.length < 1) {
+      errors.files = "이미지는 최소 1개 이상 등록해야 합니다.";
       isValid = false;
     }
 
@@ -171,18 +171,18 @@ const ProductComponent = () => {
       <Container borderBottom="true">
         <Content>
           <MainWrapper>
-            <Title>상품명</Title>
-            <TitleInput
+            <ProductName>상품명</ProductName>
+            <ProductNameInput
               type="text"
               placeholder="상품명을 입력해주세요."
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => setProductName(e.target.value)}
             />
             <ContentWrapper>
               <ImageWrapper>
-                <Title>이미지</Title>
+                <ProductName>이미지</ProductName>
                 <MainImage>
-                  {images.length > 0 && (
-                    <img src={images[0]} alt="Main Image" />
+                  {files.length > 0 && (
+                    <img src={files[0]} alt="Main product" />
                   )}
                 </MainImage>
                 <ImageInputWrapper>
@@ -194,24 +194,24 @@ const ProductComponent = () => {
                       onChange={handleImageChange}
                       style={{ display: "none" }}
                       ref={fileInputRef}
-                      disabled={remainingImages <= 0}
+                      disabled={remainingfiles <= 0}
                     />
                     <PlusIcon />
-                    <ImageCounter>
-                      {images.length}/{maxImages}
-                    </ImageCounter>
+                    <div>
+                      {files.length}/{maxfiles}
+                    </div>
                   </ImageButton>
-                  <ImagePreviewWrapper>{renderImages()}</ImagePreviewWrapper>
+                  <ImagePreviewWrapper>{renderfiles()}</ImagePreviewWrapper>
                 </ImageInputWrapper>
               </ImageWrapper>
               <SubContentWrapper>
-                <Title>가격</Title>
+                <ProductName>가격</ProductName>
                 <Input
                   type="text"
                   placeholder="₩ 가격을 입력해주세요."
                   onChange={(e) => setPrice(e.target.value)}
                 />
-                <Title>판매 기간</Title>
+                <ProductName>판매 기간</ProductName>
                 <DateContainer>
                   <DateIcon onClick={handleSDateIconClick} />
                   <StyledDatePicker
@@ -231,20 +231,20 @@ const ProductComponent = () => {
                     placeholderText="종료 날짜를 선택하세요."
                   />
                 </DateContainer>
-                <Title>재고</Title>
+                <ProductName>재고</ProductName>
                 <Input
                   type="text"
                   placeholder="재고수량을 입력해주세요."
-                  onChange={(e) => setCount(e.target.value)}
+                  onChange={(e) => setStock(e.target.value)}
                 />
-                <Title>상세 설명</Title>
+                <ProductName>상세 설명</ProductName>
                 <TextArea
                   placeholder="게시글 내용을 작성해주세요."
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </SubContentWrapper>
             </ContentWrapper>
-            <Title>카테고리</Title>
+            <ProductName>카테고리</ProductName>
             <DevBox />
           </MainWrapper>
         </Content>
@@ -302,7 +302,7 @@ const SubContentWrapper = styled.div`
   margin-left: 60px;
 `;
 
-const Title = styled.div`
+const ProductName = styled.div`
   display: flex;
   justify-content: start;
   align-items: start;
@@ -316,7 +316,7 @@ const Title = styled.div`
   text-align: left;
 `;
 
-const TitleInput = styled.input`
+const ProductNameInput = styled.input`
   display: block;
   width: 1019px;
   height: 36px;
@@ -409,10 +409,6 @@ const ImageButton = styled.label`
   background-color: #f4f4f4;
   color: #ccc;
   cursor: pointer;
-`;
-
-const ImageCounter = styled.div`
-  font-size: 12px;
 `;
 
 const PlusIcon = styled.div`

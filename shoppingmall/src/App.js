@@ -12,6 +12,7 @@ import Cart from "./pages/cart/Cart";
 import MyPage from "./pages/myPage/MyPage";
 import Sell from "./pages/sellPage/SellPage";
 import Write from "./pages/ProductWritePage/ProductWritePage";
+import Modify from "./pages/productModifyPage/ProductModifyPage";
 import ProductDetailPage from "./pages/productPage/ProductDetailPage";
 import OrderDetailsPage from "./pages/orderDetails/OrderDetailsPage";
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/settings" element={<MyPage />} />
           <Route path="/" element={<ProductListPage />} />
           <Route path="/write" element={<Write />} />
+          <Route path="/modify" element={<Modify />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/cart" element={<Cart />} />
