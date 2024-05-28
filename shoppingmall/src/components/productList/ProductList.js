@@ -11,56 +11,56 @@ const ProductList = () => {
   const [productList, setProductList] = useState([
     {
       id: 1,
-      image: "https://via.placeholder.com/150/#D9D9D9",
+      image: "https://via.placeholder.com/250/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 2,
-      image: "https://via.placeholder.com/150/#D9D9D9",
+      image: "https://via.placeholder.com/250/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 3,
-      image: "https://via.placeholder.com/150/#D9D9D9",
+      image: "https://via.placeholder.com/250/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 4,
-      image: "https://via.placeholder.com/150/#D9D9D9",
+      image: "https://via.placeholder.com/250/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 5,
-      image: "https://via.placeholder.com/150/#D9D9D9",
+      image: "https://via.placeholder.com/250/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 6,
-      image: "https://via.placeholder.com/150/#D9D9D9",
+      image: "https://via.placeholder.com/250/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 7,
-      image: "https://via.placeholder.com/150/#D9D9D9",
+      image: "https://via.placeholder.com/250/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
     },
     {
       id: 8,
-      image: "https://via.placeholder.com/150/#D9D9D9",
+      image: "https://via.placeholder.com/250/#D9D9D9",
       productName: "아디다스",
       productPrice: "56,000",
       description: "상품 설명",
@@ -144,7 +144,7 @@ const Container = styled.div`
 
 const ListContainer = styled.div`
     display: flex;
-    width: 100%;
+    width: 70%;
     height: 100%;
     margin-top: 28px;
     justify-content: center; 
@@ -153,7 +153,7 @@ const ListContainer = styled.div`
 const CardList = styled.div`
     display: flex;
     width: 100%;
-    height:500px;
+    height:640px;
     justify-content: center; 
     flex-wrap: wrap;
 `;
@@ -162,6 +162,7 @@ const Item = styled.div`
     width: 294px;
     height:250px;
     margin-right: 20px;
+    margin-bottom: 90px;
     &:nth-child(4) {
         margin-right:0px;
     }
@@ -170,7 +171,6 @@ const Item = styled.div`
     }
     cursor: pointer;
 `;
-
 
 const ImageWrapper = styled.div`
     width: 100%;
@@ -181,7 +181,7 @@ const ImageWrapper = styled.div`
 
 const Image = styled.img`
     width: 100%;
-    height: 150px;
+    height: 250px;
     border-radius: 3%;
     object-fit: cover;
 `;
@@ -191,12 +191,13 @@ const InfoWrapper = styled.div`
     justify-content: start;
     width: 100%;
     height: 26%;
-    margin-top: 8px;
+    margin-top: 100px;
 `;
 
 const Info = styled.div`
     width: 200px;
     height: 100%;
+    margin-top: 8px;
 `;
 
 const ProductName = styled.div`
@@ -224,6 +225,7 @@ const ProductDescription = styled.div`
 
 const IconWrapper = styled.div`
     margin-left: 100px;
+    margin-top: 10px;
 `;
 
 const Icon = styled.img`

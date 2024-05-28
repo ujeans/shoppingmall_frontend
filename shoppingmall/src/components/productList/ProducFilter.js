@@ -92,7 +92,7 @@ export default ProducFilter;
 const FilterContainer= styled.div`
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 70%;
     height: 40px;
 `;
 

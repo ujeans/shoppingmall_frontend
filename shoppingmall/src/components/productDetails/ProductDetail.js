@@ -22,7 +22,7 @@ const ProductDetail = () => {
             <Main>
                 <ImageContainer>
                     <ImageWrapper>
-                        <ProductImage src="https://via.placeholder.com/400/#D9D9D9"/>
+                        <ProductImage src="https://via.placeholder.com/250/#D9D9D9"/>
                         <LeftArrow src={leftarrow}/> 
                         <RightArrow src={rightarrow}/>
                     </ImageWrapper>
@@ -91,15 +91,16 @@ const ImageWrapper = styled.div`
     position: fiexd;
     display: flex;
     justify-content:start;
-    width: 700px;
-    hegith: 448px;
+    width: 250px;
+    hegith: 250px;
     margin-top: 55px;
     margin-left: 50px;
 `;
 
  const ProductImage = styled.img`
-    width: 400px;
-    height: 400px;
+    position: relative;
+    width: 250px;
+    height: 250px;
     border-radius: 10px;
 `;
 
@@ -107,8 +108,8 @@ const LeftArrow = styled.img`
     position: absolute;
     width: 24px;
     height: 24px;
-    top: 430px;
-    left: 170px;
+    top: 360px;
+    left: 440px;
     cursor: pointer;
 `;
 
@@ -116,8 +117,8 @@ const RightArrow = styled.img`
     position: absolute;
     width: 24px;
     height: 24px;
-    top: 430px;
-    right: 754px;
+    top: 360px;
+    right: 1180px;
     cursor: pointer;
 `;
 
