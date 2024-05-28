@@ -80,13 +80,7 @@ const ProductList = () => {
     navigate(`/product/${id}`);
   };
 
-  const handleHeart = (index) => {
-    setIsLike(() => {
-      const newLike = [...isChecked];
-      newLike[index] = !newLike[index];
-      return newLike;
-    });
-  };
+ 
 
   return (
     <Wrapper>
@@ -174,6 +168,7 @@ const Item = styled.div`
     &:nth-child(8) {
         margin-right:0px;
     }
+    cursor: pointer;
 `;
 
 
