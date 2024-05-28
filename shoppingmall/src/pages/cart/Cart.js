@@ -1,42 +1,25 @@
 import { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
 // assets
-import EmptyCart from "../../components/cart/EmptyCart";
+import EmptyContentLayout from "../../components/commom/EmptyContentLayout";
 import FilledCart from "../../components/cart/FilledCart";
-
-const cart_products = [
-  {
-    cart_item_id: 1,
-    product_id: 1,
-    quantity: 1,
-    name: "상품명1",
-    price: "174,000",
-    user: "아이디1",
-    soldOut: false,
-  },
-  {
-    cart_item_id: 2,
-    product_id: 2,
-    quantity: 1,
-    name: "상품명2",
-    price: "200,000",
-    user: "아이디2",
-    soldOut: true,
-  },
-  {
-    cart_item_id: 3,
-    product_id: 3,
-    quantity: 1,
-    name: "상품명3",
-    price: "200,000",
-    user: "아이디3",
-    soldOut: false,
-  },
-];
+// hooks
+import useFetchData from "../../hooks/useFetchData";
+import { LoadingSpinner } from "../../style/CommonStyles";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(cart_products);
+  const userId = 15;
+  const cartUrl = `${process.env.REACT_APP_API_URL}/cart/${userId}`;
+
+  const {
+    data: cartItems,
+    setData: setCartItems,
+    loading,
+    error,
+  } = useFetchData(cartUrl);
+
   const [allChecked, setAllChecked] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -44,7 +27,7 @@ const Cart = () => {
   useEffect(() => {
     const totalAmount = cartItems.reduce((acc, item) => {
       if (!item.soldOut) {
-        return acc + parseInt(item.price.replace(/,/g, ""), 10) * item.quantity;
+        return acc + item.price * item.quantity;
       }
       return acc;
     }, 0);
@@ -72,25 +55,33 @@ const Cart = () => {
   };
 
   const handleDeleteSoldOut = () => {
-    setCartItems(prevItems => prevItems.filter(item => !item.soldOut));
+    setCartItems(prevItems => prevItems.filter(item => item.stock !== 0));
   };
 
   const handleDeleteItem = id => {
-    setCartItems(prevItems =>
-      prevItems.filter(item => item.cart_item_id !== id)
-    );
+    setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
   };
 
   const handleOrder = () => {
     const selectedItems = cartItems.filter(item => item.checked);
-    console.log("Selected items:", selectedItems); // 디버깅을 위해 추가
     return selectedItems;
   };
 
+  if (loading) {
+    return (
+      <LoadingSpinner>
+        <ClipLoader size={150} />
+      </LoadingSpinner>
+    );
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    <ContentLayout title={"장바구니"} width="800px">
+    <ContentLayout title={"장바구니"} width="1000px">
       {cartItems.length === 0 ? (
-        <EmptyCart />
+        <EmptyContentLayout content={"장바구니에 담은 상품이 없습니다."} />
       ) : (
         <FilledCart
           cartItems={cartItems}

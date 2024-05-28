@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+
 // assets
 import checkbox from "../../../assets/checkbox.svg";
 import checkedbox from "../../../assets/checkedbox.svg";
@@ -11,7 +12,7 @@ import OrderAmount from "./OrderAmount";
 const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
   const [count, setCount] = useState(
     cartItems.reduce((acc, item) => {
-      acc[item.cart_item_id] = item.quantity;
+      acc[item.cartItemId] = item.quantity;
       return acc;
     }, {})
   );
@@ -19,7 +20,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
   const toggleCheck = id => {
     setCartItems(prevItems =>
       prevItems.map(item =>
-        item.cart_item_id === id ? { ...item, checked: !item.checked } : item
+        item.cartItemId === id ? { ...item, checked: !item.checked } : item
       )
     );
   };
@@ -32,7 +33,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
 
     setCartItems(prevItems =>
       prevItems.map(item =>
-        item.cart_item_id === id ? { ...item, quantity: newCount } : item
+        item.cartItemId === id ? { ...item, quantity: newCount } : item
       )
     );
   };
@@ -40,14 +41,13 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
   return (
     <>
       {cartItems.map(product => {
-        const totalPrice =
-          parseInt(product.price.replace(/,/g, ""), 10) *
-          count[product.cart_item_id];
+        const totalPrice = product.price * product.quantity;
+
         return (
-          <Container key={product.cart_item_id}>
+          <Container key={product.cartItemId}>
             <Wrapper>
               <Checkbox
-                onClick={() => toggleCheck(product.cart_item_id)}
+                onClick={() => toggleCheck(product.cartItemId)}
                 checked={product.checked}
               >
                 {product.checked ? (
@@ -58,11 +58,11 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
               </Checkbox>
               <Info product={product} onDeleteItem={onDeleteItem} />
               <Count
-                quantity={count[product.cart_item_id]}
+                quantity={product.quantity}
                 onUpdateCount={newCount =>
-                  updateCount(product.cart_item_id, newCount)
+                  updateCount(product.cartItemId, newCount)
                 }
-                disabled={product.soldOut}
+                disabled={product.stock === 0}
               />
               <OrderAmount
                 product={product}

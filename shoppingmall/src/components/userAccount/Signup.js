@@ -12,6 +12,7 @@ import people from "../../assets/people.svg";
 import phone from "../../assets/phone.svg";
 import home from "../../assets/home.svg";
 import userCircle from "../../assets/userCircle.svg";
+import { BlackBtn } from "../../style/CommonStyles";
 
 const Signup = () => {
   //유저 정보
@@ -23,7 +24,7 @@ const Signup = () => {
     phone: "",
     addr: "",
     nickname: "",
-    img: null,
+    img: "",
   });
 
   //이미지 미리보기
@@ -55,7 +56,6 @@ const Signup = () => {
       nickname: !user.nickname,
     };
     setFieldErrors(errors);
-    console.log(errors);
     return !Object.values(errors).some((error) => error);
   };
 
@@ -76,24 +76,30 @@ const Signup = () => {
       return;
     }
     try {
-      await fetch("/signup", {
+      console.log("try");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
         },
         body: JSON.stringify({
           email: user.email,
-          password: user.password,
-          name: user.name,
-          phone: user.phone,
-          addr: user.addr,
-          nickname: user.nickname,
+          user_password: user.password,
+          // user_name: user.name,
+          user_phone: user.phone,
+          user_addr: user.addr,
+          user_nickname: user.nickname,
+          user_img: user.img,
         }),
       });
 
-      // if (!response.ok) {
-      //   throw new Error("회원가입에 실패하였습니다.");
-      // }
+      const responseBody = await response.json();
+      console.log("body", responseBody);
+
+      if (!response.ok) {
+        throw new Error("회원가입에 실패하였습니다.");
+      }
+      console.log(response);
       moveToLogin();
     } catch (error) {
       setModalMessage("이메일과 비밀번호를 확인하세요");
@@ -322,19 +328,14 @@ const PreviewImage = styled.img`
   cursor: pointer;
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled(BlackBtn)`
   width: 100%;
   margin-bottom: 43px;
   max-width: 465px;
   height: 45px;
-  border-radius: 10px;
-  border: none;
-  background-color: ${theme.mainColor};
-  color: #ffffff;
   font-weight: 700;
   cursor: pointer;
-  &:disabled {
-    background-color: "#F4F4F4";
+  S &:disabled {
     cursor: not-allowed;
   }
 `;

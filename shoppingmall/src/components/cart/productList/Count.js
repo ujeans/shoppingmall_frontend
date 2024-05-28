@@ -23,7 +23,7 @@ const Count = ({ quantity, onUpdateCount, disabled }) => {
           <img src={minus} alt="minus" />
         </CountBox>
         <CountBox className="count" disabled={disabled}>
-          {quantity}
+          {disabled ? 0 : quantity}
         </CountBox>
         <CountBox onClick={handleIncrease} disabled={disabled}>
           <img src={plus} alt="plus" />
