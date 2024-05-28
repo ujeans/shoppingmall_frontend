@@ -94,7 +94,6 @@ const FilterContainer= styled.div`
     justify-content: space-between;
     width: 100%;
     height: 40px;
-    //background-color: gray;
 `;
 
 const LeftButtons = styled.div`
@@ -102,7 +101,6 @@ const LeftButtons = styled.div`
     width: 420px;
     height:34px;
     margin-left: 32px;
-    //background-color: pink;
 `;
 
 const RightButtons = styled.div`
@@ -113,7 +111,6 @@ const RightButtons = styled.div`
     justify-content: end;
     align-items: center;
     cursor: pointer;
-    // background-color: orange;
 `;
 
 const Menu = styled.button`
