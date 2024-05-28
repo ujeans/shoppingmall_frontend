@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
 
 // svg
 import leftarrow from "../../assets/leftarrow.svg";
@@ -163,7 +164,7 @@ const Cagetgory = styled.div`
     color: #858585;
 `;
 
-const CartButton = styled.button`
+const CartButton = styled(BlackBtn)`
     width: 250px;
     height: 40px;
     margin: 49px 0px 40px 40%;
@@ -171,7 +172,7 @@ const CartButton = styled.button`
     border-radius: 10px;
     font-size: 15px;
     font-weight: bold;
-    background-color: #EB4646;
+    // background-color: #EB4646;
     color: white;
     cursor:pointer;
 `;

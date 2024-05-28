@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { theme } from "../../style/theme";
+import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
 import styled from "styled-components";
 
 // svg
@@ -113,7 +114,7 @@ const RightButtons = styled.div`
     cursor: pointer;
 `;
 
-const Menu = styled.button`
+const Menu = styled(BlackBtn)`
   width: 92px;
   height: 30px;
   margin-right: 11px;
@@ -123,10 +124,10 @@ const Menu = styled.button`
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
-  background-color: ${(props) => (props.isActive ? "#EB4646" : "#FFFFFF")};
+  background-color: ${(props) => (props.isActive ? BlackBtn : "#FFFFFF")};
   color: ${(props) => (props.isActive ? "#FFFFFF" : "#000000")};
   &:hover {
-    background-color: ${(props) => (props.isActive ? "#EB4646" : "#F4F4F4")};
+    background-color: ${(props) => (props.isActive ? BlackBtn : "#F4F4F4")};
     color: ${(props) => (props.isActive ? "#FFFFFF" : "#000000")};
   }
 `;
