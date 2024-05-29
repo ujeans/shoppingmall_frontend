@@ -60,7 +60,7 @@ const ProductArea = () => {
   ];
 
   // 제품 수정 함수
-  const handleProductEdit = index => {
+  const handleProductEdit = (index) => {
     // 여기서 제품 수정 로직을 구현합니다.
     console.log(`제품 수정: ${products[index].title}`);
   };

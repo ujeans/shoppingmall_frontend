@@ -39,7 +39,7 @@ const Login = () => {
   //로그인 실행
   const submitLogin = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -48,14 +48,29 @@ const Login = () => {
           email: user.email,
           user_password: user.password,
         }),
-      });
-
-      if (!response.ok) {
-        throw new Error("이메일과 비밀번호를 확인하세요");
-      }
-      console.log(response);
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          console.log(response);
+          if (response.accessToken) {
+            localStorage.setItem("login-token", response.accessToken);
+            console.log(response.accessToken);
+          } else if (!response.ok) {
+            throw new Error("이메일과 비밀번호를 확인하세요");
+          }
+        });
       moveToHome();
     } catch (error) {
+      console.log(
+        "이메일 유효성 검사 :: ",
+        isValidEmail(user.email),
+        user.email
+      );
+      console.log(
+        "이메일 유효성 검사 :: ",
+        isValidPassword(user.password),
+        user.password
+      );
       setModalMessage("이메일과 비밀번호를 확인하세요");
       setIsModalOpen(true);
       console.error("에러", error);
@@ -86,9 +101,7 @@ const Login = () => {
           />
         </InputWrapper>
 
-        <SubmitButton disabled={!isValid} onClick={submitLogin}>
-          로그인
-        </SubmitButton>
+        <SubmitButton onClick={submitLogin}>로그인</SubmitButton>
         <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
       </Wrapper>
       {isModalOpen && (

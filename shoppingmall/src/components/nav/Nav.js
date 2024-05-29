@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { theme } from "../../style/theme";
 import Navigation from "./Navigation";
 
 //svg
@@ -12,6 +11,21 @@ const Nav = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const { moveToHome, moveToSignup, moveToLogin, moveToMypage, moveToCart } =
     Navigation();
+
+  useEffect(() => {
+    const token = localStorage.getItem("login-token");
+    if (token) {
+      setLoggedIn(true);
+      console.log(token);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("login-token");
+    setLoggedIn(false);
+    moveToHome();
+    console.log(localStorage.getItem("login-token"));
+  };
 
   return (
     <>
@@ -29,7 +43,7 @@ const Nav = ({ children }) => {
                   <Icon src={cart} />
                   <ButtonText>장바구니</ButtonText>
                 </CartButton>
-                <LogoutButton>로그아웃</LogoutButton>
+                <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
               </>
             ) : (
               <>
