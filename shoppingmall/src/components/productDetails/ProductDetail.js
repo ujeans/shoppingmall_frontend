@@ -1,178 +1,295 @@
-import React from 'react';
+import React, { useState , useEffect } from 'react';
+import { useLocation , useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
+import { BlackBtn } from "../../style/CommonStyles";
 
 // svg
 import leftarrow from "../../assets/leftarrow.svg";
-import rightarrow from "../../assets/rightarrow.svg";
-
-// component
+import profile from "../../assets/profile.svg";
+import unlike from "../../assets/unlike.svg";
+import Modal from '../commom/Modal/Modal';
 
 const ProductDetail = () => {
+    const navigate = useNavigate();
+   const location = useLocation();
+   const pId = location.state.productId;
+   const [productItem, setProductItem] = useState({});
+   const [isVisible, setIsVisible] = useState(false);
+   const [loginStatus, setLoginStatus] = useState(true);
+   const [navigateUrl, setNavigateUrl] = useState("/login");
+   
+   const closeModal = () => {
+        setIsVisible(false);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+              const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/product/${pId}`
+              );
+              const data = await response.json();
+              console.log("data: ", productItem);
+              setProductItem(data);
+              console.log("data: ", productItem);
+      
+            } catch (error) {
+              console.error("Error fetching data", error);
+            }
+          };
+        fetchData();
+    }, productItem);
+
+    const {productName, price, description, userNickName} = productItem;
+    const productImages = productItem.imagePaths;
+
+    let productPrice = (price+"").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')  + " 원";
+
+    const putOnCart = () => {
+        console.log("장바구니추가 버튼 클릭");
+        // 로그인 여부 검사
+        // 1. 로그인이 되어있지 않을때 팝업창을 띄운다
+        // 2. 로그인이 되어있을때 Post 요청을 보낸다
+        let loginToken = localStorage.getItem("login-token");
+        if (loginToken == "" || loginToken == null || loginToken == undefined || ( loginToken != null && typeof loginToken == "object" && !Object.keys(loginToken).length)) {
+            setLoginStatus(false);
+            setIsVisible(true);
+            console.log("로그인 안되있음: ", loginStatus, isVisible);
+        } else {
+            setLoginStatus(true);
+            setNavigateUrl("/cart");
+            console.log("로그인 되있음");
+            console.log("장바구니 추가 로직 작성");
+        }
+    };
+
+    const navigateToPage = () => {
+        navigate(navigateUrl);
+    };
  
     return (
-        <Layout>
-            <Container>
-                    <ArrowWrapper>
-                        <CustomArrow src={leftarrow}/>
-                    </ArrowWrapper>
-                    <HeaderText>
-                        상품 정보
-                    </HeaderText>
-            </Container>
-            <Main>
-                <ImageContainer>
-                    <ImageWrapper>
-                        <ProductImage src="https://via.placeholder.com/250/#D9D9D9"/>
-                        <LeftArrow src={leftarrow}/> 
-                        <RightArrow src={rightarrow}/>
-                    </ImageWrapper>
-                </ImageContainer>
-                <InfoContainer>
+            <Layout>
+                <Wrapper>
+                    <Nav>
+                        <IconWrapper>
+                        <img src={leftarrow}/> 
+                        </IconWrapper>
+                        <Title className="title">
+                            상품 정보    
+                        </Title>
+                    </Nav>
                     <Content>
-                        <ProductName>아디다스 펜츠</ProductName>
-                        <ProductPrice>56,000원</ProductPrice>
-                        <Description>
-                            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-                        </Description>
-                        <Cagetgory>#옵션 #옵션</Cagetgory>
+                        <ContentWrapper>
+                            <LeftContainer>
+                                <CarouselContainer>
+                                    <img src="https://via.placeholder.com/250/#D9D9D9"/>
+                                </CarouselContainer>
+                            </LeftContainer>
+                            <RightContainer>
+                                <InfoWrapper>
+                                    <UserWrapper>
+                                        <UserLeftWrapper>
+                                            <img src={profile}/>
+                                            <UserName>
+                                                {userNickName}
+                                            </UserName>
+                                        </UserLeftWrapper>
+                                        <HeartWrapper>
+                                            <img src={unlike}/>
+                                        </HeartWrapper>
+                                    </UserWrapper>
+                                    <Line></Line>
+                                    <DetailWrapper>
+                                        <ProductName>
+                                            {productName}
+                                        </ProductName>
+                                        <ProductPrice>
+                                            {productPrice}
+                                        </ProductPrice>
+                                        <Description>
+                                            {description}
+                                        </Description>
+                                        <Option>
+                                            #옵션 #옵션
+                                        </Option>
+                                    </DetailWrapper>
+                                </InfoWrapper>
+                            </RightContainer>
+                        </ContentWrapper>
                     </Content>
-                </InfoContainer>    
-            </Main>
-            <CartButton>장바구니 담기</CartButton>
-        </Layout>
+                    <CartButton onClick={putOnCart}>
+                        장바구니담기
+                    </CartButton>
+                    {isVisible  && (
+                    <Modal
+                        open={isVisible} 
+                        onClose={closeModal} 
+                        title="로그인이 필요한 기능입니다." 
+                        subText="로그인 페이지로 이동하시겠습니까?" 
+                        navigateToPage={navigateToPage}/>
+                    )}
+                </Wrapper>
+            </Layout>
     );
 };
 
 export default ProductDetail;
 
 const Layout = styled.div`
-    max-width: 1090px;
-    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    width: 1850px;
+    height: 1080px;
 `;
 
-const Container = styled.div`
+const Wrapper = styled.div`
     display: flex;
-    justify-content: start;
+    flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 1700px;
+    height:100%;
 `;
 
-const ArrowWrapper = styled.div`
-    margin: 45px 461px 54px 50px;
-    cursor: pointer;
-`;
-
-const CustomArrow = styled.img`
-    width: 8px;
-    height: 15px;
-`;
-
-const HeaderText = styled.div`
-    margin-right: 160px;
-    font-family: Inter;
-    font-size: 30px;
-    font-weight: 600;
-    line-height: 29.05px;
-`;
-
-const Main = styled.div`
-    display: flex;
-    width: 100%;
-    height: 100%;
-`;
-
-const ImageContainer = styled.div`
-   width: 50%;
-   height: 50%;
-   margin-bottom: 55px;
-`;
-
-const ImageWrapper = styled.div`
-    position: fiexd;
+const Nav = styled.div`
     display: flex;
     justify-content:start;
-    width: 250px;
-    hegith: 250px;
+    width: 1252px;
+    height: 50px;
     margin-top: 55px;
-    margin-left: 50px;
-`;
-
- const ProductImage = styled.img`
-    position: relative;
-    width: 250px;
-    height: 250px;
-    border-radius: 10px;
-`;
-
-const LeftArrow = styled.img`
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    top: 360px;
-    left: 440px;
-    cursor: pointer;
-`;
-
-const RightArrow = styled.img`
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    top: 360px;
-    right: 1180px;
-    cursor: pointer;
-`;
-
-const InfoContainer = styled.div`
-    width: 50%;
-    height: 50%;
 `;
 
 const Content = styled.div`
-    width: 400px;
-    hegith: 100%;
-    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+    width: 1252px;
+    height: 600px;
+    margin-top: 55px;
 `;
 
-const ProductName = styled.div`
+const IconWrapper = styled.div`
+    width: 24px;
+    height: 24px;
+    margin-left: 146px;
+`;
+
+const Title = styled.div`
+    width: 120px;
+    height: 29px;
+    margin-top: 3px;
+    margin-left: 364px;
+    text-align:center;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 29.05px;
+`;
+
+const ContentWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 1200px;
+    height: 100%;
+`;
+
+const LeftContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 500px;
+    height: 100%;
+`;
+
+const RightContainer = styled.div`
+    width: 500px;
+    height: 100%;
+`;
+
+const CarouselContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 700px;
+    height: 448px;
+    margin-top: 62px;
+`;
+
+const UserWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+    height: 50px;
+`;
+
+const InfoWrapper = styled.div`
+    margin-top: 62px;
+    height: 500px;
+`;
+
+const UserLeftWrapper = styled.div`
+    display: flex;
+    width: 160px;
+    height: 50px;
+`;
+
+const HeartWrapper = styled.div`
+    width: 20px;
+    height: 18.33px;
+    margin-top: 15px;
+`;
+
+const UserName = styled.div`
+    width: 100px;
+    height: 18px;
+    margin-left: 8px;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 19.36px;
+`;
+
+const Line = styled.hr`
+    margin-top: 14px;
+`;
+
+const DetailWrapper  = styled.div`
+    width: 160px;
+    height: 100%;
+    margin-top: 26px;
+`;
+
+const ProductName  = styled.div`
     width: 150px;
     height: 19px;
     font-size: 16px;
+    font-weight: 500;
+    line-height: 19.36px;
 `;
 
-const ProductPrice = styled.div`
-    width: 94px;
+const ProductPrice  = styled.div`
+    width: 120px;
     height: 24px;
     margin-top: 6px;
-    font-size: 20px;
     font-weight: bold;
+    font-size: 20px;
+    line-height: 24.2px;
 `;
 
-const Description = styled.div`
-    width: 400px;
-    height: 100%;
-    margin-top: 16px;
+const Description  = styled.div`
+    width: 600px;
+    height: 150px;
+    margin-top: 8px;
+    overflow-y: auto;
+    font-weight: 500;
     font-size: 16px;
-    overflow: auto;
+    line-height: 19.38px;
 `;
 
-const Cagetgory = styled.div`
-    width: 100px;
+const Option  = styled.div`
+    width: 200px;
     height: 18px;
-    margin-top: 65px;
-    font-size: 15px;
+    margin-top: 16px;
     color: #858585;
 `;
 
 const CartButton = styled(BlackBtn)`
+    margin-top: 58px;
     width: 250px;
     height: 40px;
-    margin: 49px 0px 40px 40%;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: bold;
-    // background-color: #EB4646;
-    color: white;
-    cursor:pointer;
 `;

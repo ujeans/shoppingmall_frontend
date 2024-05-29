@@ -20,8 +20,9 @@ const ProductList = () => {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/product?page=${currentPage}&sort=${sort}`)
       .then((response) => response.json())
-      .then((json) => {
-        setProductList([...json]);
+      .then((data) => {
+        setProductList([...data]);
+        console.log("data: " + productList);
       })
   }, []);
  
