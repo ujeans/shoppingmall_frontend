@@ -28,15 +28,46 @@ const FilledCart = ({
   onDeleteItem,
   onOrder,
 }) => {
+  const userId = 15;
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const nav = async () => {
+  const navigateToPage = () => {
     navigate("/");
   };
 
-  const openModal = () => {
-    setIsOpen(!isOpen);
+  const handleCheckout = async () => {
+    try {
+      const postResponse = await fetch(
+        `${process.env.REACT_APP_API_URL}/ordertotal/${userId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const text = await postResponse.text();
+      try {
+      } catch (err) {
+        console.error("응답이 JSON 형식이 아닙니다:", text);
+      }
+
+      if (!postResponse.ok) {
+        throw new Error("전체 결제 요청 실패");
+      }
+
+      setIsOpen(true);
+    } catch (error) {
+      console.error("결제 처리 중 오류가 발생했습니다:", error);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setCartItems([]);
   };
 
   return (
@@ -63,21 +94,19 @@ const FilledCart = ({
       </BtnWrapper>
       <TotalSum totalAmount={totalAmount} totalCount={totalCount} />
       <ButtonWrapper>
-        <Btn padding=" 12px 20px" fontSize="20px" onClick={nav}>
+        <Btn padding=" 12px 20px" fontSize="20px" onClick={navigateToPage}>
           CONTINUE SHOPPING
         </Btn>
-        <BlackBtn padding=" 12px 20px" fontSize="20px" onClick={openModal}>
+        <BlackBtn padding=" 12px 20px" fontSize="20px" onClick={handleCheckout}>
           CHECK OUT
         </BlackBtn>
         {isOpen && (
           <Modal
             open={isOpen}
-            onClose={() => {
-              setIsOpen(false);
-            }}
+            onClose={handleCloseModal}
             title="결제 완료"
             subText="결제 완료되었습니다. 홈으로 이동하시겠습니까?"
-            // navigateToPage={navigateToPage}
+            navigateToPage={navigateToPage}
           />
         )}
       </ButtonWrapper>
