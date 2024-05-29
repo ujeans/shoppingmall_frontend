@@ -17,9 +17,9 @@ const Login = () => {
     password: "",
   });
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     const { name, value } = event.target;
-    setUser((user) => ({
+    setUser(user => ({
       ...user,
       [name]: value,
     }));
@@ -49,8 +49,8 @@ const Login = () => {
           user_password: user.password,
         }),
       })
-        .then((response) => response.json())
-        .then((response) => {
+        .then(response => response.json())
+        .then(response => {
           console.log(response);
           if (response.accessToken) {
             localStorage.setItem("login-token", response.accessToken);
@@ -101,8 +101,8 @@ const Login = () => {
           />
         </InputWrapper>
 
-        <SubmitButton onClick={submitLogin}>로그인</SubmitButton>
-        <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
+        <SubmitButton onClick={submitLogin}>Login</SubmitButton>
+        <SignupButton onClick={moveToSignup}>Sign up</SignupButton>
       </Wrapper>
       {isModalOpen && (
         <Modal
@@ -141,19 +141,19 @@ const InputWrapper = styled.div`
   margin: 220px 0 66px 0;
 `;
 
-const SubmitButton = styled(BlackBtn)`
+const SubmitButton = styled(WhiteBtn)`
   width: 100%;
   max-width: 465px;
-  height: 45px;
+  height: 55px;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 15px;
   cursor: pointer;
 `;
 
-const SignupButton = styled(WhiteBtn)`
+const SignupButton = styled(BlackBtn)`
   width: 465px;
-  height: 45px;
+  height: 55px;
   font-weight: 700;
   font-size: 18px;
   cursor: pointer;

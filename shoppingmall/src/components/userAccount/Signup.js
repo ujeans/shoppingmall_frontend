@@ -29,13 +29,13 @@ const Signup = () => {
   //이미지 미리보기
   const [preview, setPreview] = useState(null);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     const { name, value } = event.target;
-    setUser((user) => ({
+    setUser(user => ({
       ...user,
       [name]: value,
     }));
-    setFieldErrors((errors) => ({
+    setFieldErrors(errors => ({
       ...errors,
       [name]: false,
     }));
@@ -54,7 +54,7 @@ const Signup = () => {
       nickname: !user.nickname,
     };
     setFieldErrors(errors);
-    return !Object.values(errors).some((error) => error);
+    return !Object.values(errors).some(error => error);
   };
 
   const [fieldErrors, setFieldErrors] = useState({
@@ -111,7 +111,7 @@ const Signup = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = event => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -119,7 +119,7 @@ const Signup = () => {
         setPreview(reader.result);
       };
       reader.readAsDataURL(file);
-      setUser((user) => ({
+      setUser(user => ({
         ...user,
         img: file,
       }));
@@ -230,7 +230,7 @@ const Signup = () => {
           />
         </InputWrapper>
         <SubmitButton disabled={!validateFields} onClick={submitSignup}>
-          가입하기
+          Sign up
         </SubmitButton>
       </Wrapper>
     </>
@@ -318,7 +318,8 @@ const SubmitButton = styled(BlackBtn)`
   width: 100%;
   margin-bottom: 43px;
   max-width: 465px;
-  height: 45px;
+  height: 55px;
+  font-size: 18px;
   font-weight: 700;
   cursor: pointer;
   S &:disabled {

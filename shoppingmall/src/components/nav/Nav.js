@@ -43,12 +43,18 @@ const Nav = ({ children }) => {
                   <Icon src={cart} />
                   <ButtonText>장바구니</ButtonText>
                 </CartButton>
-                <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+                <LogoutButton padding="10px 17px" onClick={handleLogout}>
+                  로그아웃
+                </LogoutButton>
               </>
             ) : (
               <>
-                <LoginButton onClick={moveToLogin}>로그인</LoginButton>
-                <SignupButton onClick={moveToSignup}>회원가입</SignupButton>
+                <LoginButton padding="10px 17px" onClick={moveToLogin}>
+                  로그인
+                </LoginButton>
+                <SignupButton padding="10px 17px" onClick={moveToSignup}>
+                  회원가입
+                </SignupButton>
               </>
             )}
           </ButtonWrapper>
@@ -89,22 +95,19 @@ const Title = styled.h2`
 
 const ButtonWrapper = styled.div``;
 
-const LoginButton = styled(BlackBtn)`
+const LoginButton = styled(WhiteBtn)`
   font-weight: 700;
-  padding: 10px 17px 10px 17px;
   margin-right: 12px;
   cursor: pointer;
 `;
 
 const LogoutButton = styled(BlackBtn)`
   font-weight: 700;
-  padding: 10px 17px 10px 17px;
   margin-right: 12px;
   cursor: pointer;
 `;
 
-const SignupButton = styled(WhiteBtn)`
-  padding: 10px 17px 10px 17px;
+const SignupButton = styled(BlackBtn)`
   margin-right: 20px;
   cursor: pointer;
 `;
