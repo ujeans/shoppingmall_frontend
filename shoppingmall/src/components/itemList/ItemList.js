@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Pagination from "../sellpage/PaginationArea";
-// import ItemFilter from "./ItemFilter";
+import ItemFilter from "./ItemFilter";
 // svg
 import unlike from "../../assets/unlike.svg";
 
@@ -32,7 +32,7 @@ const ItemList = () => {
   return (
     <Container>
       <Wrapper>
-        {/* <ItemFilter /> */}
+        <ItemFilter />
         <ListContainer>
           <CardList>
             {productList.map(product => (
