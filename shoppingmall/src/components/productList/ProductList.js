@@ -1,125 +1,76 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Pagination from "../sellpage/PaginationArea";
-import ProductFilter from "./ProducFilter";
+import ProductFilter from "../../components/productList/ProducFilter";
 
 // svg
 import unlike from "../../assets/unlike.svg";
+
 const ProductList = () => {
   const navigate = useNavigate();
-
-  const [productList, setProductList] = useState([
-    {
-      id: 1,
-      image: "https://via.placeholder.com/250/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-    {
-      id: 2,
-      image: "https://via.placeholder.com/250/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-    {
-      id: 3,
-      image: "https://via.placeholder.com/250/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-    {
-      id: 4,
-      image: "https://via.placeholder.com/250/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-    {
-      id: 5,
-      image: "https://via.placeholder.com/250/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-    {
-      id: 6,
-      image: "https://via.placeholder.com/250/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-    {
-      id: 7,
-      image: "https://via.placeholder.com/250/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-    {
-      id: 8,
-      image: "https://via.placeholder.com/250/#D9D9D9",
-      productName: "아디다스",
-      productPrice: "56,000",
-      description: "상품 설명",
-    },
-  ]);
-
   const productsPerRow = 5;
   const pages = [1, 2, 3, 4, 5];
-  const [isChecked, setIsLike] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [sort, setSort] = useState("asc");
+
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/product?page=${currentPage}&sort=${sort}`)
+      .then((response) => response.json())
+      .then((json) => {
+        setProductList([...json]);
+      })
+  }, []);
+ 
 
   const onPageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const clickProduct = (id) => {
-    navigate(`/product/${id}`);
+  const clickProduct = (productId) => {
+    navigate(`/product/${productId}`, {state: {productId: productId}});
   };
 
- 
-
   return (
-    <Wrapper>
-       <Container>
-            <ProductFilter />
-            <ListContainer>
-                    <CardList>
-                        {productList.map((product, index) => (
-                            <Item
-                            key={index}
-                            productsPerRow={productsPerRow}
-                            onClick={() => {
-                                clickProduct(product.id);}}
-                            >
-                                <ImageWrapper>
-                                    <Image  src={product.image} alt={product.productName}/>
-                                </ImageWrapper>
-                                <InfoWrapper>
-                                    <Info>
-                                        <ProductName>{product.productName}</ProductName>
-                                        <ProductPrice>{product.productPrice + " 원"}</ProductPrice>
-                                        <ProductDescription>{product.description}</ProductDescription>
-                                    </Info>
-                                    <IconWrapper>
-                                        <Icon src={unlike}/>
-                                    </IconWrapper>
-                                </InfoWrapper>
-                            </Item> 
-                        ))}   
-                    </CardList>
-            </ListContainer>        
-       </Container> 
-       <Pagination
-                pages={pages}
-                currentPage={currentPage}
-                onPageChange={onPageChange}
-            />
-    </Wrapper>
+      <Wrapper>
+            <Container>
+                <ProductFilter />
+                <ListContainer>
+                        <CardList>
+                            {productList.map((product) => (
+                                <Item
+                                key={product.productId}
+                                productsPerRow={productsPerRow}
+                                onClick={() => {
+                                    clickProduct(product.productId)}}
+                                >
+                                    <ImageWrapper>
+                                        <Image  src="https://via.placeholder.com/250/#D9D9D9" alt={product.productName}/>
+                                    </ImageWrapper>
+                                    <InfoWrapper>
+                                        <Info>
+                                            <ProductName>{product.productName}</ProductName>
+                                            <ProductPrice>{product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원"}</ProductPrice>
+                                            <ProductDescription>{product.description}</ProductDescription>
+                                        </Info>
+                                        <IconWrapper>
+                                            <Icon src={unlike}/>
+                                        </IconWrapper>
+                                    </InfoWrapper>
+                                </Item> 
+                            ))}   
+                        </CardList>
+                </ListContainer>        
+            </Container> 
+            <Pagination
+                    pages={pages}
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                />
+      </Wrapper>
   );
 };
 
@@ -148,14 +99,15 @@ const ListContainer = styled.div`
     width: 70%;
     height: 100%;
     margin-top: 28px;
-    justify-content: center; 
+    margin-left: 60px;
+    justify-content: start; 
 `;
 
 const CardList = styled.div`
     display: flex;
     width: 100%;
     height:640px;
-    justify-content: center; 
+    justify-content: start; 
     flex-wrap: wrap;
 `;
 
@@ -202,7 +154,7 @@ const Info = styled.div`
 `;
 
 const ProductName = styled.div`
-    width: 100px;
+    width: 150px;
     height: 19px;
     margin-bottom: 5px;
     font-size: 16px;
@@ -210,7 +162,7 @@ const ProductName = styled.div`
 `;
 
 const ProductPrice = styled.div`
-    width: 66px;
+    width: 86px;
     height: 17px;
     margin-bottom: 5px;
     font-size: 14px;
@@ -218,7 +170,7 @@ const ProductPrice = styled.div`
 `;
 
 const ProductDescription = styled.div`
-    width: 100px;
+    width: 170px;
     height: 17px;
     font-size: 14px;
     font-weight: bold;
