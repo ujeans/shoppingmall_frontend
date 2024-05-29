@@ -47,7 +47,9 @@ const OrderDetailsList = ({ orderItems }) => {
             <OrderDate>{formattedDate}</OrderDate>
             <OrderDetailsItem>
               <Image src={item.imageUrl} alt={item.productName} />
-              <div>{item.productName}</div>
+              <div>
+                {item.productName} 외<Quantity>{item.quantity}</Quantity>건
+              </div>
             </OrderDetailsItem>
             <OrderNumberItem>{orderNumber}</OrderNumberItem>
             <PaymentAmount>{totalPayment.toLocaleString()}원</PaymentAmount>
@@ -106,4 +108,8 @@ const Image = styled.img`
   height: 80px;
   margin-right: 15px;
   background-color: #f4f4f4;
+`;
+
+const Quantity = styled.span`
+  font-weight: bold;
 `;
