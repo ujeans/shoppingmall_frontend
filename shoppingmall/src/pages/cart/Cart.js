@@ -1,27 +1,48 @@
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
 import EmptyContentLayout from "../../components/commom/EmptyContentLayout";
 import FilledCart from "../../components/cart/FilledCart";
-// hooks
-import useFetchData from "../../hooks/useFetchData";
+// styles
 import { LoadingSpinner } from "../../style/CommonStyles";
 
 const Cart = () => {
   const userId = 15;
   const cartUrl = `${process.env.REACT_APP_API_URL}/cart/${userId}`;
+  const navigate = useNavigate();
 
-  const {
-    data: cartItems,
-    loading,
-    error,
-    setData: setCartItems,
-  } = useFetchData(cartUrl);
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [allChecked, setAllChecked] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await fetch(cartUrl, {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setCartItems(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCartItems();
+  }, [cartUrl]);
 
   useEffect(() => {
     if (cartItems.length > 0) {
@@ -79,38 +100,36 @@ const Cart = () => {
         totalPrice: item.price * item.quantity,
       };
 
-      console.log("orderData: ", orderData);
+      console.log("orderData before fetch: ", orderData);
 
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/order/${item.cartItemId}`,
+          `${process.env.REACT_APP_API_URL}/order/${item.cartItemId}`, // URL에 카트 아이템 ID 포함
           {
             method: "POST",
             headers: {
               Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(orderData),
+            body: JSON.stringify(orderData), // JSON으로 변환하여 body에 담기
           }
         );
 
-        const text = await response.text();
+        const data = await response.json();
+        console.log("Response data: ", data);
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status} - ${text}`);
+          throw new Error(
+            `HTTP error! status: ${response.status} - ${data.message}`
+          );
         }
 
-        try {
-          const data = JSON.parse(text);
-          orderedItems.push(data);
-        } catch (e) {
-          orderedItems.push({ message: text });
-        }
+        orderedItems.push(data);
       } catch (error) {
         console.error("Error placing order:", error);
+        orderedItems.push({ message: error.message });
       }
     }
-    console.log("orderedItems", orderedItems);
-
+    console.log("orderedItems after fetch: ", orderedItems);
     return orderedItems;
   };
 
