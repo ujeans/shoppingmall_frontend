@@ -10,13 +10,10 @@ const OrderAmount = ({ product, totalPrice, onOrder }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const navigateToPage = async () => {
-    const orderItems = await onOrder();
-    navigate("/order-details", { state: { orderItems } });
-  };
-
-  const openModal = () => {
-    setIsOpen(!isOpen);
+  const handleOrder = async () => {
+    const orderedItems = await onOrder();
+    console.log("Checkout Ordered Items: ", orderedItems); // 주문된 아이템 로그
+    // openModal();
   };
 
   return (
@@ -26,7 +23,7 @@ const OrderAmount = ({ product, totalPrice, onOrder }) => {
       ) : (
         <>
           <OrderPrice>{totalPrice.toLocaleString()}원</OrderPrice>
-          <BlackBtn padding="10px 12px" onClick={openModal}>
+          <BlackBtn padding="10px 12px" onClick={handleOrder}>
             BUY NOW
           </BlackBtn>
         </>
@@ -39,7 +36,7 @@ const OrderAmount = ({ product, totalPrice, onOrder }) => {
           }}
           title="결제금액"
           subText={`총 결제 금액: ${totalPrice.toLocaleString()}원, 결제하시겠습니까?`}
-          navigateToPage={navigateToPage}
+          // navigateToPage={navigateToPage}
         />
       )}
     </Container>

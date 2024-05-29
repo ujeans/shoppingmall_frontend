@@ -23,6 +23,9 @@ const OrderDetailsPage = () => {
     orderItems: [],
   };
 
+  console.log("OrderDetailsPage - stateOrderItems: ", stateOrderItems);
+  console.log("OrderDetailsPage - orderItems: ", orderItems);
+
   if (loading) {
     return (
       <LoadingSpinner>
@@ -37,6 +40,8 @@ const OrderDetailsPage = () => {
 
   const itemsToDisplay =
     stateOrderItems.length > 0 ? stateOrderItems : orderItems;
+
+  console.log("OrderDetailsPage - itemsToDisplay: ", itemsToDisplay);
 
   return (
     <ContentLayout title={"주문내역"} width="1000px">

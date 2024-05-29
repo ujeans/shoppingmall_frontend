@@ -7,12 +7,10 @@ import FilledCart from "../../components/cart/FilledCart";
 // hooks
 import useFetchData from "../../hooks/useFetchData";
 import { LoadingSpinner } from "../../style/CommonStyles";
-import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const userId = 15;
   const cartUrl = `${process.env.REACT_APP_API_URL}/cart/${userId}`;
-  const navigate = useNavigate();
 
   const {
     data: cartItems,
@@ -69,17 +67,30 @@ const Cart = () => {
     const selectedItems = cartItems.filter(item => item.checked);
     const orderedItems = [];
 
+    console.log("Selected Items: ", selectedItems);
     for (const item of selectedItems) {
+      console.log("item", item);
+      const orderData = {
+        cartItemId: item.cartItemId,
+        quantity: item.quantity,
+        price: item.price,
+        productName: item.productName,
+        imageUrl: item.imageUrl,
+        totalPrice: item.price * item.quantity,
+      };
+
+      console.log("orderData: ", orderData);
+
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/cart/${item.cartItemId}`,
+          `${process.env.REACT_APP_API_URL}/order/${item.cartItemId}`,
           {
             method: "POST",
             headers: {
               Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(item),
+            body: JSON.stringify(orderData),
           }
         );
 
@@ -98,6 +109,8 @@ const Cart = () => {
         console.error("Error placing order:", error);
       }
     }
+    console.log("orderedItems", orderedItems);
+
     return orderedItems;
   };
 

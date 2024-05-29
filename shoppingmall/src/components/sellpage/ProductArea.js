@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ModifyIcon from "../../assets/modify.svg";
+import ModifyIcon from "../../assets/Modify.svg";
 import ModifyHIcon from "../../assets/modifyh.svg";
 
 const ProductArea = () => {
@@ -60,7 +60,7 @@ const ProductArea = () => {
   ];
 
   // 제품 수정 함수
-  const handleProductEdit = (index) => {
+  const handleProductEdit = index => {
     // 여기서 제품 수정 로직을 구현합니다.
     console.log(`제품 수정: ${products[index].title}`);
   };
