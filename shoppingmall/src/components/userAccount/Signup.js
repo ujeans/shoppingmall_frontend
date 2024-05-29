@@ -20,7 +20,6 @@ const Signup = () => {
     email: "",
     password: "",
     passwordCheck: "",
-    name: "",
     phone: "",
     addr: "",
     nickname: "",
@@ -50,7 +49,6 @@ const Signup = () => {
       password: !user.password || !isValidPassword(user.password),
       passwordCheck:
         !user.passwordCheck || user.password !== user.passwordCheck,
-      name: !user.name,
       phone: !user.phone || !isValidPhone(user.phone),
       addr: !user.addr,
       nickname: !user.nickname,
@@ -63,7 +61,6 @@ const Signup = () => {
     email: false,
     password: false,
     passwordCheck: false,
-    name: false,
     phone: false,
     addr: false,
     nickname: false,
@@ -85,7 +82,6 @@ const Signup = () => {
         body: JSON.stringify({
           email: user.email,
           user_password: user.password,
-          // user_name: user.name,
           user_phone: user.phone,
           user_addr: user.addr,
           user_nickname: user.nickname,
@@ -175,16 +171,6 @@ const Signup = () => {
             onChange={handleInputChange}
             error={fieldErrors.passwordCheck}
             errorMessage={"비밀번호가 일치하지 않습니다."}
-          />
-
-          <InputField
-            iconSrc={people}
-            placeholder="이름"
-            value={user.name}
-            name="name"
-            onChange={handleInputChange}
-            error={fieldErrors.name}
-            errorMessage={"이름을 입력해주세요"}
           />
 
           <InputField
