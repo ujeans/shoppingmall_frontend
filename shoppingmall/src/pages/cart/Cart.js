@@ -84,55 +84,6 @@ const Cart = () => {
     setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
   };
 
-  const handleOrder = async () => {
-    const selectedItems = cartItems.filter(item => item.checked);
-    const orderedItems = [];
-
-    console.log("Selected Items: ", selectedItems);
-    for (const item of selectedItems) {
-      console.log("item", item);
-      const orderData = {
-        cartItemId: item.cartItemId,
-        quantity: item.quantity,
-        price: item.price,
-        productName: item.productName,
-        imageUrl: item.imageUrl,
-        totalPrice: item.price * item.quantity,
-      };
-
-      console.log("orderData before fetch: ", orderData);
-
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/order/${item.cartItemId}`, // URL에 카트 아이템 ID 포함
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(orderData), // JSON으로 변환하여 body에 담기
-          }
-        );
-
-        const data = await response.json();
-        console.log("Response data: ", data);
-        if (!response.ok) {
-          throw new Error(
-            `HTTP error! status: ${response.status} - ${data.message}`
-          );
-        }
-
-        orderedItems.push(data);
-      } catch (error) {
-        console.error("Error placing order:", error);
-        orderedItems.push({ message: error.message });
-      }
-    }
-    console.log("orderedItems after fetch: ", orderedItems);
-    return orderedItems;
-  };
-
   if (loading) {
     return (
       <LoadingSpinner>
@@ -159,7 +110,7 @@ const Cart = () => {
           onDeleteSelected={handleDeleteSelected}
           onDeleteSoldOut={handleDeleteSoldOut}
           onDeleteItem={handleDeleteItem}
-          onOrder={handleOrder}
+          // onOrder={handleOrder}
         />
       )}
     </ContentLayout>

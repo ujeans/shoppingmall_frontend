@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // assets
 import checkbox from "../../../assets/checkbox.svg";
@@ -9,13 +9,7 @@ import Info from "./Info";
 import Count from "./Count";
 import OrderAmount from "./OrderAmount";
 
-const ProductList = ({
-  cartItems,
-  setCartItems,
-  onDeleteItem,
-  onOrder,
-  // navigate,
-}) => {
+const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
   const [count, setCount] = useState(
     cartItems.reduce((acc, item) => {
       acc[item.cartItemId] = item.quantity;
@@ -44,6 +38,10 @@ const ProductList = ({
     );
   };
 
+  const removeItem = id => {
+    setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
+  };
+
   return (
     <>
       {cartItems.map(product => {
@@ -61,6 +59,7 @@ const ProductList = ({
               </Checkbox>
               <Info product={product} onDeleteItem={onDeleteItem} />
               <Count
+                product={product}
                 quantity={product.quantity}
                 onUpdateCount={newCount =>
                   updateCount(product.cartItemId, newCount)
@@ -71,6 +70,7 @@ const ProductList = ({
                 product={product}
                 totalPrice={totalPrice}
                 onOrder={onOrder}
+                onRemoveItem={() => removeItem(product.cartItemId)}
               />
             </Wrapper>
           </Container>
