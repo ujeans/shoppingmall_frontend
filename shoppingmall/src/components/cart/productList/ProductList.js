@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // assets
 import checkbox from "../../../assets/checkbox.svg";
@@ -38,6 +38,10 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
     );
   };
 
+  const removeItem = id => {
+    setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
+  };
+
   return (
     <>
       {cartItems.map(product => {
@@ -46,10 +50,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
         return (
           <Container key={product.cartItemId}>
             <Wrapper>
-              <Checkbox
-                onClick={() => toggleCheck(product.cartItemId)}
-                checked={product.checked}
-              >
+              <Checkbox onClick={() => toggleCheck(product.cartItemId)}>
                 {product.checked ? (
                   <Icon src={checkedbox} />
                 ) : (
@@ -58,6 +59,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
               </Checkbox>
               <Info product={product} onDeleteItem={onDeleteItem} />
               <Count
+                product={product}
                 quantity={product.quantity}
                 onUpdateCount={newCount =>
                   updateCount(product.cartItemId, newCount)
@@ -68,6 +70,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem, onOrder }) => {
                 product={product}
                 totalPrice={totalPrice}
                 onOrder={onOrder}
+                onRemoveItem={() => removeItem(product.cartItemId)}
               />
             </Wrapper>
           </Container>
@@ -94,6 +97,7 @@ const Checkbox = styled.div`
   width: 6%;
   display: flex;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const Icon = styled.img`
