@@ -46,7 +46,6 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem }) => {
     <>
       {cartItems.map(product => {
         const totalPrice = product.price * product.quantity;
-
         return (
           <Container key={product.cartItemId}>
             <Wrapper>

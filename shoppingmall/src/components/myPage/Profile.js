@@ -1,14 +1,18 @@
 import styled from "styled-components";
 // assets
+import profile from "../../assets/profile.svg";
 // styles
 import { BlackBtn } from "../../style/CommonStyles";
 
 const Profile = ({ userInfo }) => {
+  const profileImage = userInfo.user_img ? userInfo.user_img : profile;
+
+  console.log(userInfo);
   return (
     <Container>
       <Wrapper>
         <ProfileLeftBox>
-          <ProfileImg src={userInfo.user_img} />
+          <ProfileImg src={profileImage} alt="Profile Image" />
           <NickName>{userInfo.user_nickname}</NickName>
         </ProfileLeftBox>
         <BlackBtn padding="10px 25px">사진 변경</BlackBtn>

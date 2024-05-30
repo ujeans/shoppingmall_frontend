@@ -6,7 +6,7 @@ const Info = ({ product, onDeleteItem }) => {
   return (
     <Container>
       <Wrapper>
-        <Image />
+        <Image src={product.imageUrl} alt={product.productName} />
         <InfoBox>
           <Nickname>{product.userNickname}</Nickname>
           <Name>{product.productName}</Name>
