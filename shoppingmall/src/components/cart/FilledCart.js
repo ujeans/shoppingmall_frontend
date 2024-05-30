@@ -36,6 +36,7 @@ const FilledCart = ({
     navigate("/");
   };
 
+  console.log(cartItems);
   const handleCheckout = async () => {
     try {
       const postResponse = await fetch(
@@ -59,6 +60,7 @@ const FilledCart = ({
         throw new Error("전체 결제 요청 실패");
       }
 
+      await Promise.all(cartItems.map(item => onDeleteItem(item.cartItemId)));
       setIsOpen(true);
     } catch (error) {
       console.error("결제 처리 중 오류가 발생했습니다:", error);

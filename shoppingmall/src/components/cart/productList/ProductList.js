@@ -38,10 +38,6 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem }) => {
     );
   };
 
-  // const removeItem = id => {
-  //   setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
-  // };
-
   return (
     <>
       {cartItems.map(product => {

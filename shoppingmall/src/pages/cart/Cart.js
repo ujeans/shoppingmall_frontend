@@ -71,14 +71,6 @@ const Cart = () => {
     );
   };
 
-  const handleDeleteSelected = () => {
-    setCartItems(prevItems => prevItems.filter(item => !item.checked));
-  };
-
-  const handleDeleteSoldOut = () => {
-    setCartItems(prevItems => prevItems.filter(item => item.stock !== 0));
-  };
-
   const handleDeleteItem = async id => {
     try {
       const response = await fetch(
@@ -101,6 +93,18 @@ const Cart = () => {
     } catch (error) {
       console.error("상품 삭제 중 오류가 발생했습니다:", error);
     }
+  };
+
+  const handleDeleteSelected = async () => {
+    const selectedItems = cartItems.filter(item => item.checked);
+    await Promise.all(
+      selectedItems.map(item => handleDeleteItem(item.cartItemId))
+    );
+    setCartItems(prevItems => prevItems.filter(item => !item.checked));
+  };
+
+  const handleDeleteSoldOut = () => {
+    setCartItems(prevItems => prevItems.filter(item => item.stock !== 0));
   };
 
   if (loading) {
