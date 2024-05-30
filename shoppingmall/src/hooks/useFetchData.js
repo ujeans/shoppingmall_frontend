@@ -26,7 +26,24 @@ const useFetchData = (url, method = "GET", body = null) => {
         if (!contentType.includes("application/json"))
           throw new TypeError(`Non-JSON response`);
 
-        setData(await response.json());
+        const result = await response.json();
+
+        // Check if result is an array
+        if (Array.isArray(result)) {
+          // Base64 이미지 데이터를 이미지 URL로 변환
+          const itemsWithImages = result.map(item => {
+            if (item.imageBase64) {
+              return {
+                ...item,
+                imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
+              };
+            }
+            return item;
+          });
+          setData(itemsWithImages);
+        } else {
+          setData(result);
+        }
       } catch (error) {
         setError(error);
       } finally {

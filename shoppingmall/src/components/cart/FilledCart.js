@@ -36,7 +36,6 @@ const FilledCart = ({
     navigate("/");
   };
 
-  console.log(cartItems);
   const handleCheckout = async () => {
     try {
       const postResponse = await fetch(

@@ -32,7 +32,14 @@ const Cart = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setCartItems(data);
+
+        // Base64 이미지 데이터를 이미지 URL로 변환하여 상태에 저장
+        const itemsWithImages = data.map(item => ({
+          ...item,
+          imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
+        }));
+
+        setCartItems(itemsWithImages);
       } catch (error) {
         setError(error);
       } finally {

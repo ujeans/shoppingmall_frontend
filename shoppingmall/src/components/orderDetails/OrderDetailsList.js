@@ -44,7 +44,10 @@ const OrderDetailsList = ({ orderItems }) => {
           <ListWrapper key={index}>
             <OrderDate>{formattedDate}</OrderDate>
             <OrderDetailsItem>
-              <Image src={item.imageUrl} alt={item.productName} />
+              <Image
+                src={`data:image/jpeg;base64,${item.base64Image}`}
+                alt={item.productName}
+              />
               <div>
                 {item.productName} 외<Quantity>{item.quantity}</Quantity>건
               </div>
