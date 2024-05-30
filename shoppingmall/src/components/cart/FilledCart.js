@@ -59,15 +59,15 @@ const FilledCart = ({
         throw new Error("전체 결제 요청 실패");
       }
 
-      await Promise.all(cartItems.map(item => onDeleteItem(item.cartItemId)));
       setIsOpen(true);
     } catch (error) {
       console.error("결제 처리 중 오류가 발생했습니다:", error);
     }
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = async () => {
     setIsOpen(false);
+    await Promise.all(cartItems.map(item => onDeleteItem(item.cartItemId))); // 모달이 닫힌 후에 아이템 삭제
     setCartItems([]);
   };
 

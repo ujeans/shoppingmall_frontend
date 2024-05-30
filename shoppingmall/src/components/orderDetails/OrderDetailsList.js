@@ -11,7 +11,7 @@ const OrderDetailsList = ({ orderItems }) => {
         .split("T")[0]
         .replace(/-/g, "");
     } catch (error) {
-      formattedDate = "00000000"; // 기본값
+      formattedDate = "00000000";
     }
     return `ORD${formattedDate}-${String(orderId).padStart(7, "0")}`;
   };

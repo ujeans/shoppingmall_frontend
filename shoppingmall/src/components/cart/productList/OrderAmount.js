@@ -21,8 +21,6 @@ const OrderAmount = ({ product, totalPrice, onDeleteItem }) => {
       totalAmount: totalPrice,
     };
 
-    console.log(product);
-
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/order/${product.cartItemId}`,
@@ -40,11 +38,20 @@ const OrderAmount = ({ product, totalPrice, onDeleteItem }) => {
         throw new Error("결제에 실패했습니다.");
       }
 
-      await onDeleteItem(product.cartItemId);
       setIsOpen(true);
     } catch (error) {
       console.error("결제 요청 중 오류가 발생했습니다:", error);
     }
+  };
+
+  const handleCloseModal = async () => {
+    setIsOpen(false);
+    await onDeleteItem(product.cartItemId);
+  };
+
+  const handleConfirm = async () => {
+    await onDeleteItem(product.cartItemId);
+    navigateToPage();
   };
 
   return (
@@ -62,12 +69,11 @@ const OrderAmount = ({ product, totalPrice, onDeleteItem }) => {
       {isOpen && (
         <Modal
           open={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-          }}
+          onClose={handleCloseModal}
           title="결제금액"
           subText={`총 결제 금액: ${totalPrice.toLocaleString()}원, 결제되었습니다. 홈으로 이동하시겠습니까?`}
-          navigateToPage={navigateToPage}
+          nnavigateToPage={navigateToPage}
+          onConfirm={handleConfirm}
         />
       )}
     </Container>
