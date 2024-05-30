@@ -1,11 +1,10 @@
 import React from "react";
-import ItemList from "../../components/itemList/ItemList";
-
+import ProductList from "../../components/productList/ProductList";
 
 const ProductListPage = () => {
   return (
     <>
-      <ItemList />
+      <ProductList />
     </>
   );
 };

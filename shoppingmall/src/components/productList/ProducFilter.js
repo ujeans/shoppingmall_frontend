@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { theme } from "../../style/theme";
-import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
 import styled from "styled-components";
 
 // svg
 import pencil from "../../assets/pencil.svg";
 import categorydropdown from "../../assets/categorydropdown.svg";
 import Modal from "../commom/Modal/Modal";
+import { BlackBtn } from "../../style/CommonStyles";
 
 const ProducFilter = () => {
     const navigate = useNavigate();
@@ -43,7 +43,7 @@ const ProducFilter = () => {
       setBtnActive(idx);
     };
     return (
-        <FilterContainer>
+          <FilterContainer>
             <LeftButtons>
                 <Menu onClick={() => handleClickButton(0)} isActive={btnActive === 0}>
                     추천순
@@ -84,7 +84,7 @@ const ProducFilter = () => {
                   subText="로그인 페이지로 이동하시겠습니까?" 
                   navigateToPage={navigateToPage}/>
           )}
-        </FilterContainer>
+      </FilterContainer>
     );
 };
 
