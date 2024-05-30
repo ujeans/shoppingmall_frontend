@@ -6,10 +6,9 @@ const PaginationArea = ({
   currentPageNum,
   size,
   sort,
-  setProductList,
   pageNum,
   Filerender,
-
+  ListData,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [images, setImages] = useState([]);
@@ -17,34 +16,6 @@ const PaginationArea = ({
   const maxPages = 8;
   useEffect(() => {
     if (pageNum == 1) {
-      const fetchData = async () => {
-        try {
-          const params = new URLSearchParams();
-          params.append("page", currentPage);
-          params.append("size", maxPages);
-          params.append("sort", "asc");
-
-          const url = `${
-            process.env.REACT_APP_API_URL
-          }/product?${params.toString()}`;
-          const options = {
-            method: "GET",
-          };
-
-          const response = await fetch(url, options);
-          if (!response.ok) {
-            throw new Error("상품 정보를 가져오는데 실패했습니다.");
-          }
-          const data = await response.json();
-          console.log(data);
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      };
-
-      fetchData();
-    } else if (pageNum == 2) {
-
       const fetchData = () => {
         const token = localStorage.getItem("login-token");
         const params = new URLSearchParams(); // 39번 userId로 대체될 예정
@@ -54,8 +25,7 @@ const PaginationArea = ({
 
         const url = `${
           process.env.REACT_APP_API_URL
-        }/products/user/39?${params.toString()}`; // 39번 userId로 대체될 예정
-
+        }/product?${params.toString()}`; // 39번 userId로 대체될 예정
         const options = {
           method: "GET",
           headers: {
@@ -64,21 +34,21 @@ const PaginationArea = ({
         };
 
         fetch(url, options)
-          .then((response) => {
+          .then(response => {
             if (!response.ok) {
               throw new Error("상품 정보를 가져오는데 실패했습니다.");
             }
             return response.json();
           })
-          .then((data) => {
+          .then(data => {
             console.log("Success:", data);
             // Base64 이미지 데이터를 이미지 URL로 변환하여 상태에 저장
-            const imagesArray = data.map((item) => ({
+            const imagesArray = data.map(item => ({
               imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
               alt: item.productName,
             }));
             setImages(imagesArray);
-            const newData = data.map((item) => ({
+            const newData = data.map(item => ({
               files: `data:image/jpeg;base64,${item.imageBase64}`,
               title: item.productName,
               price: item.price,
@@ -90,7 +60,7 @@ const PaginationArea = ({
             }));
             ListData(newData);
           })
-          .catch((error) => {
+          .catch(error => {
             console.error("Error:", error);
           });
       };
@@ -114,21 +84,21 @@ const PaginationArea = ({
         };
 
         fetch(url, options)
-          .then((response) => {
+          .then(response => {
             if (!response.ok) {
               throw new Error("상품 정보를 가져오는데 실패했습니다.");
             }
             return response.json();
           })
-          .then((data) => {
+          .then(data => {
             console.log("Success:", data);
             // Base64 이미지 데이터를 이미지 URL로 변환하여 상태에 저장
-            const imagesArray = data.map((item) => ({
+            const imagesArray = data.map(item => ({
               imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
               alt: item.productName,
             }));
             setImages(imagesArray);
-            const newData = data.map((item) => ({
+            const newData = data.map(item => ({
               files: `data:image/jpeg;base64,${item.imageBase64}`,
               title: item.productName,
               price: item.price,
@@ -140,7 +110,7 @@ const PaginationArea = ({
             }));
             Filerender(newData);
           })
-          .catch((error) => {
+          .catch(error => {
             console.error("Error:", error);
           });
       };
@@ -150,7 +120,7 @@ const PaginationArea = ({
 
   const totalPages = maxPages; // 총 페이지 수
 
-  const onPageChange = (page) => {
+  const onPageChange = page => {
     if (page >= 0 && page <= totalPages) {
       setCurrentPage(page);
       console.log(`Page changed to ${page}`);
@@ -234,18 +204,18 @@ const PageButton = styled.div`
   border: 1px solid #ccc;
   border-radius: 5px;
   margin: 5px;
-  background-color: ${(props) => (props.isActive ? "black" : "#f4f4f4")};
-  color: ${(props) => (props.isActive ? "white" : "#858585")};
+  background-color: ${props => (props.isActive ? "black" : "#f4f4f4")};
+  color: ${props => (props.isActive ? "white" : "#858585")};
   cursor: pointer;
 
   &:hover {
     background-color: black;
-    color: ${(props) => props.theme.mainColor};
+    color: ${props => props.theme.mainColor};
   }
 `;
 
 const ArrowIcon = styled.img`
   width: 7px;
   height: 15px;
-  transform: ${(props) => (props.flipped ? "scaleX(-1)" : "none")};
+  transform: ${props => (props.flipped ? "scaleX(-1)" : "none")};
 `;
