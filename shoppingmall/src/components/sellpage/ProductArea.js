@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import ModifyIcon from "../../assets/modify.svg";
+import ModifyIcon from "../../assets/Modify.svg";
 import ModifyHIcon from "../../assets/modifyh.svg";
 
 const ProductArea = () => {
@@ -23,40 +23,40 @@ const ProductArea = () => {
       };
 
       fetch(url, options)
-        .then((response) => {
+        .then(response => {
           if (!response.ok) {
             throw new Error("상품 정보를 가져오는데 실패했습니다.");
           }
           return response.json();
         })
-        .then((data) => {
+        .then(data => {
           console.log("Success:", data);
           // Base64 이미지 데이터를 이미지 URL로 변환하여 상태에 저장
-          const imagesArray = data.map((item) => ({
+          const imagesArray = data.map(item => ({
             imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
             alt: item.productName,
           }));
           setImage(imagesArray);
 
-          const titlesArray = data.map((item) => item.productName);
+          const titlesArray = data.map(item => item.productName);
           setTitle(titlesArray);
 
-          const pricesArray = data.map((item) => item.price);
+          const pricesArray = data.map(item => item.price);
           setPrice(pricesArray);
 
-          const descriptionsArray = data.map((item) => item.description);
+          const descriptionsArray = data.map(item => item.description);
           setDescription(descriptionsArray);
 
-          const startDatesArray = data.map((item) => item.startDate);
+          const startDatesArray = data.map(item => item.startDate);
           setStartDate(startDatesArray);
 
-          const endDatesArray = data.map((item) => item.endDate);
+          const endDatesArray = data.map(item => item.endDate);
           setEndDate(endDatesArray);
 
-          const stocksArray = data.map((item) => item.stock);
+          const stocksArray = data.map(item => item.stock);
           setStock(stocksArray);
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("Error:", error);
         });
     }
