@@ -14,18 +14,18 @@ const ProductList = () => {
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/product`)
-      .then(response => response.json())
-      .then(json => setProductList([...json]));
+      .then((response) => response.json())
+      .then((json) => setProductList([...json]));
   }, []);
 
   const productsPerRow = 4;
   const pages = [1, 2, 3, 4, 5];
 
-  const onPageChange = page => {
+  const onPageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const clickProduct = productId => {
+  const clickProduct = (productId) => {
     navigate(`/product/${productId}`, { state: { productId: productId } });
   };
 
@@ -35,7 +35,7 @@ const ProductList = () => {
         <ProducFilter />
         <ListContainer>
           <CardList>
-            {productList.map(product => (
+            {productList.map((product) => (
               <Item
                 key={product.productId}
                 productsPerRow={productsPerRow}

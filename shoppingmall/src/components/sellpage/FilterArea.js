@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const FilterArea = () => {
+const FilterArea = ({ onFilterClick }) => {
   const [isActive, setIsActive] = useState(false);
 
-  const toggleSellingStatus = () => {
+  const handleClick = () => {
+    // 필터 클릭 시 SellPage로 값을 전달
+
     setIsActive((prevStatus) => !prevStatus);
-    console.log("판매중 필터 클릭");
+    const dataToSend = isActive;
+    onFilterClick(dataToSend);
   };
 
   return (
     <Wrapper>
       <ButtonContainer>
-        <FilterButton onClick={toggleSellingStatus} isActive={isActive}>
+        <FilterButton onClick={handleClick} isActive={isActive}>
           판매중
         </FilterButton>
       </ButtonContainer>
