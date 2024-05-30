@@ -1,29 +1,39 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Pagination from "../sellpage/PaginationArea";
+import PaginationArea from "../sellpage/PaginationArea";
 import ProducFilter from "./ProducFilter";
 // svg
 import unlike from "../../assets/unlike.svg";
 
 const ProductList = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const productId = searchParams.get("productId");
+  const productsPerRow = 4;
+  const size = 8;
+  const pages = [1, 2, 3, 4, 5];
+  const [currentPageNum, setCurrentPageNum] = useState(1);
+  const [sort, setSort] = useState("asc");
+  const [images, setImages] = useState([]);
   const [productList, setProductList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/product`)
-      .then(response => response.json())
-      .then(json => setProductList([...json]));
-  }, []);
-
-  const productsPerRow = 4;
-  const pages = [1, 2, 3, 4, 5];
-
-  const onPageChange = page => {
-    setCurrentPage(page);
-  };
+    fetch(`${process.env.REACT_APP_API_URL}/product?page=${currentPageNum}&sort=${sort}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data: " + data);
+        setProductList(data);
+        const imagesArray = data.map((item) => ({
+          imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
+          alt: item.productName,
+        }));
+        setImages(imagesArray);
+      })
+      .catch((error) => console.error("Error fetching data", error));
+  }, [currentPageNum, sort]);
 
   const clickProduct = productId => {
     navigate(`/product/${productId}`, { state: { productId: productId } });
@@ -43,14 +53,18 @@ const ProductList = () => {
               >
                 <ImageWrapper>
                   <Image
-                    src="https://via.placeholder.com/250/#D9D9D9"
+                    // src="https://via.placeholder.com/250/#D9D9D9"
+                    src={`data:image/jpeg;base64,${product.imageBase64}`}
                     alt={product.productName}
+                    onClick={() => clickProduct(product.productId)}
                   />
                 </ImageWrapper>
                 <InfoWrapper>
                   <Info>
                     <ProductName>
-                      {product.productName}{" "}
+                      <div onClick={() => clickProduct(product.productId)}>
+                        {product.productName}
+                      </div>
                       <IconWrapper>
                         <Icon src={unlike} />
                       </IconWrapper>
@@ -70,10 +84,12 @@ const ProductList = () => {
             ))}
           </CardList>
         </ListContainer>
-        <Pagination
-          pages={pages}
-          currentPage={currentPage}
-          onPageChange={onPageChange}
+        <PaginationArea
+          currentPageNum={currentPageNum}
+          size={size}
+          sort={sort}
+          onPageChange={currentPageNum}
+          setProductList={setProductList}
         />
       </Wrapper>
     </Container>
@@ -122,6 +138,7 @@ const Item = styled.div`
 
 const ImageWrapper = styled.div`
   width: 100%;
+  // height: 100%;
 `;
 
 const Image = styled.img`
