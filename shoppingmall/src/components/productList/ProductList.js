@@ -7,7 +7,7 @@ import ProducFilter from "./ProducFilter";
 // svg
 import unlike from "../../assets/unlike.svg";
 
-const ItemList = () => {
+const ProductList = () => {
   const navigate = useNavigate();
   const [productList, setProductList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -80,7 +80,7 @@ const ItemList = () => {
   );
 };
 
-export default ItemList;
+export default ProductList;
 
 const Container = styled.div`
   width: 100%;

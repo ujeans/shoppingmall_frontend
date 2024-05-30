@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { theme } from "../../style/theme";
-import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
+import { BlackBtn } from "../../style/CommonStyles";
 import styled from "styled-components";
 
 // svg
