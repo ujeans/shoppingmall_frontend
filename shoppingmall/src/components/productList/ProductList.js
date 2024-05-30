@@ -26,12 +26,12 @@ const ProductList = () => {
     title: item.title,
     price: item.price,
     description: item.description,
+    productId: item.productId,
   }));
 
   const ListData = (data) => {
     setListData(data);
   };
-
 
   const clickProduct = (productId) => {
     navigate(`/product/${productId}`, { state: { productId: productId } });
