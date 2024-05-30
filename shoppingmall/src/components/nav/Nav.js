@@ -89,7 +89,6 @@ const Wrapper = styled.div`
 const Title = styled.h2`
   font-weight: bold;
   font-size: 20px;
-  margin-left: 20px;
   cursor: pointer;
 `;
 
@@ -108,7 +107,6 @@ const LogoutButton = styled(BlackBtn)`
 `;
 
 const SignupButton = styled(BlackBtn)`
-  margin-right: 20px;
   cursor: pointer;
 `;
 
