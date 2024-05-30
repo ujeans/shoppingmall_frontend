@@ -18,24 +18,22 @@ const ProductList = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const [sort, setSort] = useState("asc");
   const [images, setImages] = useState([]);
-  const [productList, setProductList] = useState([]);
 
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/product?page=${currentPageNum}&sort=${sort}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("data: " + data);
-        setProductList(data);
-        const imagesArray = data.map((item) => ({
-          imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
-          alt: item.productName,
-        }));
-        setImages(imagesArray);
-      })
-      .catch((error) => console.error("Error fetching data", error));
-  }, [currentPageNum, sort]);
+  const [listData, setListData] = useState([]);
 
-  const clickProduct = productId => {
+  const products = listData.map((item) => ({
+    image: item.files,
+    title: item.title,
+    price: item.price,
+    description: item.description,
+  }));
+
+  const ListData = (data) => {
+    setListData(data);
+  };
+
+
+  const clickProduct = (productId) => {
     navigate(`/product/${productId}`, { state: { productId: productId } });
   };
 
@@ -45,7 +43,7 @@ const ProductList = () => {
         <ProducFilter />
         <ListContainer>
           <CardList>
-            {productList.map(product => (
+            {products.map((product) => (
               <Item
                 key={product.productId}
                 productsPerRow={productsPerRow}
@@ -53,9 +51,8 @@ const ProductList = () => {
               >
                 <ImageWrapper>
                   <Image
-                    // src="https://via.placeholder.com/250/#D9D9D9"
-                    src={`data:image/jpeg;base64,${product.imageBase64}`}
-                    alt={product.productName}
+                    src={product.image}
+                    alt={product.title}
                     onClick={() => clickProduct(product.productId)}
                   />
                 </ImageWrapper>
@@ -63,7 +60,7 @@ const ProductList = () => {
                   <Info>
                     <ProductName>
                       <div onClick={() => clickProduct(product.productId)}>
-                        {product.productName}
+                        {product.title}
                       </div>
                       <IconWrapper>
                         <Icon src={unlike} />
@@ -88,8 +85,9 @@ const ProductList = () => {
           currentPageNum={currentPageNum}
           size={size}
           sort={sort}
+          pageNum={1}
           onPageChange={currentPageNum}
-          setProductList={setProductList}
+          ListData={ListData}
         />
       </Wrapper>
     </Container>

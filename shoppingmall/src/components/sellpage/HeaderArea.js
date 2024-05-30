@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import LeftArrowIcon from "../../assets/leftarrow.svg";
-
+import { Navigate } from "react-router-dom";
 const HeaderArea = ({ text }) => {
+  const [handleArrow, setHandleArrow] = useState(false);
+
   const handleArrowClick = () => {
-    console.log("화살표 클릭 로직 구현");
+    setHandleArrow(true);
   };
+
+  if (handleArrow) {
+    return <Navigate to="/mypage" />;
+  }
 
   return (
     <Wrapper>
