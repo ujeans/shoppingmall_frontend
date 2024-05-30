@@ -28,9 +28,7 @@ const useFetchData = (url, method = "GET", body = null) => {
 
         const result = await response.json();
 
-        // Check if result is an array
         if (Array.isArray(result)) {
-          // Base64 이미지 데이터를 이미지 URL로 변환
           const itemsWithImages = result.map(item => {
             if (item.imageBase64) {
               return {

@@ -33,7 +33,6 @@ const Cart = () => {
         }
         const data = await response.json();
 
-        // Base64 이미지 데이터를 이미지 URL로 변환하여 상태에 저장
         const itemsWithImages = data.map(item => ({
           ...item,
           imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,

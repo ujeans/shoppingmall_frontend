@@ -67,7 +67,7 @@ const FilledCart = ({
 
   const handleCloseModal = async () => {
     setIsOpen(false);
-    await Promise.all(cartItems.map(item => onDeleteItem(item.cartItemId))); // 모달이 닫힌 후에 아이템 삭제
+    await Promise.all(cartItems.map(item => onDeleteItem(item.cartItemId)));
     setCartItems([]);
   };
 
