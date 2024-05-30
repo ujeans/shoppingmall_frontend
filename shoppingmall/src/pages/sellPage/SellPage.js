@@ -12,7 +12,6 @@ const SellPage = () => {
   //모달
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterAreaData, setFilterAreaData] = useState(true);
-
   const Filerender = (data) => {
     setPageData(data);
   };
