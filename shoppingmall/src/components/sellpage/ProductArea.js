@@ -2,36 +2,30 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ModifyIcon from "../../assets/modify.svg";
 import ModifyHIcon from "../../assets/modifyh.svg";
+import { Navigate } from "react-router-dom";
 
 const ProductArea = ({ ProductData }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [image, setImage] = useState([]);
-  const [title, setTitle] = useState([]);
-  const [price, setPrice] = useState([]);
-  const [description, setDescription] = useState([]);
-  const [startDate, setStartDate] = useState([]);
-  const [endDate, setEndDate] = useState([]);
-  const [stock, setStock] = useState([]);
+  const [nav, setnav] = useState(true);
 
   const products = ProductData.map((item) => ({
     image: item.files,
     title: item.title,
     price: item.price,
     description: item.description,
+    productId: item.productId,
   }));
 
   // 제품 수정 함수
-  const handleProductEdit = () => {
-    // 여기서 제품 수정 로직을 구현합니다.
-    const data = ProductData.map((item) => ({
-      image: item.files,
-      title: item.title,
-      price: item.price,
-      description: item.description,
-      productId: item.productId,
-    }));
-    console.log("제품 수정", data);
+  const handleProductEdit = (productId) => {
+    console.log("제품 수정", productId);
+    localStorage.setItem("productId", productId);
+    setnav(false);
   };
+
+  if (!nav) {
+    return <Navigate to="/modify" />;
+  }
 
   return (
     <Wrapper>
@@ -47,7 +41,7 @@ const ProductArea = ({ ProductData }) => {
               alt="수정"
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              onClick={handleProductEdit}
+              onClick={() => handleProductEdit(product.productId)}
             />
           </ProductInfo>
           <ProductPrice>{product.price}</ProductPrice>

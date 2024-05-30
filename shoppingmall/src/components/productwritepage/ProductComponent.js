@@ -21,6 +21,7 @@ const ProductComponent = ({ event }) => {
   const [files, setFiles] = useState([]);
   const [rawFiles, setRawFiles] = useState([]);
   const [images, setImages] = useState([]);
+  const [productData, setProductData] = useState({});
   //모달
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -37,7 +38,8 @@ const ProductComponent = ({ event }) => {
 
   useEffect(() => {
     if (event == 1) {
-      const url = `${process.env.REACT_APP_API_URL}/products/user/39`;
+      const productId = localStorage.getItem("productId");
+      const url = `${process.env.REACT_APP_API_URL}/product/${productId}`;
       const options = {
         method: "GET",
         headers: {
@@ -53,14 +55,31 @@ const ProductComponent = ({ event }) => {
           return response.json();
         })
         .then((data) => {
-          console.log("Success:", data);
-          // Base64 이미지 데이터를 이미지 URL로 변환하여 상태에 저장
-          const imagesArray = data.map((item) => ({
-            imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
-            alt: item.productName,
+          console.log("Success:", data); // 데이터를 제대로 가져왔는지 확인
+          const imagesArray = data.base64images.map((imageBase64) => ({
+            image: `data:image/jpeg;base64,${imageBase64}`,
           }));
           setImages(imagesArray);
+
+          const productInfo = {
+            title: data.productName,
+            price: data.price,
+            files: data.base64images,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            stock: data.stock,
+            description: data.description,
+          };
+          setProductData(productInfo);
+
+          const imageInfo = [];
+          imagesArray.forEach((item) => {
+            imageInfo.push(item.image);
+          });
+
+          setFiles(imageInfo);
         })
+
         .catch((error) => {
           console.error("Error:", error);
         });
@@ -368,29 +387,26 @@ const ProductComponent = ({ event }) => {
 
   return (
     <Wrapper>
-      {isModalOpen == true && (
-        <Modal
-          onClose={closeModal}
-          title="title"
-          subText="subTextsubText"
-          navigateToPage={navigateToPage}
-        />
-      )}
-
       <Container borderBottom="true">
-        <div>
-          {images.map((image, index) => (
-            <img key={index} src={image.imageUrl} alt={image.alt} />
-          ))}
-        </div>
+        {isModalOpen == true && (
+          <Modal
+            onClose={closeModal}
+            title="title"
+            subText="subTextsubText"
+            navigateToPage={navigateToPage}
+          />
+        )}
         <Content>
           <MainWrapper>
             <ProductName>상품명</ProductName>
+
             <ProductNameInput
               type="text"
               placeholder="상품명을 입력해주세요."
+              value={productData.title}
               onChange={(e) => setProductName(e.target.value)}
             />
+
             <ContentWrapper>
               <ImageWrapper>
                 <ProductName>이미지</ProductName>
@@ -423,6 +439,7 @@ const ProductComponent = ({ event }) => {
                 <Input
                   type="text"
                   placeholder="₩ 가격을 입력해주세요."
+                  value={productData.price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
                 <ProductName>판매 기간</ProductName>
@@ -434,6 +451,7 @@ const ProductComponent = ({ event }) => {
                     onChange={(date) => setStartDate(date)}
                     dateFormat="yyyy-MM-dd"
                     placeholderText="시작 날짜를 선택하세요."
+                    value={productData.startDate}
                   />
                   <Datetext>~</Datetext>
                   <DateIcon onClick={handleEDateIconClick} />
@@ -443,17 +461,20 @@ const ProductComponent = ({ event }) => {
                     onChange={(date) => setEndDate(date)}
                     dateFormat="yyyy-MM-dd"
                     placeholderText="종료 날짜를 선택하세요."
+                    value={productData.endDate}
                   />
                 </DateContainer>
                 <ProductName>재고</ProductName>
                 <Input
                   type="text"
                   placeholder="재고수량을 입력해주세요."
+                  value={productData.stock}
                   onChange={(e) => setStock(e.target.value)}
                 />
                 <ProductName>상세 설명</ProductName>
                 <TextArea
                   placeholder="게시글 내용을 작성해주세요."
+                  value={productData.description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </SubContentWrapper>
