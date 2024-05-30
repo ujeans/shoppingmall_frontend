@@ -6,7 +6,7 @@ import { BlackBtn } from "../../../style/CommonStyles";
 // components
 import Modal from "../../commom/Modal/Modal";
 
-const OrderAmount = ({ product, totalPrice, onRemoveItem }) => {
+const OrderAmount = ({ product, totalPrice, onDeleteItem }) => {
   const token = localStorage.getItem("login-token");
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +20,8 @@ const OrderAmount = ({ product, totalPrice, onRemoveItem }) => {
       quantity: product.quantity,
       totalAmount: totalPrice,
     };
+
+    console.log(product);
 
     try {
       const response = await fetch(
@@ -38,7 +40,7 @@ const OrderAmount = ({ product, totalPrice, onRemoveItem }) => {
         throw new Error("결제에 실패했습니다.");
       }
 
-      onRemoveItem();
+      await onDeleteItem(product.cartItemId);
       setIsOpen(true);
     } catch (error) {
       console.error("결제 요청 중 오류가 발생했습니다:", error);

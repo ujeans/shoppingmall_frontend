@@ -79,8 +79,28 @@ const Cart = () => {
     setCartItems(prevItems => prevItems.filter(item => item.stock !== 0));
   };
 
-  const handleDeleteItem = id => {
-    setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
+  const handleDeleteItem = async id => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/cart/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("상품 삭제에 실패했습니다.");
+      }
+
+      setCartItems(prevItems =>
+        prevItems.filter(item => item.cartItemId !== id)
+      );
+    } catch (error) {
+      console.error("상품 삭제 중 오류가 발생했습니다:", error);
+    }
   };
 
   if (loading) {

@@ -4,6 +4,8 @@ import minus from "../../../assets/minus.svg";
 import plus from "../../../assets/plus.svg";
 
 const Count = ({ quantity, onUpdateCount, disabled, product }) => {
+  const token = localStorage.getItem("login-token");
+
   const handleDecrease = async () => {
     if (!disabled && quantity > 1) {
       const newQuantity = product.quantity - 1;
@@ -31,7 +33,7 @@ const Count = ({ quantity, onUpdateCount, disabled, product }) => {
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(requestBody),

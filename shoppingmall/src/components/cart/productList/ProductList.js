@@ -38,9 +38,9 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem }) => {
     );
   };
 
-  const removeItem = id => {
-    setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
-  };
+  // const removeItem = id => {
+  //   setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
+  // };
 
   return (
     <>
@@ -68,7 +68,7 @@ const ProductList = ({ cartItems, setCartItems, onDeleteItem }) => {
               <OrderAmount
                 product={product}
                 totalPrice={totalPrice}
-                onRemoveItem={() => removeItem(product.cartItemId)}
+                onDeleteItem={onDeleteItem}
               />
             </Wrapper>
           </Container>
