@@ -18,9 +18,9 @@ const Login = () => {
     password: "",
   });
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setUser(user => ({
+    setUser((user) => ({
       ...user,
       [name]: value,
     }));
@@ -47,8 +47,6 @@ const Login = () => {
           user_password: user.password,
         }),
       })
-        .then(response => response.json())
-        .then(response => {
         .then((response) => response.json())
         .then((response) => {
           if (response.accessToken) {
