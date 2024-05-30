@@ -18,7 +18,6 @@ const ProductList = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const [sort, setSort] = useState("asc");
   const [images, setImages] = useState([]);
-
   const [listData, setListData] = useState([]);
 
   const products = listData.map((item) => ({
@@ -135,8 +134,9 @@ const Item = styled.div`
 `;
 
 const ImageWrapper = styled.div`
-  width: 100%;
-  // height: 100%;
+  width: 296px;
+  height: 300px;
+  background-color: gray;
 `;
 
 const Image = styled.img`
