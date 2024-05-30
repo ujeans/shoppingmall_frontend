@@ -1,15 +1,17 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { Navigate } from "react-router-dom";
 import dateIcon from "../../assets/date.svg";
 import plusIcon from "../../assets/plus.svg";
 import deleteIcon from "../../assets/delete.svg";
+import Modal from "../commom/Modal/Modal";
+import { BlackBtn } from "../../style/CommonStyles";
 
-import { BlackBtn, Container } from "../../style/CommonStyles";
+import { Container } from "../../style/CommonStyles";
 
-const ProductComponent = Route => {
+const ProductComponent = ({ event }) => {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
@@ -17,23 +19,91 @@ const ProductComponent = Route => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [files, setFiles] = useState([]);
+  const [rawFiles, setRawFiles] = useState([]);
+  const [images, setImages] = useState([]);
+  //모달
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const navigateToPage = () => {
+    return <Navigate to="/sell" />;
+  };
 
   const fileInputRef = useRef(null);
+  const token = localStorage.getItem("login-token");
+
+  useEffect(() => {
+    if (event == 1) {
+      const url = `${process.env.REACT_APP_API_URL}/products/user/35`;
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      fetch(url, options)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("상품 정보를 가져오는데 실패했습니다.");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Success:", data);
+          // Base64 이미지 데이터를 이미지 URL로 변환하여 상태에 저장
+          const imagesArray = data.map((item) => ({
+            imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
+            alt: item.productName,
+          }));
+          setImages(imagesArray);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, []);
+
+  if (!token) {
+    console.log("토큰이 유효하지 않습니다. 로그인 페이지로 이동");
+    return <Navigate to="/login" />;
+  }
+
   const maxfiles = 10;
   const remainingfiles = maxfiles - files.length;
 
-  const handleImageChange = e => {
+  const handleImageChange = (e) => {
     const files = e.target.files;
 
-    const promises = Array.from(files).map(file => {
+    const maxSize = 10 * 1024 * 1024; // 10MB
+
+    const formData = new FormData();
+    const newRawFiles = []; // 새로운 인코딩되지 않은 원본 파일을 저장하는 배열
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.size > maxSize) {
+        alert("파일 크기는 10MB를 초과할 수 없습니다.");
+        return;
+      }
+      formData.append("files", file); // FormData에는 인코딩된 파일을 추가
+      newRawFiles.push(file); // newRawFiles 배열에는 인코딩되지 않은 원본 파일을 추가
+    }
+
+    setRawFiles((prevRawFiles) => [...prevRawFiles, ...newRawFiles]);
+
+    const promises = Array.from(files).map((file) => {
       const reader = new FileReader();
 
       return new Promise((resolve, reject) => {
-        reader.onload = e => {
+        reader.onload = (e) => {
           resolve(e.target.result);
         };
 
-        reader.onerror = error => {
+        reader.onerror = (error) => {
           reject(error);
         };
 
@@ -42,25 +112,29 @@ const ProductComponent = Route => {
     });
 
     Promise.all(promises)
-      .then(results => {
-        setFiles(prevfiles => {
+      .then((results) => {
+        setFiles((prevfiles) => {
           const newfiles = [...prevfiles, ...results];
           if (newfiles.length > 10) {
             return newfiles.slice(newfiles.length - 10);
           }
+
           return newfiles;
         });
         fileInputRef.current.value = null;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("이미지를 읽는 동안 오류가 발생했습니다.", error);
       });
   };
 
-  const handleDeleteImage = index => {
-    const newfiles = [...files];
-    newfiles.splice(index, 1);
-    setFiles(newfiles);
+  const handleDeleteImage = (index) => {
+    const newFiles = [...files];
+    const newRawFiles = [...rawFiles]; // rawFiles 복사
+    newFiles.splice(index, 1); // 파일 삭제
+    newRawFiles.splice(index, 1); // rawFiles에서도 삭제
+    setFiles(newFiles); // 파일 상태 업데이트
+    setRawFiles(newRawFiles); // rawFiles 상태 업데이트
   };
 
   const renderfiles = () => {
@@ -72,26 +146,152 @@ const ProductComponent = Route => {
     ));
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
+  const handleSubmit = (e) => {
     // 유효성 검사
     const isValid = validateForm();
     if (!isValid) {
       return;
     }
 
-    const formData = {
-      productName,
-      price,
-      stock,
-      description,
-      startDate,
-      endDate,
-      files,
-    };
-    console.log("제출:", formData);
-    // 여기서 폼 데이터를 서버로 전송하는 작업을 수행할 수 있습니다.
+    if (event == 0) {
+      e.preventDefault();
+
+      // 유효성 검사
+      const isValid = validateForm();
+      if (!isValid) {
+        return;
+      }
+
+      const productOption = "임시옵션";
+
+      const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      };
+
+      const formattedStartDate = startDate ? formatDate(startDate) : null;
+      const formattedEndDate = endDate ? formatDate(endDate) : null;
+
+      const formData = new FormData();
+      formData.append("productName", productName);
+      formData.append("price", parseFloat(price));
+      formData.append("stock", parseFloat(stock));
+      formData.append("productOption", productOption);
+      formData.append("startDate", formattedStartDate);
+      formData.append("endDate", formattedEndDate);
+      formData.append("description", description);
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      rawFiles.forEach((file) => {
+        if (file.size > maxSize) {
+          alert("파일 크기는 10MB를 초과할 수 없습니다.");
+          throw new Error("파일 크기 초과");
+        }
+        formData.append(`files`, file);
+        console.log("파일 크기: ", file.size);
+      });
+
+      for (let [key, value] of formData.entries()) {
+        console.log(key + ", " + value);
+      }
+
+      const url = `${process.env.REACT_APP_API_URL}/products/register`;
+      const options = {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      };
+
+      fetch(url, options)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Success:", data);
+          setIsModalOpen(true);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else if (event == 1) {
+      // 수정 처리
+      e.preventDefault();
+
+      // 유효성 검사
+      const isValid = validateForm();
+      if (!isValid) {
+        return;
+      }
+
+      const productOption = "임시옵션";
+
+      const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      };
+
+      const formattedStartDate = startDate ? formatDate(startDate) : null;
+      const formattedEndDate = endDate ? formatDate(endDate) : null;
+
+      const productId = 64;
+
+      const url = `${process.env.REACT_APP_API_URL}/products/${productId}`;
+      const formData = new FormData();
+      formData.append("productName", productName);
+      formData.append("price", parseFloat(price));
+      formData.append("stock", parseFloat(stock));
+      formData.append("productOption", productOption);
+      formData.append("startDate", formattedStartDate);
+      formData.append("endDate", formattedEndDate);
+      formData.append("description", description);
+      formData.append("email", "user1@example.com");
+      formData.append("password", "Password12345");
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      rawFiles.forEach((file) => {
+        if (file.size > maxSize) {
+          alert("파일 크기는 10MB를 초과할 수 없습니다.");
+          throw new Error("파일 크기 초과");
+        }
+        formData.append(`files`, file);
+      });
+
+      for (let [key, value] of formData.entries()) {
+        console.log(key + ", " + value);
+      }
+
+      const options = {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      };
+
+      fetch(url, options)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Success:", data);
+          setIsModalOpen(true);
+          // 성공적으로 처리된 경우 사용자에게 알림 등을 추가할 수 있습니다.
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // 오류 발생 시 사용자에게 알림 등을 추가할 수 있습니다.
+        });
+    }
   };
 
   const handleSDateIconClick = () => {
@@ -168,14 +368,28 @@ const ProductComponent = Route => {
 
   return (
     <Wrapper>
+      {isModalOpen == true && (
+        <Modal
+          onClose={closeModal}
+          title="title"
+          subText="subTextsubText"
+          navigateToPage={navigateToPage}
+        />
+      )}
+
       <Container borderBottom="true">
+        <div>
+          {images.map((image, index) => (
+            <img key={index} src={image.imageUrl} alt={image.alt} />
+          ))}
+        </div>
         <Content>
           <MainWrapper>
             <ProductName>상품명</ProductName>
             <ProductNameInput
               type="text"
               placeholder="상품명을 입력해주세요."
-              onChange={e => setProductName(e.target.value)}
+              onChange={(e) => setProductName(e.target.value)}
             />
             <ContentWrapper>
               <ImageWrapper>
@@ -209,7 +423,7 @@ const ProductComponent = Route => {
                 <Input
                   type="text"
                   placeholder="₩ 가격을 입력해주세요."
-                  onChange={e => setPrice(e.target.value)}
+                  onChange={(e) => setPrice(e.target.value)}
                 />
                 <ProductName>판매 기간</ProductName>
                 <DateContainer>
@@ -217,7 +431,7 @@ const ProductComponent = Route => {
                   <StyledDatePicker
                     id="Sdate"
                     selected={startDate}
-                    onChange={date => setStartDate(date)}
+                    onChange={(date) => setStartDate(date)}
                     dateFormat="yyyy-MM-dd"
                     placeholderText="시작 날짜를 선택하세요."
                   />
@@ -226,7 +440,7 @@ const ProductComponent = Route => {
                   <StyledDatePicker
                     id="Edate"
                     selected={endDate}
-                    onChange={date => setEndDate(date)}
+                    onChange={(date) => setEndDate(date)}
                     dateFormat="yyyy-MM-dd"
                     placeholderText="종료 날짜를 선택하세요."
                   />
@@ -235,12 +449,12 @@ const ProductComponent = Route => {
                 <Input
                   type="text"
                   placeholder="재고수량을 입력해주세요."
-                  onChange={e => setStock(e.target.value)}
+                  onChange={(e) => setStock(e.target.value)}
                 />
                 <ProductName>상세 설명</ProductName>
                 <TextArea
                   placeholder="게시글 내용을 작성해주세요."
-                  onChange={e => setDescription(e.target.value)}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </SubContentWrapper>
             </ContentWrapper>
@@ -250,13 +464,7 @@ const ProductComponent = Route => {
         </Content>
       </Container>
       <FooterWrapper>
-        <ComppletedButton
-          padding="15px 170px"
-          fontSize="20px"
-          onClick={handleSubmit}
-        >
-          작성 완료
-        </ComppletedButton>
+        <ComppletedButton onClick={handleSubmit}>작성 완료</ComppletedButton>
       </FooterWrapper>
     </Wrapper>
   );
@@ -470,7 +678,7 @@ const ComppletedButton = styled(BlackBtn)`
   margin: 120px 0 45px 0;
   cursor: pointer;
   &:hover {
-    color: ${props => props.theme.mainColor};
+    color: ${(props) => props.theme.mainColor};
   }
 `;
 
