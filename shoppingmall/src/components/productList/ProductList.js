@@ -3,23 +3,30 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Pagination from "../sellpage/PaginationArea";
-import ProducFilter from "./ProducFilter";
+import ProductFilter from "../../components/productList/ProducFilter";
+
 // svg
 import unlike from "../../assets/unlike.svg";
 
 const ProductList = () => {
   const navigate = useNavigate();
+  const productsPerRow = 5;
+  const pages = [1, 2, 3, 4, 5];
+  const [currentPage, setCurrentPage] = useState(0);
+  const [sort, setSort] = useState("asc");
+
   const [productList, setProductList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/product`)
+    fetch(
+      `${process.env.REACT_APP_API_URL}/product?page=${currentPage}&sort=${sort}`
+    )
       .then(response => response.json())
-      .then(json => setProductList([...json]));
+      .then(data => {
+        setProductList([...data]);
+        console.log("data: " + productList);
+      });
   }, []);
-
-  const productsPerRow = 4;
-  const pages = [1, 2, 3, 4, 5];
 
   const onPageChange = page => {
     setCurrentPage(page);
@@ -30,16 +37,18 @@ const ProductList = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <ProducFilter />
+    <Wrapper>
+      <Container>
+        <ProductFilter />
         <ListContainer>
           <CardList>
             {productList.map(product => (
               <Item
                 key={product.productId}
                 productsPerRow={productsPerRow}
-                onClick={() => clickProduct(product.productId)}
+                onClick={() => {
+                  clickProduct(product.productId);
+                }}
               >
                 <ImageWrapper>
                   <Image
@@ -49,133 +58,141 @@ const ProductList = () => {
                 </ImageWrapper>
                 <InfoWrapper>
                   <Info>
-                    <ProductName>
-                      {product.productName}{" "}
-                      <IconWrapper>
-                        <Icon src={unlike} />
-                      </IconWrapper>
-                    </ProductName>
-                    <ProductDescription>
-                      {product.description}
-                    </ProductDescription>
+                    <ProductName>{product.productName}</ProductName>
                     <ProductPrice>
                       {product.price
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                      <PriceText>원</PriceText>
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " 원"}
                     </ProductPrice>
+                    <ProductDescription>
+                      {product.description}
+                    </ProductDescription>
                   </Info>
+                  <IconWrapper>
+                    <Icon src={unlike} />
+                  </IconWrapper>
                 </InfoWrapper>
               </Item>
             ))}
           </CardList>
         </ListContainer>
-        <Pagination
-          pages={pages}
-          currentPage={currentPage}
-          onPageChange={onPageChange}
-        />
-      </Wrapper>
-    </Container>
+      </Container>
+      <Pagination
+        pages={pages}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+      />
+    </Wrapper>
   );
 };
 
 export default ProductList;
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
 const Wrapper = styled.div`
-  width: 1267px;
   display: flex;
   flex-direction: column;
+  justify-content: start;
+  width: 100%;
+  height: 100%;
+`;
+
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
   margin-top: 32px;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 `;
 
 const ListContainer = styled.div`
   display: flex;
-  justify-content: center;
+  width: 70%;
+  height: 100%;
   margin-top: 28px;
-  width: 100%;
+  margin-left: 60px;
+  justify-content: start;
 `;
 
 const CardList = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between;
   width: 100%;
+  height: 640px;
+  justify-content: start;
+  flex-wrap: wrap;
 `;
 
 const Item = styled.div`
-  max-width: calc(25% - 20px);
-  flex: 1 1 calc(25% - 20px);
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-
+  width: 294px;
+  height: 250px;
+  margin-right: 20px;
+  margin-bottom: 90px;
+  &:nth-child(4) {
+    margin-right: 0px;
+  }
+  &:nth-child(8) {
+    margin-right: 0px;
+  }
   cursor: pointer;
 `;
 
 const ImageWrapper = styled.div`
   width: 100%;
+  height: 150px;
+  border: 1px solid white;
+  border-radius: 3%;
 `;
 
 const Image = styled.img`
   width: 100%;
-  height: 100%;
+  height: 250px;
+  border-radius: 3%;
   object-fit: cover;
 `;
 
 const InfoWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding-top: 10px;
+  justify-content: start;
+  width: 100%;
+  height: 26%;
+  margin-top: 100px;
 `;
 
 const Info = styled.div`
-  flex-grow: 1;
+  width: 200px;
+  height: 100%;
+  margin-top: 8px;
 `;
 
 const ProductName = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 10px;
+  width: 150px;
+  height: 19px;
+  margin-bottom: 5px;
   font-size: 16px;
   font-weight: bold;
-  text-decoration: underline;
 `;
 
 const ProductPrice = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 16px;
+  width: 86px;
+  height: 17px;
+  margin-bottom: 5px;
+  font-size: 14px;
   font-weight: bold;
 `;
 
-const PriceText = styled.div`
-  font-weight: 300;
-  font-size: 14px;
-  color: #5d5d5d;
-`;
-
 const ProductDescription = styled.div`
-  padding-bottom: 15px;
+  width: 170px;
+  height: 17px;
   font-size: 14px;
-  color: #5d5d5d;
+  font-weight: bold;
 `;
 
 const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding-left: 10px;
+  margin-left: 100px;
+  margin-top: 10px;
 `;
 
 const Icon = styled.img`
-  width: 24px;
-  height: 24px;
+  background-color: none;
 `;
