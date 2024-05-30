@@ -25,6 +25,7 @@ const ProductList = () => {
     title: item.title,
     price: item.price,
     description: item.description,
+    productId: item.productId,
   }));
 
   const ListData = (data) => {
@@ -133,8 +134,9 @@ const Item = styled.div`
 `;
 
 const ImageWrapper = styled.div`
-  width: 100%;
-  // height: 100%;
+  width: 296px;
+  height: 300px;
+  background-color: gray;
 `;
 
 const Image = styled.img`

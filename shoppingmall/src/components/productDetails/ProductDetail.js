@@ -18,6 +18,7 @@ const ProductDetail = () => {
   const [loginStatus, setLoginStatus] = useState(true);
   const [navigateUrl, setNavigateUrl] = useState("/login");
   const [isOnCart, setIsOnCart] = useState(false);
+  const [isAlreadyOnCart, setIsAlreadyOnCart] = useState(false);
   const [modalClose, setModalClose] = useState(false);
 
   const closeModal = () => {
@@ -42,8 +43,6 @@ const ProductDetail = () => {
   }, productItem);
 
   const {thumbnailUrl, productName, price, description, userNickName } = productItem;
-  const productImages = productItem.imagePaths;
-
   let productPrice =
     (price + "").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " 원";
 
@@ -79,20 +78,9 @@ const ProductDetail = () => {
                   if (data.cartItemId != 0) {
                       setIsOnCart(true);
                       setNavigateUrl("/");
-                        //   await fetch(`${process.env.REACT_APP_API_URL}/cart/${userId}`, {
-                        //     method: "GET",
-                        //     headers: {
-                        //         "Content-Type": "application/json",
-                        //         Authorization: `Bearer ${loginToken}`,
-                        //     },
-                        //     body: JSON.stringify(cartData),
-                        // })
-                     
-                      
                   } else if (data.message === " 동일한 상품이 이미 장바구니에 있습니다.") {
-                      setIsOnCart(false);
-                      setNavigateUrl("/")
-                      // setNavigateUrl(`/cart/${userId}`);
+                      setIsAlreadyOnCart(true);
+                      setNavigateUrl("/");
                   }
               }
           } catch (error) {
@@ -119,7 +107,7 @@ const ProductDetail = () => {
             <LeftContainer>
               <CarouselContainer>
                 <DetailImage
-                    src={`data:image/jpeg;base64,${thumbnailUrl}`}
+                    src={`data:image/jpeg;base64,${thumbnailUrl}`} 
                     alt={productName}
                   />
               </CarouselContainer>
@@ -165,6 +153,16 @@ const ProductDetail = () => {
           />
 
         )}
+        {isAlreadyOnCart && (
+          <Modal
+          open={isVisible}
+          onClose={closeModal}
+          title="동일한 상품이 이미 장바구니에 있습니다"
+          subText="다른 상품을 구매해 보는 건 어떨까요?"
+          navigateToPage={navigateToPage}
+        />
+
+      )}
       </Wrapper>
     </Layout>
   );
