@@ -24,8 +24,6 @@ const OrderDetailsList = ({ orderItems }) => {
     return `${year}.${month}.${day}`;
   };
 
-  console.log("OrderDetailsList - orderItems: ", orderItems);
-
   return (
     <Container borderBottom={false}>
       <Header>

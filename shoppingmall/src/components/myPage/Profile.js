@@ -7,7 +7,6 @@ import { BlackBtn } from "../../style/CommonStyles";
 const Profile = ({ userInfo }) => {
   const profileImage = userInfo.user_img ? userInfo.user_img : profile;
 
-  console.log(userInfo);
   return (
     <Container>
       <Wrapper>
