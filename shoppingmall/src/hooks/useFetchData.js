@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 
 const useFetchData = (url, method = "GET", body = null) => {
+  const token = localStorage.getItem("login-token");
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +13,7 @@ const useFetchData = (url, method = "GET", body = null) => {
         const response = await fetch(url, {
           method,
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: method !== "GET" && body ? JSON.stringify(body) : null,

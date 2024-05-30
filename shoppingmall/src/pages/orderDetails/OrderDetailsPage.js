@@ -12,19 +12,16 @@ import { LoadingSpinner } from "../../style/CommonStyles";
 import FilledOrder from "../../components/orderDetails/FilledOrder";
 
 const OrderDetailsPage = () => {
-  const location = useLocation();
-
-  const userId = 15;
+  const userId = localStorage.getItem("user_Id");
   const orderUrl = `${process.env.REACT_APP_API_URL}/order/${userId}`;
+
+  const location = useLocation();
 
   const { data: orderItems, loading, error } = useFetchData(orderUrl);
 
   const { orderItems: stateOrderItems = [] } = location.state || {
     orderItems: [],
   };
-
-  console.log("OrderDetailsPage - stateOrderItems: ", stateOrderItems);
-  console.log("OrderDetailsPage - orderItems: ", orderItems);
 
   if (loading) {
     return (

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
-import { useNavigate } from "react-router-dom";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
 import EmptyContentLayout from "../../components/commom/EmptyContentLayout";
@@ -9,9 +8,9 @@ import FilledCart from "../../components/cart/FilledCart";
 import { LoadingSpinner } from "../../style/CommonStyles";
 
 const Cart = () => {
-  const userId = 15;
+  const token = localStorage.getItem("login-token");
+  const userId = localStorage.getItem("user_Id");
   const cartUrl = `${process.env.REACT_APP_API_URL}/cart/${userId}`;
-  const navigate = useNavigate();
 
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +25,7 @@ const Cart = () => {
       try {
         const response = await fetch(cartUrl, {
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         if (!response.ok) {
@@ -110,7 +109,6 @@ const Cart = () => {
           onDeleteSelected={handleDeleteSelected}
           onDeleteSoldOut={handleDeleteSoldOut}
           onDeleteItem={handleDeleteItem}
-          // onOrder={handleOrder}
         />
       )}
     </ContentLayout>

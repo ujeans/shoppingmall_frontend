@@ -7,6 +7,7 @@ import { BlackBtn } from "../../../style/CommonStyles";
 import Modal from "../../commom/Modal/Modal";
 
 const OrderAmount = ({ product, totalPrice, onRemoveItem }) => {
+  const token = localStorage.getItem("login-token");
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -26,7 +27,7 @@ const OrderAmount = ({ product, totalPrice, onRemoveItem }) => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(requestBody),
