@@ -35,7 +35,9 @@ const Login = () => {
   };
 
   //로그인 실행
-  const submitLogin = async () => {
+  const submitLogin = async (event) => {
+    event.preventDefault();
+
     try {
       await fetch(`${process.env.REACT_APP_API_URL}/login`, {
         method: "POST",
@@ -72,26 +74,28 @@ const Login = () => {
     <>
       <Wrapper>
         <Title onClick={moveToHome}>super24</Title>
-        <InputWrapper>
-          <InputField
-            iconSrc={email}
-            placeholder="아이디(이메일)"
-            value={user.email}
-            name="email"
-            onChange={handleInputChange}
-          />
-          <InputField
-            iconSrc={password}
-            placeholder="비밀번호"
-            type="password"
-            value={user.password}
-            name="password"
-            onChange={handleInputChange}
-          />
-        </InputWrapper>
+        <Form onSubmit={submitLogin}>
+          <InputWrapper>
+            <InputField
+              iconSrc={email}
+              placeholder="아이디(이메일)"
+              value={user.email}
+              name="email"
+              onChange={handleInputChange}
+            />
+            <InputField
+              iconSrc={password}
+              placeholder="비밀번호"
+              type="password"
+              value={user.password}
+              name="password"
+              onChange={handleInputChange}
+            />
+          </InputWrapper>
 
-        <SubmitButton onClick={submitLogin}>Login</SubmitButton>
-        <SignupButton onClick={moveToSignup}>Sign up</SignupButton>
+          <SubmitButton type="submit">Login</SubmitButton>
+          <SignupButton onClick={moveToSignup}>Sign up</SignupButton>
+        </Form>
       </Wrapper>
       {isModalOpen && (
         <Modal
@@ -122,12 +126,19 @@ const Title = styled.h2`
   cursor: pointer;
 `;
 
-const InputWrapper = styled.div`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   margin: 220px 0 66px 0;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `;
 
 const SubmitButton = styled(WhiteBtn)`
