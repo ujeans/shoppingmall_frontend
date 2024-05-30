@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../style/theme";
-import { isValidEmail, isValidPassword, isValidPhone } from "./Vaildators";
-import InputField from "./InputField";
-import Navigation from "../nav/Navigation";
 
 //svg
 import email from "../../assets/email.svg";
 import password from "../../assets/password.svg";
-import people from "../../assets/people.svg";
 import phone from "../../assets/phone.svg";
 import home from "../../assets/home.svg";
 import userCircle from "../../assets/userCircle.svg";
+import defaultImage from "../../assets/defaultImage.jpg";
+
+//components
 import { BlackBtn } from "../../style/CommonStyles";
+import Modal from "../commom/Modal/Modal";
+import { isValidEmail, isValidPassword, isValidPhone } from "./Vaildators";
+import InputField from "./InputField";
+import Navigation from "../nav/Navigation";
 
 const Signup = () => {
   //유저 정보
@@ -26,23 +29,29 @@ const Signup = () => {
     img: "",
   });
 
-  //이미지 미리보기
   const [preview, setPreview] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({
+    email: false,
+    password: false,
+    passwordCheck: false,
+    phone: false,
+    addr: false,
+    nickname: false,
+  });
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setUser(user => ({
+    setUser((user) => ({
       ...user,
       [name]: value,
     }));
-    setFieldErrors(errors => ({
+    setFieldErrors((errors) => ({
       ...errors,
       [name]: false,
     }));
   };
 
   //유효성 검사
-
   const validateFields = () => {
     const errors = {
       email: !user.email || !isValidEmail(user.email),
@@ -54,52 +63,47 @@ const Signup = () => {
       nickname: !user.nickname,
     };
     setFieldErrors(errors);
-    return !Object.values(errors).some(error => error);
+    return !Object.values(errors).some((error) => error);
   };
-
-  const [fieldErrors, setFieldErrors] = useState({
-    email: false,
-    password: false,
-    passwordCheck: false,
-    phone: false,
-    addr: false,
-    nickname: false,
-  });
 
   //회원가입
   const submitSignup = async () => {
-    console.log(user);
     if (!validateFields()) {
       return;
     }
+
+    const formData = new FormData();
+    formData.append("email", user.email);
+    formData.append("password", user.password);
+    formData.append("phone", user.phone);
+    formData.append("addr", user.addr);
+    formData.append("nickname", user.nickname);
+
+    if (user.img) {
+      formData.append("userImg", user.img);
+    } else {
+      const response = await fetch(defaultImage);
+      const blob = await response.blob();
+      formData.append("userImg", blob, "defaultImage.jpg");
+    }
+
     try {
-      console.log("try");
       const response = await fetch(`${process.env.REACT_APP_API_URL}/signup`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
-        body: JSON.stringify({
-          email: user.email,
-          user_password: user.password,
-          user_phone: user.phone,
-          user_addr: user.addr,
-          user_nickname: user.nickname,
-          user_img: user.img,
-        }),
+        body: formData,
       });
 
       const responseBody = await response.json();
       console.log("body", responseBody);
+      console.log(user.img);
 
       if (!response.ok) {
         throw new Error("회원가입에 실패하였습니다.");
       }
       console.log(response);
-      moveToLogin();
-    } catch (error) {
-      setModalMessage("이메일과 비밀번호를 확인하세요");
+      setModalMessage("회원가입에 성공하였습니다.");
       setIsModalOpen(true);
+    } catch (error) {
       console.error("에러", error);
     }
   };
@@ -111,7 +115,7 @@ const Signup = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = event => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -119,7 +123,7 @@ const Signup = () => {
         setPreview(reader.result);
       };
       reader.readAsDataURL(file);
-      setUser(user => ({
+      setUser((user) => ({
         ...user,
         img: file,
       }));
@@ -129,10 +133,6 @@ const Signup = () => {
   //모달
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   //navigate
   const { moveToHome, moveToLogin } = Navigation();
@@ -150,17 +150,19 @@ const Signup = () => {
             name="email"
             onChange={handleInputChange}
             error={fieldErrors.email}
-            errorMessage={"유효한 이메일을 입력해주세요."}
+            errorMessage={"유효한 이메일을 입력해주세요. ( 이메일 형식 )"}
           />
           <InputField
             iconSrc={password}
-            placeholder="비밀번호"
+            placeholder="비밀번호 ( 8자 이상 20자 이하 영문자 숫자 조합 )"
             type="password"
             value={user.password}
             name="password"
             onChange={handleInputChange}
             error={fieldErrors.password}
-            errorMessage={"유효한 비밀번호를 입력해주세요."}
+            errorMessage={
+              "유효한 비밀번호를 입력해주세요. ( 8자 이상 20자 이하 영문자 숫자 조합 )"
+            }
           />
           <InputField
             iconSrc={password}
@@ -175,12 +177,12 @@ const Signup = () => {
 
           <InputField
             iconSrc={phone}
-            placeholder="휴대폰 번호"
+            placeholder="휴대폰 번호 ( - 포함) "
             value={user.phone}
             name="phone"
             onChange={handleInputChange}
             error={fieldErrors.phone}
-            errorMessage={"유효한 휴대폰 번호를 입력해주세요"}
+            errorMessage={"유효한 휴대폰 번호를 입력해주세요 ( - 포함 )"}
           />
 
           <InputField
@@ -219,7 +221,6 @@ const Signup = () => {
               />
             )}
           </FileInputWrapper>
-
           <InputNickname
             placeholder="닉네임"
             value={user.nickname}
@@ -230,9 +231,17 @@ const Signup = () => {
           />
         </InputWrapper>
         <SubmitButton disabled={!validateFields} onClick={submitSignup}>
-          Sign up
+          가입하기
         </SubmitButton>
       </Wrapper>
+      {isModalOpen && (
+        <Modal
+          onClose={moveToLogin}
+          title="회원가입"
+          subText={modalMessage}
+          navigateToPage={moveToLogin}
+        />
+      )}
     </>
   );
 };
@@ -318,8 +327,7 @@ const SubmitButton = styled(BlackBtn)`
   width: 100%;
   margin-bottom: 43px;
   max-width: 465px;
-  height: 55px;
-  font-size: 18px;
+  height: 45px;
   font-weight: 700;
   cursor: pointer;
   S &:disabled {
