@@ -9,13 +9,27 @@ import unlike from "../../assets/unlike.svg";
 
 const ProductList = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const productId = searchParams.get("productId");
   const productsPerRow = 4;
   const size = 8;
   const pages = [1, 2, 3, 4, 5];
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const [sort, setSort] = useState("asc");
   const [images, setImages] = useState([]);
-  const [productList, setProductList] = useState([]);
+  const [listData, setListData] = useState([]);
+
+  const products = listData.map((item) => ({
+    image: item.files,
+    title: item.title,
+    price: item.price,
+    description: item.description,
+  }));
+
+  const ListData = (data) => {
+    setListData(data);
+  };
 
   const clickProduct = (productId) => {
     navigate(`/product/${productId}`, { state: { productId: productId } });
@@ -27,7 +41,7 @@ const ProductList = () => {
         <ProducFilter />
         <ListContainer>
           <CardList>
-            {productList.map((product) => (
+            {products.map((product) => (
               <Item
                 key={product.productId}
                 productsPerRow={productsPerRow}
@@ -35,9 +49,8 @@ const ProductList = () => {
               >
                 <ImageWrapper>
                   <Image
-                    // src="https://via.placeholder.com/250/#D9D9D9"
-                    src={`data:image/jpeg;base64,${product.imageBase64}`}
-                    alt={product.productName}
+                    src={product.image}
+                    alt={product.title}
                     onClick={() => clickProduct(product.productId)}
                   />
                 </ImageWrapper>
@@ -45,7 +58,7 @@ const ProductList = () => {
                   <Info>
                     <ProductName>
                       <div onClick={() => clickProduct(product.productId)}>
-                        {product.productName}
+                        {product.title}
                       </div>
                       <IconWrapper>
                         <Icon src={unlike} />
@@ -70,8 +83,9 @@ const ProductList = () => {
           currentPageNum={currentPageNum}
           size={size}
           sort={sort}
+          pageNum={1}
           onPageChange={currentPageNum}
-          setProductList={setProductList}
+          ListData={ListData}
         />
       </Wrapper>
     </Container>
