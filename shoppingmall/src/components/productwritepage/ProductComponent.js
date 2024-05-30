@@ -506,8 +506,6 @@ const ProductComponent = ({ event }) => {
                 />
               </SubContentWrapper>
             </ContentWrapper>
-            <ProductName>카테고리</ProductName>
-            <DevBox />
           </MainWrapper>
         </Content>
       </Container>
@@ -705,14 +703,6 @@ const MainImage = styled.div`
     width: 400px;
     height: 400px;
   }
-`;
-
-const DevBox = styled.div`
-  position: relative;
-
-  width: 1028px;
-  height: 130px;
-  border: 1px solid #ccc;
 `;
 
 const ComppletedButton = styled(BlackBtn)`
