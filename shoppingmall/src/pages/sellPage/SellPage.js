@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PaginationArea from "../../components/sellpage/PaginationArea";
 import FilterArea from "../../components/sellpage/FilterArea";
-import HeaderArea from "../../components/sellpage/HeaderArea";
 import ProductArea from "../../components/sellpage/ProductArea";
-import PageLayout from "../../components/commom/PageLayout";
 import { Navigate } from "react-router-dom";
 import Modal from "../../components/commom/Modal/Modal";
+import ContentLayout from "../../components/commom/ContentLayout";
 
 const SellPage = () => {
   const [pageData, setPageData] = useState([]);
@@ -15,6 +14,8 @@ const SellPage = () => {
   const Filerender = (data) => {
     setPageData(data);
   };
+
+  const token = localStorage.getItem("login-token");
 
   useEffect(() => {
     //페이지 정보 관리
@@ -35,7 +36,6 @@ const SellPage = () => {
   const navigateToPage = () => {
     return <Navigate to="/sell" />;
   };
-  const token = localStorage.getItem("login-token");
 
   if (!token) {
     console.log("토큰이 유효하지 않습니다. 로그인 페이지로 이동");
@@ -43,20 +43,20 @@ const SellPage = () => {
   }
 
   return (
-    <PageLayout>
+    <ContentLayout title={"판매 내역"} width="1100px">
       {isModalOpen == true && (
         <Modal
           onClose={closeModal}
-          title="title"
-          subText="subTextsubText"
+          title="등록한 상품을 삭제 하시겠습니까?"
+          subText="확인 버튼을 클릭해주세요"
           navigateToPage={navigateToPage}
         />
       )}
-      <HeaderArea text="판매 내역" />
+
       <FilterArea onFilterClick={handleFilterClick} />
       <ProductArea ProductData={pageData} />
       <PaginationArea pageNum={2} Filerender={Filerender} />
-    </PageLayout>
+    </ContentLayout>
   );
 };
 
