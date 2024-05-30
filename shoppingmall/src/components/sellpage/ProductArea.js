@@ -8,7 +8,7 @@ const ProductArea = ({ ProductData }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [nav, setnav] = useState(true);
 
-  const products = ProductData.map((item) => ({
+  const products = ProductData.map(item => ({
     image: item.files,
     title: item.title,
     price: item.price,
@@ -17,7 +17,7 @@ const ProductArea = ({ ProductData }) => {
   }));
 
   // 제품 수정 함수
-  const handleProductEdit = (productId) => {
+  const handleProductEdit = productId => {
     console.log("제품 수정", productId);
     localStorage.setItem("productId", productId);
     setnav(false);
