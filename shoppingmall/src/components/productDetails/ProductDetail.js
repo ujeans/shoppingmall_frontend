@@ -17,10 +17,11 @@ const ProductDetail = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [loginStatus, setLoginStatus] = useState(true);
   const [navigateUrl, setNavigateUrl] = useState("/login");
-  const [isOnCart, setIsOnCart] = useState("");
+  const [isOnCart, setIsOnCart] = useState(false);
+  const [modalClose, setModalClose] = useState(false);
 
   const closeModal = () => {
-    setIsVisible(false);
+    setModalClose(true);
   };
 
   useEffect(() => {
@@ -54,6 +55,7 @@ const ProductDetail = () => {
       console.log("cartData: ", cartData);
      
       let loginToken = localStorage.getItem("login-token");
+      let userId = localStorage.getItem("user_Id");
       if (!loginToken) {
           setLoginStatus(false);
           setIsVisible(true);
@@ -74,10 +76,25 @@ const ProductDetail = () => {
               } else {
                   const data = await response.json();
                   console.log("장바구니에 삼품이 담겼습니다: " , data);
-                  setIsOnCart(data);
+                  if (data.cartItemId != 0) {
+                      setIsOnCart(true);
+                      setNavigateUrl("/");
+                        //   await fetch(`${process.env.REACT_APP_API_URL}/cart/${userId}`, {
+                        //     method: "GET",
+                        //     headers: {
+                        //         "Content-Type": "application/json",
+                        //         Authorization: `Bearer ${loginToken}`,
+                        //     },
+                        //     body: JSON.stringify(cartData),
+                        // })
+                     
+                      
+                  } else if (data.message === " 동일한 상품이 이미 장바구니에 있습니다.") {
+                      setIsOnCart(false);
+                      setNavigateUrl("/")
+                      // setNavigateUrl(`/cart/${userId}`);
+                  }
               }
-
-             
           } catch (error) {
               console.error(error);
           }
@@ -101,9 +118,7 @@ const ProductDetail = () => {
           <ContentWrapper>
             <LeftContainer>
               <CarouselContainer>
-                {/* <img src="https://via.placeholder.com/250/#D9D9D9" /> */}
                 <DetailImage
-                    // src="https://via.placeholder.com/250/#D9D9D9"
                     src={`data:image/jpeg;base64,${thumbnailUrl}`}
                     alt={productName}
                   />
@@ -139,6 +154,16 @@ const ProductDetail = () => {
             subText="로그인 페이지로 이동하시겠습니까?"
             navigateToPage={navigateToPage}
           />
+        )}
+        {isOnCart && (
+           <Modal
+            open={isVisible}
+            onClose={closeModal}
+            title="장바구니에 상품이 추가되었습니다"
+            subText="확인을 누르시면 메인페이지로 이동됩니다"
+            navigateToPage={navigateToPage}
+          />
+
         )}
       </Wrapper>
     </Layout>
@@ -297,13 +322,6 @@ const Description = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 19.38px;
-`;
-
-const Option = styled.div`
-  width: 200px;
-  height: 18px;
-  margin-top: 16px;
-  color: #858585;
 `;
 
 const CartButton = styled(BlackBtn)`

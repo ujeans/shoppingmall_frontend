@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Pagination from "../sellpage/PaginationArea";
+import PaginationArea from "../sellpage/PaginationArea";
 import ProducFilter from "./ProducFilter";
 // svg
 import unlike from "../../assets/unlike.svg";
@@ -13,14 +13,15 @@ const ProductList = () => {
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get("productId");
   const productsPerRow = 4;
+  const size = 8;
   const pages = [1, 2, 3, 4, 5];
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPageNum, setCurrentPageNum] = useState(1);
   const [sort, setSort] = useState("asc");
   const [images, setImages] = useState([]);
   const [productList, setProductList] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/product?page=${currentPage}&sort=${sort}`)
+    fetch(`${process.env.REACT_APP_API_URL}/product?page=${currentPageNum}&sort=${sort}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("data: " + data);
@@ -32,12 +33,7 @@ const ProductList = () => {
         setImages(imagesArray);
       })
       .catch((error) => console.error("Error fetching data", error));
-  }, [currentPage, sort]);
-
-
-  const onPageChange = page => {
-    setCurrentPage(page);
-  };
+  }, [currentPageNum, sort]);
 
   const clickProduct = productId => {
     navigate(`/product/${productId}`, { state: { productId: productId } });
@@ -60,12 +56,15 @@ const ProductList = () => {
                     // src="https://via.placeholder.com/250/#D9D9D9"
                     src={`data:image/jpeg;base64,${product.imageBase64}`}
                     alt={product.productName}
+                    onClick={() => clickProduct(product.productId)}
                   />
                 </ImageWrapper>
                 <InfoWrapper>
                   <Info>
                     <ProductName>
-                      {product.productName}{" "}
+                      <div onClick={() => clickProduct(product.productId)}>
+                        {product.productName}
+                      </div>
                       <IconWrapper>
                         <Icon src={unlike} />
                       </IconWrapper>
@@ -85,10 +84,12 @@ const ProductList = () => {
             ))}
           </CardList>
         </ListContainer>
-        <Pagination
-          pages={pages}
-          currentPage={currentPage}
-          onPageChange={onPageChange}
+        <PaginationArea
+          currentPageNum={currentPageNum}
+          size={size}
+          sort={sort}
+          onPageChange={currentPageNum}
+          setProductList={setProductList}
         />
       </Wrapper>
     </Container>
