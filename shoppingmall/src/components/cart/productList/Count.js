@@ -3,16 +3,48 @@ import styled from "styled-components";
 import minus from "../../../assets/minus.svg";
 import plus from "../../../assets/plus.svg";
 
-const Count = ({ quantity, onUpdateCount, disabled }) => {
-  const handleDecrease = () => {
+const Count = ({ quantity, onUpdateCount, disabled, product }) => {
+  const handleDecrease = async () => {
     if (!disabled && quantity > 1) {
-      onUpdateCount(quantity - 1);
+      const newQuantity = product.quantity - 1;
+      await updateQuantity(newQuantity);
     }
   };
 
-  const handleIncrease = () => {
+  const handleIncrease = async () => {
     if (!disabled) {
-      onUpdateCount(quantity + 1);
+      const newQuantity = product.quantity + 1;
+      await updateQuantity(newQuantity);
+    }
+  };
+
+  const updateQuantity = async newQuantity => {
+    try {
+      const requestBody = {
+        productId: product.productId,
+        quantity: newQuantity,
+        totalprice: product.price * newQuantity,
+      };
+
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/cart/${product.cartItemId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      onUpdateCount(newQuantity);
+    } catch (error) {
+      console.error("수량 업데이트 중 오류가 발생했습니다:", error);
     }
   };
 

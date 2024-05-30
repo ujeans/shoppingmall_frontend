@@ -1,41 +1,30 @@
 import { useState, useEffect } from "react";
 
-const useFetchData = (url, options = {}) => {
-  const {
-    method = "GET",
-    body = null,
-    headers = {
-      Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-  } = options;
-
+const useFetchData = (url, method = "GET", body = null) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(url, {
-        method,
-        headers,
-        body: method !== "GET" && body ? JSON.stringify(body) : null,
-        cache: "no-store",
-      });
-
       try {
-        if (!response.ok) {
+        const response = await fetch(url, {
+          method,
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+          body: method !== "GET" && body ? JSON.stringify(body) : null,
+          cache: "no-store",
+        });
+
+        if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          const text = await response.text();
-          throw new TypeError(`Received non-JSON response: ${text}`);
-        }
+        if (!contentType.includes("application/json"))
+          throw new TypeError(`Non-JSON response`);
 
-        const data = await response.json();
-        setData(data);
+        setData(await response.json());
       } catch (error) {
         setError(error);
       } finally {
@@ -44,9 +33,9 @@ const useFetchData = (url, options = {}) => {
     };
 
     fetchData();
-  }, [url, method, body, headers, setData]);
+  }, [url, method, body]);
 
-  return { data, setData, loading, error };
+  return { data, loading, error, setData };
 };
 
 export default useFetchData;

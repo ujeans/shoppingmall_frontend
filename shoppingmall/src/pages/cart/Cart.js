@@ -1,46 +1,68 @@
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
-// assets
 import EmptyContentLayout from "../../components/commom/EmptyContentLayout";
 import FilledCart from "../../components/cart/FilledCart";
-// hooks
-import useFetchData from "../../hooks/useFetchData";
+// styles
 import { LoadingSpinner } from "../../style/CommonStyles";
 
 const Cart = () => {
   const userId = 15;
   const cartUrl = `${process.env.REACT_APP_API_URL}/cart/${userId}`;
+  const navigate = useNavigate();
 
-  const {
-    data: cartItems,
-    setData: setCartItems,
-    loading,
-    error,
-  } = useFetchData(cartUrl);
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [allChecked, setAllChecked] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
-    const totalAmount = cartItems.reduce((acc, item) => {
-      if (!item.soldOut) {
-        return acc + item.price * item.quantity;
+    const fetchCartItems = async () => {
+      try {
+        const response = await fetch(cartUrl, {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setCartItems(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
       }
-      return acc;
-    }, 0);
+    };
 
-    const totalCount = cartItems.reduce((acc, item) => {
-      if (!item.soldOut) {
-        return acc + item.quantity;
-      }
-      return acc;
-    }, 0);
+    fetchCartItems();
+  }, [cartUrl]);
 
-    setTotalAmount(totalAmount);
-    setTotalCount(totalCount);
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      const totalAmount = cartItems.reduce((acc, item) => {
+        if (item.stock !== 0) {
+          return acc + item.price * item.quantity;
+        }
+        return acc;
+      }, 0);
+
+      const totalCount = cartItems.reduce((acc, item) => {
+        if (item.stock !== 0) {
+          return acc + item.quantity;
+        }
+        return acc;
+      }, 0);
+
+      setTotalAmount(totalAmount);
+      setTotalCount(totalCount);
+    }
   }, [cartItems]);
 
   const handleAllChecked = () => {
@@ -60,11 +82,6 @@ const Cart = () => {
 
   const handleDeleteItem = id => {
     setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
-  };
-
-  const handleOrder = () => {
-    const selectedItems = cartItems.filter(item => item.checked);
-    return selectedItems;
   };
 
   if (loading) {
@@ -93,7 +110,7 @@ const Cart = () => {
           onDeleteSelected={handleDeleteSelected}
           onDeleteSoldOut={handleDeleteSoldOut}
           onDeleteItem={handleDeleteItem}
-          onOrder={handleOrder}
+          // onOrder={handleOrder}
         />
       )}
     </ContentLayout>

@@ -3,6 +3,29 @@ import styled from "styled-components";
 import { Container, Header } from "../../style/CommonStyles";
 
 const OrderDetailsList = ({ orderItems }) => {
+  const formatOrderNumber = (orderId, date) => {
+    let formattedDate;
+    try {
+      formattedDate = new Date(date)
+        .toISOString()
+        .split("T")[0]
+        .replace(/-/g, "");
+    } catch (error) {
+      formattedDate = "00000000"; // 기본값
+    }
+    return `ORD${formattedDate}-${String(orderId).padStart(7, "0")}`;
+  };
+
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}.${month}.${day}`;
+  };
+
+  console.log("OrderDetailsList - orderItems: ", orderItems);
+
   return (
     <Container borderBottom={false}>
       <Header>
@@ -13,15 +36,22 @@ const OrderDetailsList = ({ orderItems }) => {
       </Header>
       {orderItems.map((item, index) => {
         const totalPayment = item.price * item.quantity;
+        const orderNumber = formatOrderNumber(
+          item.orderedItemId,
+          item.createAt
+        );
+        const formattedDate = formatDate(item.createAt);
 
         return (
           <ListWrapper key={index}>
-            <OrderDate>{item.created_at}</OrderDate>
+            <OrderDate>{formattedDate}</OrderDate>
             <OrderDetailsItem>
-              <Image src={item.image || ""} alt={item.name} />
-              <div>{item.name}</div>
+              <Image src={item.imageUrl} alt={item.productName} />
+              <div>
+                {item.productName} 외<Quantity>{item.quantity}</Quantity>건
+              </div>
             </OrderDetailsItem>
-            <OrderNumberItem>{item.order_history_id}</OrderNumberItem>
+            <OrderNumberItem>{orderNumber}</OrderNumberItem>
             <PaymentAmount>{totalPayment.toLocaleString()}원</PaymentAmount>
           </ListWrapper>
         );
@@ -78,4 +108,8 @@ const Image = styled.img`
   height: 80px;
   margin-right: 15px;
   background-color: #f4f4f4;
+`;
+
+const Quantity = styled.span`
+  font-weight: bold;
 `;
