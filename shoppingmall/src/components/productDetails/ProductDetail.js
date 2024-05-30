@@ -17,6 +17,7 @@ const ProductDetail = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [loginStatus, setLoginStatus] = useState(true);
   const [navigateUrl, setNavigateUrl] = useState("/login");
+  const [isOnCart, setIsOnCart] = useState("");
 
   const closeModal = () => {
     setIsVisible(false);
@@ -39,35 +40,48 @@ const ProductDetail = () => {
     fetchData();
   }, productItem);
 
-  const { productName, price, description, userNickName } = productItem;
+  const {thumbnailUrl, productName, price, description, userNickName } = productItem;
   const productImages = productItem.imagePaths;
 
   let productPrice =
     (price + "").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " 원";
 
-  const putOnCart = () => {
-    console.log("장바구니추가 버튼 클릭");
-    // 로그인 여부 검사
-    // 1. 로그인이 되어있지 않을때 팝업창을 띄운다
-    // 2. 로그인이 되어있을때 Post 요청을 보낸다
-    let loginToken = localStorage.getItem("login-token");
-    if (
-      loginToken == "" ||
-      loginToken == null ||
-      loginToken == undefined ||
-      (loginToken != null &&
-        typeof loginToken == "object" &&
-        !Object.keys(loginToken).length)
-    ) {
-      setLoginStatus(false);
-      setIsVisible(true);
-      console.log("로그인 안되있음: ", loginStatus, isVisible);
-    } else {
-      setLoginStatus(true);
-      setNavigateUrl("/cart");
-      console.log("로그인 되있음");
-      console.log("장바구니 추가 로직 작성");
-    }
+    const putOnCart = async () => {
+      const cartData = {
+          productId: productItem.productId,
+          quantity: 1
+      };
+      console.log("cartData: ", cartData);
+     
+      let loginToken = localStorage.getItem("login-token");
+      if (!loginToken) {
+          setLoginStatus(false);
+          setIsVisible(true);
+          console.log("로그인 안되있음: ", loginStatus, isVisible);
+      } else {
+          try {
+              const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${loginToken}`,
+                  },
+                  body: JSON.stringify(cartData),
+              });
+
+              if (!response.ok) {
+                  throw new Error("상품추가에 실패했습니다");
+              } else {
+                  const data = await response.json();
+                  console.log("장바구니에 삼품이 담겼습니다: " , data);
+                  setIsOnCart(data);
+              }
+
+             
+          } catch (error) {
+              console.error(error);
+          }
+      }
   };
 
   const navigateToPage = () => {
@@ -87,7 +101,12 @@ const ProductDetail = () => {
           <ContentWrapper>
             <LeftContainer>
               <CarouselContainer>
-                <img src="https://via.placeholder.com/250/#D9D9D9" />
+                {/* <img src="https://via.placeholder.com/250/#D9D9D9" /> */}
+                <DetailImage
+                    // src="https://via.placeholder.com/250/#D9D9D9"
+                    src={`data:image/jpeg;base64,${thumbnailUrl}`}
+                    alt={productName}
+                  />
               </CarouselContainer>
             </LeftContainer>
             <RightContainer>
@@ -106,14 +125,13 @@ const ProductDetail = () => {
                   <ProductName>{productName}</ProductName>
                   <ProductPrice>{productPrice}</ProductPrice>
                   <Description>{description}</Description>
-                  <Option>#옵션 #옵션</Option>
                 </DetailWrapper>
               </InfoWrapper>
             </RightContainer>
           </ContentWrapper>
         </Content>
         <CartButton onClick={putOnCart}>장바구니담기</CartButton>
-        {isVisible && (
+        {isVisible &&  (
           <Modal
             open={isVisible}
             onClose={closeModal}
@@ -199,9 +217,15 @@ const RightContainer = styled.div`
 const CarouselContainer = styled.div`
   display: flex;
   justify-content: center;
-  width: 700px;
-  height: 448px;
+  // width: 700px;
+  // height: 448px;
+  width: 250px;
+  height: 250px;
   margin-top: 62px;
+`;
+
+const DetailImage = styled.img`
+  width: 100%;
 `;
 
 const UserWrapper = styled.div`
