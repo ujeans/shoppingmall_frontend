@@ -47,6 +47,7 @@ const Login = () => {
           user_password: user.password,
         }),
       })
+        //수정
         .then((response) => response.json())
         .then((response) => {
           if (response.accessToken) {
