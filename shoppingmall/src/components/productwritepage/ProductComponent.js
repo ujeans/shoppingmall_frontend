@@ -7,9 +7,9 @@ import dateIcon from "../../assets/date.svg";
 import plusIcon from "../../assets/plus.svg";
 import deleteIcon from "../../assets/delete.svg";
 
-import { Container } from "../../style/CommonStyles";
+import { BlackBtn, Container } from "../../style/CommonStyles";
 
-const ProductComponent = (Route) => {
+const ProductComponent = Route => {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
@@ -22,18 +22,18 @@ const ProductComponent = (Route) => {
   const maxfiles = 10;
   const remainingfiles = maxfiles - files.length;
 
-  const handleImageChange = (e) => {
+  const handleImageChange = e => {
     const files = e.target.files;
 
-    const promises = Array.from(files).map((file) => {
+    const promises = Array.from(files).map(file => {
       const reader = new FileReader();
 
       return new Promise((resolve, reject) => {
-        reader.onload = (e) => {
+        reader.onload = e => {
           resolve(e.target.result);
         };
 
-        reader.onerror = (error) => {
+        reader.onerror = error => {
           reject(error);
         };
 
@@ -42,8 +42,8 @@ const ProductComponent = (Route) => {
     });
 
     Promise.all(promises)
-      .then((results) => {
-        setFiles((prevfiles) => {
+      .then(results => {
+        setFiles(prevfiles => {
           const newfiles = [...prevfiles, ...results];
           if (newfiles.length > 10) {
             return newfiles.slice(newfiles.length - 10);
@@ -52,12 +52,12 @@ const ProductComponent = (Route) => {
         });
         fileInputRef.current.value = null;
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("이미지를 읽는 동안 오류가 발생했습니다.", error);
       });
   };
 
-  const handleDeleteImage = (index) => {
+  const handleDeleteImage = index => {
     const newfiles = [...files];
     newfiles.splice(index, 1);
     setFiles(newfiles);
@@ -72,7 +72,7 @@ const ProductComponent = (Route) => {
     ));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     // 유효성 검사
@@ -175,7 +175,7 @@ const ProductComponent = (Route) => {
             <ProductNameInput
               type="text"
               placeholder="상품명을 입력해주세요."
-              onChange={(e) => setProductName(e.target.value)}
+              onChange={e => setProductName(e.target.value)}
             />
             <ContentWrapper>
               <ImageWrapper>
@@ -209,7 +209,7 @@ const ProductComponent = (Route) => {
                 <Input
                   type="text"
                   placeholder="₩ 가격을 입력해주세요."
-                  onChange={(e) => setPrice(e.target.value)}
+                  onChange={e => setPrice(e.target.value)}
                 />
                 <ProductName>판매 기간</ProductName>
                 <DateContainer>
@@ -217,7 +217,7 @@ const ProductComponent = (Route) => {
                   <StyledDatePicker
                     id="Sdate"
                     selected={startDate}
-                    onChange={(date) => setStartDate(date)}
+                    onChange={date => setStartDate(date)}
                     dateFormat="yyyy-MM-dd"
                     placeholderText="시작 날짜를 선택하세요."
                   />
@@ -226,7 +226,7 @@ const ProductComponent = (Route) => {
                   <StyledDatePicker
                     id="Edate"
                     selected={endDate}
-                    onChange={(date) => setEndDate(date)}
+                    onChange={date => setEndDate(date)}
                     dateFormat="yyyy-MM-dd"
                     placeholderText="종료 날짜를 선택하세요."
                   />
@@ -235,12 +235,12 @@ const ProductComponent = (Route) => {
                 <Input
                   type="text"
                   placeholder="재고수량을 입력해주세요."
-                  onChange={(e) => setStock(e.target.value)}
+                  onChange={e => setStock(e.target.value)}
                 />
                 <ProductName>상세 설명</ProductName>
                 <TextArea
                   placeholder="게시글 내용을 작성해주세요."
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={e => setDescription(e.target.value)}
                 />
               </SubContentWrapper>
             </ContentWrapper>
@@ -250,7 +250,13 @@ const ProductComponent = (Route) => {
         </Content>
       </Container>
       <FooterWrapper>
-        <ComppletedButton onClick={handleSubmit}>작성 완료</ComppletedButton>
+        <ComppletedButton
+          padding="15px 170px"
+          fontSize="20px"
+          onClick={handleSubmit}
+        >
+          작성 완료
+        </ComppletedButton>
       </FooterWrapper>
     </Wrapper>
   );
@@ -275,9 +281,8 @@ const Content = styled.div`
   align-items: start;
   max-width: 1030px;
   max-height: 830px;
-  border: 1px solid #d1d4d8;
   border-radius: 2px;
-  padding: 15px;
+  padding-bottom: 20px;
   margin-top: 0px;
 `;
 
@@ -454,9 +459,9 @@ const DevBox = styled.div`
   border: 1px solid #ccc;
 `;
 
-const ComppletedButton = styled.button`
-  width: 250px;
-  height: 40px;
+const ComppletedButton = styled(BlackBtn)`
+  /* width: 250px;
+  height: 40px; */
   font-size: 16px;
   font-weight: bold;
   background: black;
@@ -465,7 +470,7 @@ const ComppletedButton = styled.button`
   margin: 120px 0 45px 0;
   cursor: pointer;
   &:hover {
-    color: ${(props) => props.theme.mainColor};
+    color: ${props => props.theme.mainColor};
   }
 `;
 

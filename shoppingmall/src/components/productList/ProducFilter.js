@@ -1,117 +1,118 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { theme } from "../../style/theme";
+import { BlackBtn } from "../../style/CommonStyles";
 import styled from "styled-components";
 
 // svg
 import pencil from "../../assets/pencil.svg";
 import categorydropdown from "../../assets/categorydropdown.svg";
 import Modal from "../commom/Modal/Modal";
-import { BlackBtn } from "../../style/CommonStyles";
 
 const ProducFilter = () => {
-    const navigate = useNavigate();
-    const [btnActive, setBtnActive] = useState(0);
-    const [isVisible, setIsVisible] = useState(false);
-    const [isLogin, setIsLogin] = useState(false);
-    const [isDropdownToggled, setDropdownToggled] = useState(false);
-    const selectList = [
-      { id: 1, value: "all", name: "전체" },
-      { id: 2, value: "cloth", name: "의류" },
-      { id: 3, value: "home", name: "가전" },
-      { id: 4, value: "digital", name: "디지털" },
-    ];
-  
-    const closeModal = () => {
+  const navigate = useNavigate();
+  const [btnActive, setBtnActive] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isDropdownToggled, setDropdownToggled] = useState(false);
+  const selectList = [
+    { id: 1, value: "all", name: "전체" },
+    { id: 2, value: "cloth", name: "의류" },
+    { id: 3, value: "home", name: "가전" },
+    { id: 4, value: "digital", name: "디지털" },
+  ];
+
+  const closeModal = () => {
+    setIsVisible(false);
+  };
+
+  const checkLogin = () => {
+    if (isLogin === true) {
+      navigate("/write");
       setIsVisible(false);
-    };
-  
-    const checkLogin = () => {
-      if (isLogin === true) {
-        navigate("/write");
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-    };
-  
-    const navigateToPage = () => {
-      navigate("/login");
+    } else {
+      setIsVisible(true);
     }
-  
-    const handleClickButton = (idx) => {
-      setBtnActive(idx);
-    };
-    return (
-          <FilterContainer>
-            <LeftButtons>
-                <Menu onClick={() => handleClickButton(0)} isActive={btnActive === 0}>
-                    추천순
-                  </Menu>
-                  <Menu onClick={() => handleClickButton(1)} isActive={btnActive === 1}>
-                    가격 낮은순
-                  </Menu>
-                  <Menu
-                    onClick={() => handleClickButton(2)}
-                    isActive={btnActive === 2}
-                    isH
-                  >
-                    가격 높은순
-                  </Menu>
-                  <CategoryButton
-                    onCLick={() => {
-                      setDropdownToggled(true);
-                    }}
-                  >
-                    카테고리
-                    <CategoryIcon src={categorydropdown} />
-                  </CategoryButton>
-                  <Options active={isDropdownToggled}>
-                    {selectList.map((option, index) => {
-                      return <button>{option.name}</button>;
-                    })}
-                  </Options>
-            </LeftButtons>
-            <RightButtons>
-                  <ItemAddButton onClick={checkLogin}>상품 등록</ItemAddButton>
-                  <Icon src={pencil} />
-            </RightButtons>
-            {isVisible && (
-            <Modal
-                  open={isVisible} 
-                  onClose={closeModal} 
-                  title="로그인이 필요한 기능입니다." 
-                  subText="로그인 페이지로 이동하시겠습니까?" 
-                  navigateToPage={navigateToPage}/>
-          )}
-      </FilterContainer>
-    );
+  };
+
+  const navigateToPage = () => {
+    navigate("/login");
+  };
+
+  const handleClickButton = idx => {
+    setBtnActive(idx);
+  };
+  return (
+    <FilterContainer>
+      <LeftButtons>
+        <Menu onClick={() => handleClickButton(0)} isActive={btnActive === 0}>
+          추천순
+        </Menu>
+        <Menu onClick={() => handleClickButton(1)} isActive={btnActive === 1}>
+          가격 낮은순
+        </Menu>
+        <Menu
+          onClick={() => handleClickButton(2)}
+          isActive={btnActive === 2}
+          isH
+        >
+          가격 높은순
+        </Menu>
+        <CategoryButton
+          onCLick={() => {
+            setDropdownToggled(true);
+          }}
+        >
+          카테고리
+          <CategoryIcon src={categorydropdown} />
+        </CategoryButton>
+        <Options active={isDropdownToggled}>
+          {selectList.map((option, index) => {
+            return <button>{option.name}</button>;
+          })}
+        </Options>
+      </LeftButtons>
+      <RightButtons>
+        <ItemAddButton onClick={checkLogin}>상품 등록</ItemAddButton>
+        <Icon src={pencil} />
+      </RightButtons>
+      {isVisible && (
+        <Modal
+          open={isVisible}
+          onClose={closeModal}
+          title="로그인이 필요한 기능입니다."
+          subText="로그인 페이지로 이동하시겠습니까?"
+          navigateToPage={navigateToPage}
+        />
+      )}
+    </FilterContainer>
+  );
 };
 
 export default ProducFilter;
 
-const FilterContainer= styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 70%;
-    height: 40px;
+const FilterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 1267px;
+  height: 40px;
 `;
 
 const LeftButtons = styled.div`
-    display: flex;
-    width: 420px;
-    height:34px;
-    margin-left: 32px;
+  display: flex;
+  align-items: center;
+  width: 420px;
+  height: 34px;
 `;
 
 const RightButtons = styled.div`
-    display: flex;
-    width: 257px;
-    height:40px;
-    margin-right: 34px;
-    justify-content: end;
-    align-items: center;
-    cursor: pointer;
+  display: flex;
+  width: 257px;
+  height: 40px;
+  justify-content: end;
+  align-items: center;
+  cursor: pointer;
 `;
 
 const Menu = styled(BlackBtn)`
@@ -124,11 +125,11 @@ const Menu = styled(BlackBtn)`
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
-  background-color: ${(props) => (props.isActive ? BlackBtn : "#FFFFFF")};
-  color: ${(props) => (props.isActive ? "#FFFFFF" : "#000000")};
+  background-color: ${props => (props.isActive ? BlackBtn : "#FFFFFF")};
+  color: ${props => (props.isActive ? "#FFFFFF" : "#000000")};
   &:hover {
-    background-color: ${(props) => (props.isActive ? BlackBtn : "#F4F4F4")};
-    color: ${(props) => (props.isActive ? "#FFFFFF" : "#000000")};
+    background-color: ${props => (props.isActive ? BlackBtn : "#F4F4F4")};
+    color: ${props => (props.isActive ? "#FFFFFF" : "#000000")};
   }
 `;
 
@@ -148,7 +149,7 @@ const CategoryIcon = styled.img`
 `;
 
 const Options = styled.div`
-  display: ${(props) => (props.active ? "visible" : "none")};
+  display: ${props => (props.active ? "visible" : "none")};
 `;
 
 const ItemAddButton = styled.button`
