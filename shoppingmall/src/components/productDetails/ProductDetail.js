@@ -17,9 +17,11 @@ const ProductDetail = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [loginStatus, setLoginStatus] = useState(true);
   const [navigateUrl, setNavigateUrl] = useState("/login");
+  const [isOnCart, setIsOnCart] = useState(false);
+  const [modalClose, setModalClose] = useState(false);
 
   const closeModal = () => {
-    setIsVisible(false);
+    setModalClose(true);
   };
 
   useEffect(() => {
@@ -39,35 +41,64 @@ const ProductDetail = () => {
     fetchData();
   }, productItem);
 
-  const { productName, price, description, userNickName } = productItem;
+  const {thumbnailUrl, productName, price, description, userNickName } = productItem;
   const productImages = productItem.imagePaths;
 
   let productPrice =
     (price + "").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " 원";
 
-  const putOnCart = () => {
-    console.log("장바구니추가 버튼 클릭");
-    // 로그인 여부 검사
-    // 1. 로그인이 되어있지 않을때 팝업창을 띄운다
-    // 2. 로그인이 되어있을때 Post 요청을 보낸다
-    let loginToken = localStorage.getItem("login-token");
-    if (
-      loginToken == "" ||
-      loginToken == null ||
-      loginToken == undefined ||
-      (loginToken != null &&
-        typeof loginToken == "object" &&
-        !Object.keys(loginToken).length)
-    ) {
-      setLoginStatus(false);
-      setIsVisible(true);
-      console.log("로그인 안되있음: ", loginStatus, isVisible);
-    } else {
-      setLoginStatus(true);
-      setNavigateUrl("/cart");
-      console.log("로그인 되있음");
-      console.log("장바구니 추가 로직 작성");
-    }
+    const putOnCart = async () => {
+      const cartData = {
+          productId: productItem.productId,
+          quantity: 1
+      };
+      console.log("cartData: ", cartData);
+     
+      let loginToken = localStorage.getItem("login-token");
+      let userId = localStorage.getItem("user_Id");
+      if (!loginToken) {
+          setLoginStatus(false);
+          setIsVisible(true);
+          console.log("로그인 안되있음: ", loginStatus, isVisible);
+      } else {
+          try {
+              const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${loginToken}`,
+                  },
+                  body: JSON.stringify(cartData),
+              });
+
+              if (!response.ok) {
+                  throw new Error("상품추가에 실패했습니다");
+              } else {
+                  const data = await response.json();
+                  console.log("장바구니에 삼품이 담겼습니다: " , data);
+                  if (data.cartItemId != 0) {
+                      setIsOnCart(true);
+                      setNavigateUrl("/");
+                        //   await fetch(`${process.env.REACT_APP_API_URL}/cart/${userId}`, {
+                        //     method: "GET",
+                        //     headers: {
+                        //         "Content-Type": "application/json",
+                        //         Authorization: `Bearer ${loginToken}`,
+                        //     },
+                        //     body: JSON.stringify(cartData),
+                        // })
+                     
+                      
+                  } else if (data.message === " 동일한 상품이 이미 장바구니에 있습니다.") {
+                      setIsOnCart(false);
+                      setNavigateUrl("/")
+                      // setNavigateUrl(`/cart/${userId}`);
+                  }
+              }
+          } catch (error) {
+              console.error(error);
+          }
+      }
   };
 
   const navigateToPage = () => {
@@ -87,7 +118,10 @@ const ProductDetail = () => {
           <ContentWrapper>
             <LeftContainer>
               <CarouselContainer>
-                <img src="https://via.placeholder.com/250/#D9D9D9" />
+                <DetailImage
+                    src={`data:image/jpeg;base64,${thumbnailUrl}`}
+                    alt={productName}
+                  />
               </CarouselContainer>
             </LeftContainer>
             <RightContainer>
@@ -106,14 +140,13 @@ const ProductDetail = () => {
                   <ProductName>{productName}</ProductName>
                   <ProductPrice>{productPrice}</ProductPrice>
                   <Description>{description}</Description>
-                  <Option>#옵션 #옵션</Option>
                 </DetailWrapper>
               </InfoWrapper>
             </RightContainer>
           </ContentWrapper>
         </Content>
         <CartButton onClick={putOnCart}>장바구니담기</CartButton>
-        {isVisible && (
+        {isVisible &&  (
           <Modal
             open={isVisible}
             onClose={closeModal}
@@ -121,6 +154,16 @@ const ProductDetail = () => {
             subText="로그인 페이지로 이동하시겠습니까?"
             navigateToPage={navigateToPage}
           />
+        )}
+        {isOnCart && (
+           <Modal
+            open={isVisible}
+            onClose={closeModal}
+            title="장바구니에 상품이 추가되었습니다"
+            subText="확인을 누르시면 메인페이지로 이동됩니다"
+            navigateToPage={navigateToPage}
+          />
+
         )}
       </Wrapper>
     </Layout>
@@ -199,9 +242,15 @@ const RightContainer = styled.div`
 const CarouselContainer = styled.div`
   display: flex;
   justify-content: center;
-  width: 700px;
-  height: 448px;
+  // width: 700px;
+  // height: 448px;
+  width: 250px;
+  height: 250px;
   margin-top: 62px;
+`;
+
+const DetailImage = styled.img`
+  width: 100%;
 `;
 
 const UserWrapper = styled.div`
@@ -273,13 +322,6 @@ const Description = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 19.38px;
-`;
-
-const Option = styled.div`
-  width: 200px;
-  height: 18px;
-  margin-top: 16px;
-  color: #858585;
 `;
 
 const CartButton = styled(BlackBtn)`
