@@ -2,37 +2,120 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import LeftArrowIcon from "../../assets/leftarrow.svg";
 
-const PaginationArea = () => {
-  const maxPages = 7;
-  const [currentPage, setCurrentPage] = useState(0);
+const PaginationArea = ({
+  currentPageNum,
+  size,
+  sort,
+  pageNum,
+  Filerender,
+  ListData,
+}) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [images, setImages] = useState([]);
 
+  const maxPages = 8;
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const params = new URLSearchParams();
+    if (pageNum == 1) {
+      const fetchData = () => {
+        const token = localStorage.getItem("login-token");
+        const params = new URLSearchParams(); // 39번 userId로 대체될 예정
         params.append("page", currentPage);
         params.append("size", maxPages);
-        params.append("sort", "asc");
+        params.append("sort", "enddate");
 
         const url = `${
           process.env.REACT_APP_API_URL
-        }/product?${params.toString()}`;
+        }/product?${params.toString()}`; // 39번 userId로 대체될 예정
         const options = {
           method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         };
 
-        const response = await fetch(url, options);
-        if (!response.ok) {
-          throw new Error("상품 정보를 가져오는데 실패했습니다.");
-        }
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
+        fetch(url, options)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("상품 정보를 가져오는데 실패했습니다.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Success:", data);
+            // Base64 이미지 데이터를 이미지 URL로 변환하여 상태에 저장
+            const imagesArray = data.map((item) => ({
+              imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
+              alt: item.productName,
+            }));
+            setImages(imagesArray);
+            const newData = data.map((item) => ({
+              files: `data:image/jpeg;base64,${item.imageBase64}`,
+              title: item.productName,
+              price: item.price,
+              description: item.description,
+              startDate: item.startDate,
+              endDate: item.endDate,
+              stock: item.stock,
+              productId: item.productId,
+            }));
+            ListData(newData);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      };
+      fetchData();
+    } else if (pageNum == 2) {
+      const fetchData = () => {
+        const token = localStorage.getItem("login-token");
+        const params = new URLSearchParams(); // 39번 userId로 대체될 예정
+        params.append("page", currentPage);
+        params.append("size", maxPages);
+        params.append("sort", "enddate");
 
-    fetchData();
+        const url = `${
+          process.env.REACT_APP_API_URL
+        }/products/user/39?${params.toString()}`; // 39번 userId로 대체될 예정
+        const options = {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        fetch(url, options)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("상품 정보를 가져오는데 실패했습니다.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Success:", data);
+            // Base64 이미지 데이터를 이미지 URL로 변환하여 상태에 저장
+            const imagesArray = data.map((item) => ({
+              imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
+              alt: item.productName,
+            }));
+            setImages(imagesArray);
+            const newData = data.map((item) => ({
+              files: `data:image/jpeg;base64,${item.imageBase64}`,
+              title: item.productName,
+              price: item.price,
+              description: item.description,
+              startDate: item.startDate,
+              endDate: item.endDate,
+              stock: item.stock,
+              productId: item.productId,
+            }));
+            Filerender(newData);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      };
+      fetchData();
+    }
   }, [currentPage, maxPages]);
 
   const totalPages = maxPages; // 총 페이지 수
@@ -49,9 +132,9 @@ const PaginationArea = () => {
     let startPage = currentPage - 2;
     let endPage = currentPage + 2;
 
-    if (startPage < 0) {
-      startPage = 0;
-      endPage = 4;
+    if (startPage < 1) {
+      startPage = 1;
+      endPage = 5;
     } else if (endPage > totalPages) {
       endPage = totalPages;
       startPage = totalPages - 4;
@@ -64,7 +147,7 @@ const PaginationArea = () => {
           onClick={() => onPageChange(i)}
           isActive={currentPage === i}
         >
-          {i + 1}
+          {i}
         </PageButton>
       );
     }
@@ -75,9 +158,7 @@ const PaginationArea = () => {
     <Wrapper>
       <PaginationContainer>
         <PageButton
-          onClick={() =>
-            onPageChange(currentPage - 1 >= 0 ? currentPage - 1 : 0)
-          }
+          onClick={() => onPageChange(currentPage > 1 ? currentPage - 1 : 1)}
         >
           <ArrowIcon src={LeftArrowIcon} alt="Previous" />
         </PageButton>

@@ -37,7 +37,7 @@ const ProductComponent = ({ event }) => {
 
   useEffect(() => {
     if (event == 1) {
-      const url = `${process.env.REACT_APP_API_URL}/products/user/35`;
+      const url = `${process.env.REACT_APP_API_URL}/products/user/39`;
       const options = {
         method: "GET",
         headers: {
