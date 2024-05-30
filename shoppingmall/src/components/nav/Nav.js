@@ -102,7 +102,6 @@ const LoginButton = styled(WhiteBtn)`
 
 const LogoutButton = styled(BlackBtn)`
   font-weight: 700;
-  margin-right: 12px;
   cursor: pointer;
 `;
 
