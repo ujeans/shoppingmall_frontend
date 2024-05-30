@@ -6,9 +6,10 @@ const PaginationArea = ({
   currentPageNum,
   size,
   sort,
+  setProductList,
   pageNum,
   Filerender,
-  ListData,
+
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [images, setImages] = useState([]);
@@ -16,6 +17,34 @@ const PaginationArea = ({
   const maxPages = 8;
   useEffect(() => {
     if (pageNum == 1) {
+      const fetchData = async () => {
+        try {
+          const params = new URLSearchParams();
+          params.append("page", currentPage);
+          params.append("size", maxPages);
+          params.append("sort", "asc");
+
+          const url = `${
+            process.env.REACT_APP_API_URL
+          }/product?${params.toString()}`;
+          const options = {
+            method: "GET",
+          };
+
+          const response = await fetch(url, options);
+          if (!response.ok) {
+            throw new Error("상품 정보를 가져오는데 실패했습니다.");
+          }
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      };
+
+      fetchData();
+    } else if (pageNum == 2) {
+
       const fetchData = () => {
         const token = localStorage.getItem("login-token");
         const params = new URLSearchParams(); // 39번 userId로 대체될 예정
@@ -25,7 +54,8 @@ const PaginationArea = ({
 
         const url = `${
           process.env.REACT_APP_API_URL
-        }/product?${params.toString()}`; // 39번 userId로 대체될 예정
+        }/products/user/39?${params.toString()}`; // 39번 userId로 대체될 예정
+
         const options = {
           method: "GET",
           headers: {

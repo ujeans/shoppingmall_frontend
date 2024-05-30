@@ -18,7 +18,6 @@ const ProductList = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const [sort, setSort] = useState("asc");
   const [images, setImages] = useState([]);
-
   const [listData, setListData] = useState([]);
 
   const products = listData.map((item) => ({
@@ -31,7 +30,6 @@ const ProductList = () => {
   const ListData = (data) => {
     setListData(data);
   };
-
 
   const clickProduct = (productId) => {
     navigate(`/product/${productId}`, { state: { productId: productId } });
