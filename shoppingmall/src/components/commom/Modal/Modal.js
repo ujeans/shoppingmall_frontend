@@ -6,11 +6,21 @@ import ModalContainer from "./ModalContainer";
 import useClickOutside from "../../../hooks/useClickOutside";
 import { BlackBtn, WhiteBtn } from "../../../style/CommonStyles";
 
-const Modal = ({ onClose, title, subText, navigateToPage }) => {
+const Modal = ({ onClose, title, subText, navigateToPage, onConfirm }) => {
   const modalRef = useRef(null);
 
   const handleClose = () => {
     onClose?.();
+  };
+
+  const handleConfirm = async () => {
+    if (onConfirm) {
+      await onConfirm();
+    }
+    if (navigateToPage) {
+      navigateToPage();
+    }
+    handleClose();
   };
 
   useEffect(() => {
@@ -35,7 +45,7 @@ const Modal = ({ onClose, title, subText, navigateToPage }) => {
             <WhiteBtn padding="8px 16px" onClick={handleClose}>
               취소
             </WhiteBtn>
-            <Btn padding="8px 16px" onClick={navigateToPage}>
+            <Btn padding="8px 16px" onClick={handleConfirm}>
               확인
             </Btn>
           </Bottom>

@@ -1,14 +1,23 @@
 import styled from "styled-components";
 // assets
+import profile from "../../assets/profile.svg";
 // styles
 import { BlackBtn } from "../../style/CommonStyles";
 
 const Profile = ({ userInfo }) => {
+  const handleImageError = e => {
+    e.target.src = profile;
+  };
+
   return (
     <Container>
       <Wrapper>
         <ProfileLeftBox>
-          <ProfileImg src={userInfo.user_img} />
+          <ProfileImg
+            src={`data:image/jpeg;base64,${userInfo.user_img}`}
+            alt="Profile Image"
+            onError={handleImageError}
+          />
           <NickName>{userInfo.user_nickname}</NickName>
         </ProfileLeftBox>
         <BlackBtn padding="10px 25px">사진 변경</BlackBtn>
@@ -42,7 +51,11 @@ const ProfileLeftBox = styled.div`
 `;
 
 const ProfileImg = styled.img`
+  width: 70px;
+  height: 70px;
   margin-right: 20px;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 const NickName = styled.div``;

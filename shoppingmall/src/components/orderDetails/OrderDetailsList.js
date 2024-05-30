@@ -11,7 +11,7 @@ const OrderDetailsList = ({ orderItems }) => {
         .split("T")[0]
         .replace(/-/g, "");
     } catch (error) {
-      formattedDate = "00000000"; // 기본값
+      formattedDate = "00000000";
     }
     return `ORD${formattedDate}-${String(orderId).padStart(7, "0")}`;
   };
@@ -23,8 +23,6 @@ const OrderDetailsList = ({ orderItems }) => {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}.${month}.${day}`;
   };
-
-  console.log("OrderDetailsList - orderItems: ", orderItems);
 
   return (
     <Container borderBottom={false}>
@@ -46,7 +44,10 @@ const OrderDetailsList = ({ orderItems }) => {
           <ListWrapper key={index}>
             <OrderDate>{formattedDate}</OrderDate>
             <OrderDetailsItem>
-              <Image src={item.imageUrl} alt={item.productName} />
+              <Image
+                src={`data:image/jpeg;base64,${item.base64Image}`}
+                alt={item.productName}
+              />
               <div>
                 {item.productName} 외<Quantity>{item.quantity}</Quantity>건
               </div>

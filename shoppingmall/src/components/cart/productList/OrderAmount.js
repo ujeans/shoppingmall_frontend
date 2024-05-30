@@ -6,7 +6,8 @@ import { BlackBtn } from "../../../style/CommonStyles";
 // components
 import Modal from "../../commom/Modal/Modal";
 
-const OrderAmount = ({ product, totalPrice, onRemoveItem }) => {
+const OrderAmount = ({ product, totalPrice, onDeleteItem }) => {
+  const token = localStorage.getItem("login-token");
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -26,7 +27,7 @@ const OrderAmount = ({ product, totalPrice, onRemoveItem }) => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(requestBody),
@@ -37,11 +38,20 @@ const OrderAmount = ({ product, totalPrice, onRemoveItem }) => {
         throw new Error("결제에 실패했습니다.");
       }
 
-      onRemoveItem();
       setIsOpen(true);
     } catch (error) {
       console.error("결제 요청 중 오류가 발생했습니다:", error);
     }
+  };
+
+  const handleCloseModal = async () => {
+    setIsOpen(false);
+    await onDeleteItem(product.cartItemId);
+  };
+
+  const handleConfirm = async () => {
+    await onDeleteItem(product.cartItemId);
+    navigateToPage();
   };
 
   return (
@@ -59,12 +69,11 @@ const OrderAmount = ({ product, totalPrice, onRemoveItem }) => {
       {isOpen && (
         <Modal
           open={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-          }}
+          onClose={handleCloseModal}
           title="결제금액"
           subText={`총 결제 금액: ${totalPrice.toLocaleString()}원, 결제되었습니다. 홈으로 이동하시겠습니까?`}
-          navigateToPage={navigateToPage}
+          nnavigateToPage={navigateToPage}
+          onConfirm={handleConfirm}
         />
       )}
     </Container>

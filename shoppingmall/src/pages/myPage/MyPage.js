@@ -7,7 +7,7 @@ import MyDealList from "../../components/myPage/MyDealList";
 import useFetchData from "../../hooks/useFetchData";
 
 const MyPage = () => {
-  const userId = 15;
+  const userId = localStorage.getItem("user_Id");
   const userUrl = `${process.env.REACT_APP_API_URL}/users/${userId}`;
 
   const { data: userInfo, loading, error } = useFetchData(userUrl);

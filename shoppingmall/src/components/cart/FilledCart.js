@@ -26,9 +26,9 @@ const FilledCart = ({
   onDeleteSelected,
   onDeleteSoldOut,
   onDeleteItem,
-  onOrder,
 }) => {
-  const userId = 15;
+  const token = localStorage.getItem("login-token");
+  const userId = localStorage.getItem("user_Id");
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -43,7 +43,7 @@ const FilledCart = ({
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -65,8 +65,9 @@ const FilledCart = ({
     }
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = async () => {
     setIsOpen(false);
+    await Promise.all(cartItems.map(item => onDeleteItem(item.cartItemId)));
     setCartItems([]);
   };
 
@@ -85,7 +86,6 @@ const FilledCart = ({
           cartItems={cartItems}
           setCartItems={setCartItems}
           onDeleteItem={onDeleteItem}
-          onOrder={onOrder}
         />
       </Container>
       <BtnWrapper>

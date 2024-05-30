@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
-import { useNavigate } from "react-router-dom";
 // components
 import ContentLayout from "../../components/commom/ContentLayout";
 import EmptyContentLayout from "../../components/commom/EmptyContentLayout";
@@ -9,9 +8,9 @@ import FilledCart from "../../components/cart/FilledCart";
 import { LoadingSpinner } from "../../style/CommonStyles";
 
 const Cart = () => {
-  const userId = 15;
+  const token = localStorage.getItem("login-token");
+  const userId = localStorage.getItem("user_Id");
   const cartUrl = `${process.env.REACT_APP_API_URL}/cart/${userId}`;
-  const navigate = useNavigate();
 
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,14 +25,20 @@ const Cart = () => {
       try {
         const response = await fetch(cartUrl, {
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setCartItems(data);
+
+        const itemsWithImages = data.map(item => ({
+          ...item,
+          imageUrl: `data:image/jpeg;base64,${item.imageBase64}`,
+        }));
+
+        setCartItems(itemsWithImages);
       } catch (error) {
         setError(error);
       } finally {
@@ -72,16 +77,40 @@ const Cart = () => {
     );
   };
 
-  const handleDeleteSelected = () => {
+  const handleDeleteItem = async id => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/cart/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("상품 삭제에 실패했습니다.");
+      }
+
+      setCartItems(prevItems =>
+        prevItems.filter(item => item.cartItemId !== id)
+      );
+    } catch (error) {
+      console.error("상품 삭제 중 오류가 발생했습니다:", error);
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    const selectedItems = cartItems.filter(item => item.checked);
+    await Promise.all(
+      selectedItems.map(item => handleDeleteItem(item.cartItemId))
+    );
     setCartItems(prevItems => prevItems.filter(item => !item.checked));
   };
 
   const handleDeleteSoldOut = () => {
     setCartItems(prevItems => prevItems.filter(item => item.stock !== 0));
-  };
-
-  const handleDeleteItem = id => {
-    setCartItems(prevItems => prevItems.filter(item => item.cartItemId !== id));
   };
 
   if (loading) {
@@ -110,7 +139,6 @@ const Cart = () => {
           onDeleteSelected={handleDeleteSelected}
           onDeleteSoldOut={handleDeleteSoldOut}
           onDeleteItem={handleDeleteItem}
-          // onOrder={handleOrder}
         />
       )}
     </ContentLayout>
