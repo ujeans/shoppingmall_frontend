@@ -13,6 +13,7 @@ const ProducFilter = () => {
   const navigate = useNavigate();
   const [btnActive, setBtnActive] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [sortStatus, setSortStatus] = useState("asc");
   const closeModal = () => {
     setIsVisible(false);
   };
@@ -32,15 +33,22 @@ const ProducFilter = () => {
 
   const handleClickButton = idx => {
     setBtnActive(idx);
+    if (idx === 0) {
+      setSortStatus("asc");
+    } else if (idx === 1) {
+      setSortStatus("desc");
+    } else {
+      setSortStatus("enddate");
+    }
   };
   return (
     <FilterContainer>
       <LeftButtons>
         <Menu onClick={() => handleClickButton(0)} isActive={btnActive === 0}>
-          가격 높은순
+          가격 낮은순
         </Menu>
         <Menu onClick={() => handleClickButton(1)} isActive={btnActive === 1}>
-          가격 낮은순
+          가격 높은순
         </Menu>
         <Menu
           onClick={() => handleClickButton(2)}
