@@ -38,56 +38,55 @@ const ProductList = () => {
 
   return (
     <Container>
-      <Wrapper>
-        <ProducFilter />
-        <ListContainer>
-          <CardList>
-            {products.map((product) => (
-              <Item
-                key={product.productId}
-                productsPerRow={productsPerRow}
-                onClick={() => clickProduct(product.productId)}
-              >
-                <ImageWrapper>
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    onClick={() => clickProduct(product.productId)}
-                  />
-                </ImageWrapper>
-                <InfoWrapper>
-                  <Info>
-                    <ProductName>
-                      <div onClick={() => clickProduct(product.productId)}>
-                        {product.title}
-                      </div>
-                      <IconWrapper>
-                        <Icon src={unlike} />
-                      </IconWrapper>
-                    </ProductName>
-                    <ProductDescription>
-                      {product.description}
-                    </ProductDescription>
-                    <ProductPrice>
-                      {product.price
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                      <PriceText>원</PriceText>
-                    </ProductPrice>
-                  </Info>
-                </InfoWrapper>
-              </Item>
-            ))}
-          </CardList>
-        </ListContainer>
-        <PaginationArea
-          currentPageNum={currentPageNum}
-          size={size}
-          sort={sort}
-          pageNum={1}
-          onPageChange={currentPageNum}
-          ListData={ListData}
-        />
+        <Wrapper>
+          <ProducFilter />
+          <ListContainer>
+            <CardList>
+              {products.map((product) => (
+                <Item
+                  key={product.productId}
+                  productsPerRow={productsPerRow}
+                >
+                  <ImageWrapper>
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      onClick={() => clickProduct(product.productId)}
+                    />
+                  </ImageWrapper>
+                  <InfoWrapper>
+                    <Info>
+                      <ProductName>
+                        <div onClick={() => clickProduct(product.productId)}>
+                          {product.title}
+                        </div>
+                        <IconWrapper>
+                          <Icon src={unlike} />
+                        </IconWrapper>
+                      </ProductName>
+                      <ProductDescription>
+                        {product.description}
+                      </ProductDescription>
+                      <ProductPrice>
+                        {product.price
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        <PriceText>원</PriceText>
+                      </ProductPrice>
+                    </Info>
+                  </InfoWrapper>
+                </Item>
+              ))}
+            </CardList>
+          </ListContainer>
+          <PaginationArea
+            currentPageNum={currentPageNum}
+            size={size}
+            sort={sort}
+            pageNum={1}
+            onPageChange={currentPageNum}
+            ListData={ListData}
+          />
       </Wrapper>
     </Container>
   );

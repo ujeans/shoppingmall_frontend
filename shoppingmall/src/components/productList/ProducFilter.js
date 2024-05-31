@@ -13,25 +13,16 @@ const ProducFilter = () => {
   const navigate = useNavigate();
   const [btnActive, setBtnActive] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
-  const [isDropdownToggled, setDropdownToggled] = useState(false);
-  const selectList = [
-    { id: 1, value: "all", name: "전체" },
-    { id: 2, value: "cloth", name: "의류" },
-    { id: 3, value: "home", name: "가전" },
-    { id: 4, value: "digital", name: "디지털" },
-  ];
-
   const closeModal = () => {
     setIsVisible(false);
   };
 
   const checkLogin = () => {
-    if (isLogin === true) {
-      navigate("/write");
-      setIsVisible(false);
+    const loginToken = localStorage.getItem("login_token");
+    if (loginToken !== null) {
+        setIsVisible(true);
     } else {
-      setIsVisible(true);
+      navigate("/sell");
     }
   };
 
@@ -46,7 +37,7 @@ const ProducFilter = () => {
     <FilterContainer>
       <LeftButtons>
         <Menu onClick={() => handleClickButton(0)} isActive={btnActive === 0}>
-          추천순
+          가격 높은순
         </Menu>
         <Menu onClick={() => handleClickButton(1)} isActive={btnActive === 1}>
           가격 낮은순
@@ -54,23 +45,9 @@ const ProducFilter = () => {
         <Menu
           onClick={() => handleClickButton(2)}
           isActive={btnActive === 2}
-          isH
         >
-          가격 높은순
+          마감 빠른순
         </Menu>
-        <CategoryButton
-          onCLick={() => {
-            setDropdownToggled(true);
-          }}
-        >
-          카테고리
-          <CategoryIcon src={categorydropdown} />
-        </CategoryButton>
-        <Options active={isDropdownToggled}>
-          {selectList.map((option, index) => {
-            return <button>{option.name}</button>;
-          })}
-        </Options>
       </LeftButtons>
       <RightButtons>
         <ItemAddButton onClick={checkLogin}>상품 등록</ItemAddButton>
