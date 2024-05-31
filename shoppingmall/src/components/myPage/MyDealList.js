@@ -11,7 +11,7 @@ const MyDealList = () => {
   const navigateToPage = title => {
     switch (title) {
       case "판매 내역":
-        navigate("/sales-details");
+        navigate("/sell");
         break;
       case "주문 내역":
         navigate("/order-details");

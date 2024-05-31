@@ -8,6 +8,7 @@ import leftarrow from "../../assets/leftarrow.svg";
 import profile from "../../assets/profile.svg";
 import unlike from "../../assets/unlike.svg";
 import Modal from "../commom/Modal/Modal";
+import ContentLayout from "../commom/ContentLayout";
 
 const ProductDetail = () => {
   const navigate = useNavigate();
@@ -32,17 +33,16 @@ const ProductDetail = () => {
           `${process.env.REACT_APP_API_URL}/product/${pId}`
         );
         const data = await response.json();
-        console.log("data: ", productItem);
         setProductItem(data);
-        console.log("data: ", productItem);
       } catch (error) {
         console.error("Error fetching data", error);
       }
     };
     fetchData();
-  }, productItem);
+  }, [pId]);
 
-  const {thumbnailUrl, productName, price, description, userNickName } = productItem;
+  const { thumbnailUrl, productName, price, description, userNickName } =
+    productItem;
   let productPrice =
     (price + "").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " 원";
 
@@ -84,9 +84,9 @@ const ProductDetail = () => {
                   }
               }
           } catch (error) {
-              console.error(error);
-          }
-      }
+            console.error(error);
+          }  
+    }
   };
 
   const navigateToPage = () => {
@@ -94,22 +94,16 @@ const ProductDetail = () => {
   };
 
   return (
-    <Layout>
+    <ContentLayout title={"상품 정보"} width="1000px">
       <Wrapper>
-        <Nav>
-          <IconWrapper>
-            <img src={leftarrow} />
-          </IconWrapper>
-          <Title className="title">상품 정보</Title>
-        </Nav>
         <Content>
           <ContentWrapper>
             <LeftContainer>
               <CarouselContainer>
                 <DetailImage
-                    src={`data:image/jpeg;base64,${thumbnailUrl}`} 
-                    alt={productName}
-                  />
+                  src={`data:image/jpeg;base64,${thumbnailUrl}`}
+                  alt={productName}
+                />
               </CarouselContainer>
             </LeftContainer>
             <RightContainer>
@@ -130,6 +124,42 @@ const ProductDetail = () => {
                   <Description>{description}</Description>
                 </DetailWrapper>
               </InfoWrapper>
+              <BtnWrapper>
+                <BlackBtn
+                  padding="10px 120px"
+                  fontSize="18px"
+                  onClick={putOnCart}
+                >
+                  Add Cart
+                </BlackBtn>
+              </BtnWrapper>
+              {isVisible && (
+                <Modal
+                  open={isVisible}
+                  onClose={closeModal}
+                  title="로그인이 필요한 기능입니다."
+                  subText="로그인 페이지로 이동하시겠습니까?"
+                  navigateToPage={navigateToPage}
+                />
+              )}
+              {isOnCart && (
+                <Modal
+                  open={isVisible}
+                  onClose={closeModal}
+                  title="장바구니에 상품이 추가되었습니다"
+                  subText="확인을 누르시면 메인페이지로 이동됩니다"
+                  navigateToPage={navigateToPage}
+                />
+              )}
+              {isAlreadyOnCart && (
+                <Modal
+                  open={isVisible}
+                  onClose={closeModal}
+                  title="동일한 상품이 이미 장바구니에 있습니다"
+                  subText="다른 상품을 구매해 보는 건 어떨까요?"
+                  navigateToPage={navigateToPage}
+                />
+              )}
             </RightContainer>
           </ContentWrapper>
         </Content>
@@ -163,87 +193,50 @@ const ProductDetail = () => {
         />
       )}
       </Wrapper>
-    </Layout>
+    </ContentLayout>
   );
 };
 
 export default ProductDetail;
 
-const Layout = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 1850px;
-  height: 1080px;
-`;
-
 const Wrapper = styled.div`
+  width: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1700px;
-  height: 100%;
-`;
-
-const Nav = styled.div`
-  display: flex;
-  justify-content: start;
-  width: 1252px;
-  height: 50px;
-  margin-top: 55px;
 `;
 
 const Content = styled.div`
+  width: 100%;
   display: flex;
-  justify-content: center;
-  width: 1252px;
-  height: 600px;
-  margin-top: 55px;
-`;
-
-const IconWrapper = styled.div`
-  width: 24px;
-  height: 24px;
-  margin-left: 146px;
-`;
-
-const Title = styled.div`
-  width: 120px;
-  height: 29px;
-  margin-top: 3px;
-  margin-left: 364px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 29.05px;
 `;
 
 const ContentWrapper = styled.div`
+  width: 100%;
+  margin-top: 30px;
   display: flex;
-  justify-content: center;
-  width: 1200px;
-  height: 100%;
+  justify-content: space-between;
 `;
 
 const LeftContainer = styled.div`
+  width: 50%;
+  height: 100%;
   display: flex;
   justify-content: center;
-  width: 500px;
-  height: 100%;
+  align-items: center;
 `;
 
 const RightContainer = styled.div`
-  width: 500px;
-  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 30px;
+  border-left: 1px solid ${props => props.theme.border};
 `;
 
 const CarouselContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  // width: 700px;
-  // height: 448px;
-  width: 250px;
-  height: 250px;
-  margin-top: 62px;
+  width: 100%;
 `;
 
 const DetailImage = styled.img`
@@ -253,14 +246,10 @@ const DetailImage = styled.img`
 const UserWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 500px;
   height: 50px;
 `;
 
-const InfoWrapper = styled.div`
-  margin-top: 62px;
-  height: 500px;
-`;
+const InfoWrapper = styled.div``;
 
 const UserLeftWrapper = styled.div`
   display: flex;
@@ -289,22 +278,19 @@ const Line = styled.hr`
 `;
 
 const DetailWrapper = styled.div`
-  width: 160px;
-  height: 100%;
+  width: 100%;
   margin-top: 26px;
 `;
 
 const ProductName = styled.div`
-  width: 150px;
-  height: 19px;
+  width: 100%;
   font-size: 16px;
   font-weight: 500;
   line-height: 19.36px;
 `;
 
 const ProductPrice = styled.div`
-  width: 120px;
-  height: 24px;
+  width: 100%;
   margin-top: 6px;
   font-weight: bold;
   font-size: 20px;
@@ -312,8 +298,8 @@ const ProductPrice = styled.div`
 `;
 
 const Description = styled.div`
-  width: 600px;
-  height: 150px;
+  width: 100%;
+  max-height: 250px;
   margin-top: 8px;
   overflow-y: auto;
   font-weight: 500;
@@ -321,8 +307,7 @@ const Description = styled.div`
   line-height: 19.38px;
 `;
 
-const CartButton = styled(BlackBtn)`
-  margin-top: 58px;
-  width: 250px;
-  height: 40px;
+const BtnWrapper = styled.div`
+  display: flex;
+  justify-content: center;
 `;
