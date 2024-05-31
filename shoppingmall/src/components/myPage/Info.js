@@ -47,4 +47,5 @@ const InfoText = styled.div`
   padding-left: 15px;
   border: 1px solid ${props => props.theme.border};
   color: #b1b5b9;
+  overflow-x: auto;
 `;
