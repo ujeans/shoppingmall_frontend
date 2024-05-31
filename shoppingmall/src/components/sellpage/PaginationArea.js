@@ -21,7 +21,7 @@ const PaginationArea = ({
         const params = new URLSearchParams();
         params.append("page", currentPage);
         params.append("size", maxPages);
-        params.append("sort", "enddate");
+        params.append("sort", sort);
 
         const url = `${
           process.env.REACT_APP_API_URL
@@ -72,7 +72,7 @@ const PaginationArea = ({
         const params = new URLSearchParams();
         params.append("page", currentPage);
         params.append("size", maxPages);
-        params.append("sort", "enddate");
+        params.append("sort", sort);
 
         const url = `${
           process.env.REACT_APP_API_URL
@@ -219,3 +219,4 @@ const ArrowIcon = styled.img`
   height: 15px;
   transform: ${(props) => (props.flipped ? "scaleX(-1)" : "none")};
 `;
+
