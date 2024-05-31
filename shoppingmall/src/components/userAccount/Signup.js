@@ -94,13 +94,10 @@ const Signup = () => {
       });
 
       const responseBody = await response.json();
-      console.log("body", responseBody);
-      console.log(user.img);
 
       if (!response.ok) {
         throw new Error("회원가입에 실패하였습니다.");
       }
-      console.log(response);
       setModalMessage("회원가입에 성공하였습니다.");
       setIsModalOpen(true);
     } catch (error) {
