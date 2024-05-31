@@ -30,6 +30,7 @@ const ProductList = () => {
 
   const ListData = (data) => {
     setListData(data);
+    console.log(data);
   };
 
   const clickProduct = (productId) => {
