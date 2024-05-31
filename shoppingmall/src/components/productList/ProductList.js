@@ -18,8 +18,7 @@ const ProductList = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const [images, setImages] = useState([]);
   const [listData, setListData] = useState([]);
-  const [sortStatus, setSortStatus] = useState("");
-  const [sort, setSort] = useState(sortStatus);
+  const [sort, setSort] = useState("");
 
   const products = listData.map((item) => ({
     image: item.files,
@@ -40,7 +39,7 @@ const ProductList = () => {
   return (
     <Container>
         <Wrapper>
-          <ProducFilter sortStatus={setSortStatus} />
+          <ProducFilter sort={setSort} />
           <ListContainer>
             <CardList>
               {products.map((product) => (

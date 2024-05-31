@@ -8,7 +8,7 @@ import styled from "styled-components";
 import pencil from "../../assets/pencil.svg";
 import Modal from "../commom/Modal/Modal";
 
-const ProducFilter = ( {sortStatus }) => {
+const ProducFilter = ( {setSort }) => {
   const navigate = useNavigate();
   const [btnActive, setBtnActive] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -33,11 +33,11 @@ const ProducFilter = ( {sortStatus }) => {
   const handleClickButton = idx => {
     setBtnActive(idx);
     if (idx === 0) {
-      sortStatus = "asc";
+      setSort = "asc";
     } else if (idx === 1) {
-      sortStatus = "desc";
+      setSort = "desc";
     } else {
-      sortStatus = "enddate";
+      setSort = "enddate";
     }
   };
   return (
