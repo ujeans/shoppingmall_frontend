@@ -23,9 +23,6 @@ const ProductArea = ({ ProductData }) => {
     setnav(false);
   };
 
-  if (!nav) {
-    return <Navigate to="/modify" />;
-  }
 
   return (
     <Wrapper>

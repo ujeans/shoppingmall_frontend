@@ -112,6 +112,7 @@ const PaginationArea = ({
         params.append("size", maxPages);
         params.append("sort", "asc");
 
+
         const url = `${
           process.env.REACT_APP_API_URL
         }/products/user/${userId}?${params.toString()}`;
@@ -232,3 +233,4 @@ const ArrowIcon = styled.img`
   height: 15px;
   transform: ${(props) => (props.flipped ? "scaleX(-1)" : "none")};
 `;
+

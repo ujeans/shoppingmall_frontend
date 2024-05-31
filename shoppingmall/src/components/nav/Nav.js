@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navigation from "./Navigation";
+import { useNavigate } from "react-router-dom";
 
 //svg
 import mypage from "../../assets/mypage.svg";
@@ -8,15 +9,15 @@ import cart from "../../assets/cart.svg";
 import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
 
 const Nav = ({ children }) => {
+  const navigate = useNavigate();
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const { moveToHome, moveToSignup, moveToLogin, moveToMypage, moveToCart } =
+  const { moveToHome, moveToSignup, moveToLogin, moveToMypage } =
     Navigation();
 
   useEffect(() => {
     const token = localStorage.getItem("login-token");
     if (token) {
       setLoggedIn(true);
-      console.log(token);
     }
   }, []);
 
@@ -24,8 +25,11 @@ const Nav = ({ children }) => {
     localStorage.removeItem("login-token");
     setLoggedIn(false);
     moveToHome();
-    console.log(localStorage.getItem("login-token"));
   };
+
+  const moveToCart = () => {
+    navigate("/cart");
+  }
 
   return (
     <>

@@ -6,6 +6,8 @@ import PaginationArea from "../sellpage/PaginationArea";
 import ProducFilter from "./ProducFilter";
 // svg
 import unlike from "../../assets/unlike.svg";
+import { LoadingSpinner } from "../../style/CommonStyles";
+import { ClipLoader } from "react-spinners";
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -16,9 +18,10 @@ const ProductList = () => {
   const size = 8;
   const pages = [1, 2, 3, 4, 5];
   const [currentPageNum, setCurrentPageNum] = useState(1);
-  const [sort, setSort] = useState("asc");
   const [images, setImages] = useState([]);
   const [listData, setListData] = useState([]);
+  const [sort, setSort] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const products = listData.map((item) => ({
     image: item.files,
@@ -37,58 +40,65 @@ const ProductList = () => {
     navigate(`/product/${productId}`, { state: { productId: productId } });
   };
 
+  if (loading) {
+    return (
+      <LoadingSpinner>
+        <ClipLoader size={150} />
+      </LoadingSpinner>
+    );
+  }
+
   return (
     <Container>
-      <Wrapper>
-        <ProducFilter />
-        <ListContainer>
-          <CardList>
-            {products.map((product) => (
-              <Item
-                key={product.productId}
-                productsPerRow={productsPerRow}
-                onClick={() => clickProduct(product.productId)}
-              >
-                <ImageWrapper>
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    onClick={() => clickProduct(product.productId)}
-                  />
-                </ImageWrapper>
-                <InfoWrapper>
-                  <Info>
-                    <ProductName>
-                      <div onClick={() => clickProduct(product.productId)}>
-                        {product.title}
-                      </div>
-                      <IconWrapper>
-                        <Icon src={unlike} />
-                      </IconWrapper>
-                    </ProductName>
-                    <ProductDescription>
-                      {product.description}
-                    </ProductDescription>
-                    <ProductPrice>
-                      {product.price
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                      <PriceText>원</PriceText>
-                    </ProductPrice>
-                  </Info>
-                </InfoWrapper>
-              </Item>
-            ))}
-          </CardList>
-        </ListContainer>
-        <PaginationArea
-          currentPageNum={currentPageNum}
-          size={size}
-          sort={sort}
-          pageNum={1}
-          onPageChange={currentPageNum}
-          ListData={ListData}
-        />
+        <Wrapper>
+          <ProducFilter sort={setSort} />
+          <ListContainer>
+            <CardList>
+              {products.map((product) => (
+                <Item
+                  key={product.productId}
+                  productsPerRow={productsPerRow}
+                >
+                  <ImageWrapper>
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      onClick={() => clickProduct(product.productId)}
+                    />
+                  </ImageWrapper>
+                  <InfoWrapper>
+                    <Info>
+                      <ProductName>
+                        <div onClick={() => clickProduct(product.productId)}>
+                          {product.title}
+                        </div>
+                        <IconWrapper>
+                          <Icon src={unlike} />
+                        </IconWrapper>
+                      </ProductName>
+                      <ProductDescription>
+                        {product.description}
+                      </ProductDescription>
+                      <ProductPrice>
+                        {product.price
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        <PriceText>원</PriceText>
+                      </ProductPrice>
+                    </Info>
+                  </InfoWrapper>
+                </Item>
+              ))}
+            </CardList>
+          </ListContainer>
+          <PaginationArea
+            currentPageNum={currentPageNum}
+            size={size}
+            sort={sort}
+            pageNum={1}
+            onPageChange={currentPageNum}
+            ListData={ListData}
+          />
       </Wrapper>
     </Container>
   );

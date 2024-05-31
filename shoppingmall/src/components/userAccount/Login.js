@@ -55,7 +55,6 @@ const Login = () => {
           if (response.accessToken) {
             localStorage.setItem("login-token", response.accessToken);
             localStorage.setItem("user_Id", response.user_Id);
-            console.log(response.user_Id);
           } else if (!response.ok) {
             throw new Error("이메일과 비밀번호를 확인하세요");
           }
@@ -64,7 +63,6 @@ const Login = () => {
     } catch (error) {
       setModalMessage("이메일과 비밀번호를 확인하세요");
       setIsModalOpen(true);
-      console.error("에러", error);
     }
   };
 
