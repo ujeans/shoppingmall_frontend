@@ -16,7 +16,6 @@ const Nav = ({ children }) => {
     const token = localStorage.getItem("login-token");
     if (token) {
       setLoggedIn(true);
-      console.log(token);
     }
   }, []);
 
@@ -24,7 +23,6 @@ const Nav = ({ children }) => {
     localStorage.removeItem("login-token");
     setLoggedIn(false);
     moveToHome();
-    console.log(localStorage.getItem("login-token"));
   };
 
   return (
