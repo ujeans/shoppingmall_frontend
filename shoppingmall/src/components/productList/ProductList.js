@@ -18,9 +18,9 @@ const ProductList = () => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const [images, setImages] = useState([]);
   const [listData, setListData] = useState([]);
-  const [sortStatus, setSortStatus] = useState({});
+  const [sortStatus, setSortStatus] = useState("");
   const [sort, setSort] = useState(sortStatus);
-  
+
   const products = listData.map((item) => ({
     image: item.files,
     title: item.title,

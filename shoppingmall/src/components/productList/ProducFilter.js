@@ -6,14 +6,13 @@ import styled from "styled-components";
 
 // svg
 import pencil from "../../assets/pencil.svg";
-import categorydropdown from "../../assets/categorydropdown.svg";
 import Modal from "../commom/Modal/Modal";
 
-const ProducFilter = () => {
+const ProducFilter = ( {sortStatus }) => {
   const navigate = useNavigate();
   const [btnActive, setBtnActive] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [sortStatus, setSortStatus] = useState("asc");
+
   const closeModal = () => {
     setIsVisible(false);
   };
@@ -34,11 +33,11 @@ const ProducFilter = () => {
   const handleClickButton = idx => {
     setBtnActive(idx);
     if (idx === 0) {
-      setSortStatus("asc");
+      sortStatus = "asc";
     } else if (idx === 1) {
-      setSortStatus("desc");
+      sortStatus = "desc";
     } else {
-      setSortStatus("enddate");
+      sortStatus = "enddate";
     }
   };
   return (
