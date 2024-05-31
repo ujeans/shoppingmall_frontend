@@ -219,3 +219,4 @@ const ArrowIcon = styled.img`
   height: 15px;
   transform: ${props => (props.flipped ? "scaleX(-1)" : "none")};
 `;
+
