@@ -22,7 +22,7 @@ const ProducFilter = ( {setSort }) => {
     if (loginToken !== null) {
         setIsVisible(true);
     } else {
-      navigate("/sell");
+      navigate("/write");
     }
   };
 
