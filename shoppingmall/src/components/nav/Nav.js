@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navigation from "./Navigation";
+import { useNavigate } from "react-router-dom";
 
 //svg
 import mypage from "../../assets/mypage.svg";
@@ -8,8 +9,9 @@ import cart from "../../assets/cart.svg";
 import { BlackBtn, WhiteBtn } from "../../style/CommonStyles";
 
 const Nav = ({ children }) => {
+  const navigate = useNavigate();
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const { moveToHome, moveToSignup, moveToLogin, moveToMypage, moveToCart } =
+  const { moveToHome, moveToSignup, moveToLogin, moveToMypage } =
     Navigation();
 
   useEffect(() => {
@@ -24,6 +26,10 @@ const Nav = ({ children }) => {
     setLoggedIn(false);
     moveToHome();
   };
+
+  const moveToCart = () => {
+    navigate("/cart");
+  }
 
   return (
     <>

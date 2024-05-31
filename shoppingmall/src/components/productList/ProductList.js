@@ -6,6 +6,8 @@ import PaginationArea from "../sellpage/PaginationArea";
 import ProducFilter from "./ProducFilter";
 // svg
 import unlike from "../../assets/unlike.svg";
+import { LoadingSpinner } from "../../style/CommonStyles";
+import { ClipLoader } from "react-spinners";
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const ProductList = () => {
   const [images, setImages] = useState([]);
   const [listData, setListData] = useState([]);
   const [sort, setSort] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const products = listData.map((item) => ({
     image: item.files,
@@ -35,6 +38,14 @@ const ProductList = () => {
   const clickProduct = (productId) => {
     navigate(`/product/${productId}`, { state: { productId: productId } });
   };
+
+  if (loading) {
+    return (
+      <LoadingSpinner>
+        <ClipLoader size={150} />
+      </LoadingSpinner>
+    );
+  }
 
   return (
     <Container>
