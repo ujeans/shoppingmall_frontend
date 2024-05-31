@@ -71,7 +71,7 @@ const PaginationArea = ({
         const params = new URLSearchParams(); // 39번 userId로 대체될 예정
         params.append("page", currentPage);
         params.append("size", maxPages);
-        params.append("sort", "enddate");
+        params.append("sort", sort);
 
         const url = `${
           process.env.REACT_APP_API_URL
