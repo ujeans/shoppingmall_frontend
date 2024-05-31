@@ -21,8 +21,8 @@ const ProductDetail = () => {
   const [isAlreadyOnCart, setIsAlreadyOnCart] = useState(false);
   const [modalClose, setModalClose] = useState(false);
 
-  const closeModal = () => {
-    setModalClose(true);
+  const onClose = () => {
+    setModalClose(false);
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const ProductDetail = () => {
                   console.log("장바구니에 삼품이 담겼습니다: " , data);
                   if (data.cartItemId != 0) {
                       setIsOnCart(true);
-                      setNavigateUrl("/");
+                      setNavigateUrl("/cart");
                   } else if (data.message === " 동일한 상품이 이미 장바구니에 있습니다.") {
                       setIsAlreadyOnCart(true);
                       setNavigateUrl("/");
@@ -137,7 +137,7 @@ const ProductDetail = () => {
         {isVisible &&  (
           <Modal
             open={isVisible}
-            onClose={closeModal}
+            onClose={onClose}
             title="로그인이 필요한 기능입니다."
             subText="로그인 페이지로 이동하시겠습니까?"
             navigateToPage={navigateToPage}
@@ -146,7 +146,7 @@ const ProductDetail = () => {
         {isOnCart && (
            <Modal
             open={isVisible}
-            onClose={closeModal}
+            onClose={onClose}
             title="장바구니에 상품이 추가되었습니다"
             subText="확인을 누르시면 메인페이지로 이동됩니다"
             navigateToPage={navigateToPage}
@@ -156,12 +156,11 @@ const ProductDetail = () => {
         {isAlreadyOnCart && (
           <Modal
           open={isVisible}
-          onClose={closeModal}
+          onClose={onClose}
           title="동일한 상품이 이미 장바구니에 있습니다"
           subText="다른 상품을 구매해 보는 건 어떨까요?"
           navigateToPage={navigateToPage}
         />
-
       )}
       </Wrapper>
     </Layout>
